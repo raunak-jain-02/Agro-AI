@@ -38,7 +38,7 @@ npm -v
 
 Make sure you have git isntalled on your terminal.
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/raunak-jain-02/agro-mitra-ai.git
 cd agro-mitra-ai
 ```
 
