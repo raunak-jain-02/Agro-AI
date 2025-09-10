@@ -1,73 +1,130 @@
-# Welcome to your Lovable project
+# 🌱 Agro-AI
 
-## Project info
+![Node.js](https://img.shields.io/badge/Node.js-18%2B-green?logo=node.js) ![React](https://img.shields.io/badge/React-18-blue?logo=react) 
+![Vite](https://img.shields.io/badge/Vite-5-purple?logo=vite) 
+![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3-blue?logo=tailwindcss) 
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
-**URL**: https://lovable.dev/projects/14cbfb61-f88f-47eb-a178-e5c4645a9027
+Agro Mitra AI is a modern web application built to assist farmers and agriculture stakeholders using AI-powered insights. This project is built with **React**, **TypeScript**, **Vite**, and **Tailwind CSS** for a fast, scalable, and responsive user experience.
 
-## How can I edit this code?
+## 🚀 Features
+- 🌾 **AI-powered recommendations** for crops and farming practices
+- 📊 **Data visualization** for soil, weather, and crop analytics
+- 🗺️ **Interactive pages** for various agricultural services
+- ⚡ **Fast development** using Vite + React
+- 🎨 **Beautiful UI** with Tailwind CSS
 
-There are several ways of editing your application.
+## 🛠️ Tech Stack
+- **Frontend:** React, TypeScript
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS
+- **Linting:** ESLint
+- **Project Structure:**  
+  - `src/components` → Reusable UI components  
+  - `src/pages` → Main application pages  
+  - `src/hooks` → Custom React hooks  
+  - `src/lib` → Utility libraries  
+  - `public/` → Static files  
 
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/14cbfb61-f88f-47eb-a178-e5c4645a9027) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+## 📦 Installation & Setup
+Make sure you have **Node.js (LTS)** installed. Check using:
+```bash
+node -v
+npm -v
 ```
 
-**Edit a file directly in GitHub**
+## <img src="https://cdn-icons-png.flaticon.com/128/1051/1051377.png" alt="GitHub" width="30"> Cloning the Git Repository
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
 
-**Use GitHub Codespaces**
+Make sure you have git isntalled on your terminal.
+```bash
+git clone <your-repo-url>
+cd agro-mitra-ai
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## Installing the dependencies
+Install using:
+```bash
+npm install
+```
 
-## What technologies are used for this project?
+## Build for Production
+```bash
+npm run build
+```
 
-This project is built with:
+## Preview Production Preview
+```bash
+npm run preview
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🧩 Scripts
+Command	Action
+| Command           | Action                                |
+| ----------------- | ------------------------------------- |
+| `npm run dev`     | Starts the local development server   |
+| `npm run build`   | Builds the project for production     |
+| `npm run preview` | Previews the production build locally |
 
-## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/14cbfb61-f88f-47eb-a178-e5c4645a9027) and click on Share -> Publish.
+## 📂 Folder Structure (Simplified)
+```pgsql
+agro-mitra-ai/
+├── public/
+│   └── robots.txt
+├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── hooks/
+│   ├── lib/
+│   ├── pages/
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── index.css
+├── .gitignore
+├── index.html
+├── package.json
+├── tailwind.config.ts
+└── vite.config.ts
+```
 
-## Can I connect a custom domain to my Lovable project?
+## 🤝 Contributing
+Contributions are welcome! Please fork the repository and submit a pull request for any enhancements, bug fixes, or documentation improvements.
 
-Yes, you can!
+## 👥 Top Contributors
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+<a href="https://github.com/raunak-jain-02">
+  <img src="https://github.com/raunak-jain-02.png" width="50" height="50">
+</a>
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+<a href="https://github.com/leafrelaf">
+  <img src="https://github.com/leafrelaf.png" width="50" height="50">
+</a>
+
+<a href="https://github.com/akarsh0612">
+  <img src="https://github.com/akarsh0612.png" width="50" height="50">
+</a>
+
+<a href="https://github.com/parekhudit7">
+  <img src="https://github.com/parekhudit7.png" width="50" height="50">
+</a>
+<!-- repeat for each contributor -->
+
+
+
+## <img src="https://cdn-icons-png.flaticon.com/128/702/702814.png" alt="icon" width="30" height="30">Conclusion
+
+Agro Mitra AI is a step toward combining modern technology with agriculture to empower farmers, researchers, and agri-businesses.  
+By leveraging AI and a clean, responsive interface, this project aims to make critical agricultural insights accessible to everyone.  
+
+If you find this project useful, feel free to ⭐ star the repository, share it with others, or contribute to make it even better!
+
+## <img src="https://cdn-icons-png.flaticon.com/128/3095/3095610.png" alt="icon" width="28" height="30">Contact
+
+**Name**: Raunak Jain<br>
+**Email**: raunakjain1002@gmail.com<br>
+**Website**: 
+
+
+ 
+
