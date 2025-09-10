@@ -1,6 +1,7 @@
 # 🌱 Agro-AI
 
-![Node.js](https://img.shields.io/badge/Node.js-18%2B-green?logo=node.js) ![React](https://img.shields.io/badge/React-18-blue?logo=react) 
+![Node.js](https://img.shields.io/badge/Node.js-18%2B-green?logo=node.js) 
+![React](https://img.shields.io/badge/React-18-blue?logo=react) 
 ![Vite](https://img.shields.io/badge/Vite-5-purple?logo=vite) 
 ![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3-blue?logo=tailwindcss) 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
