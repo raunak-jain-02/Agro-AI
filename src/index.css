@@ -6,58 +6,59 @@
 
 @layer base {
   :root {
-    /* Background & Surfaces */
-    --background: 120 20% 98%;
-    --foreground: 120 10% 15%;
+    /* Background & Surfaces - ClinIQ inspired dark theme */
+    --background: 200 25% 8%;
+    --foreground: 0 0% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 120 10% 15%;
+    --card: 200 20% 12%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 120 10% 15%;
+    --popover: 200 20% 12%;
+    --popover-foreground: 0 0% 98%;
 
-    /* Agricultural Green Primary */
-    --primary: 120 60% 25%;
+    /* ClinIQ Teal Primary */
+    --primary: 180 100% 35%;
     --primary-foreground: 0 0% 98%;
-    --primary-light: 120 45% 35%;
-    --primary-dark: 120 70% 20%;
+    --primary-light: 180 80% 45%;
+    --primary-dark: 180 100% 25%;
 
-    /* Earth Tone Secondary */
-    --secondary: 30 25% 90%;
-    --secondary-foreground: 120 60% 25%;
+    /* Dark Secondary */
+    --secondary: 200 15% 18%;
+    --secondary-foreground: 0 0% 98%;
 
-    /* Natural Muted */
-    --muted: 120 15% 94%;
-    --muted-foreground: 120 8% 45%;
+    /* Muted Dark */
+    --muted: 200 15% 15%;
+    --muted-foreground: 200 10% 65%;
 
-    /* Crop Accent - Warm Orange */
-    --accent: 35 85% 60%;
-    --accent-foreground: 0 0% 98%;
-    --accent-light: 35 75% 70%;
+    /* Accent - Light Blue */
+    --accent: 200 100% 60%;
+    --accent-foreground: 200 25% 8%;
+    --accent-light: 200 80% 70%;
 
     /* Error States */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     /* Borders & Inputs */
-    --border: 120 20% 88%;
-    --input: 120 20% 95%;
-    --ring: 120 60% 25%;
+    --border: 200 15% 20%;
+    --input: 200 15% 15%;
+    --ring: 180 100% 35%;
 
-    /* Custom Agricultural Tokens */
-    --success: 120 70% 35%;
+    /* Custom Tokens */
+    --success: 120 70% 45%;
     --warning: 45 90% 55%;
-    --info: 200 70% 45%;
+    --info: 200 100% 60%;
     
-    /* Gradients */
+    /* ClinIQ Style Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-light)));
-    --gradient-hero: linear-gradient(180deg, hsl(var(--background)), hsl(120 25% 95%));
-    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(120 15% 97%));
+    --gradient-hero: linear-gradient(180deg, hsl(200 25% 8%), hsl(200 30% 12%));
+    --gradient-card: linear-gradient(145deg, hsl(200 20% 12%), hsl(200 15% 15%));
+    --gradient-navbar: linear-gradient(180deg, hsl(200 20% 12% / 0.95), hsl(200 25% 8% / 0.95));
 
     /* Shadows */
-    --shadow-soft: 0 2px 8px hsl(120 20% 20% / 0.08);
-    --shadow-card: 0 4px 12px hsl(120 20% 20% / 0.10);
-    --shadow-elevated: 0 8px 24px hsl(120 20% 20% / 0.12);
+    --shadow-soft: 0 2px 8px hsl(200 25% 8% / 0.3);
+    --shadow-card: 0 4px 12px hsl(200 25% 8% / 0.4);
+    --shadow-elevated: 0 8px 24px hsl(200 25% 8% / 0.5);
 
     --radius: 0.5rem;
 
@@ -124,5 +125,16 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .typewriter-cursor {
+    animation: blink 1s infinite;
+  }
+  
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
   }
 }

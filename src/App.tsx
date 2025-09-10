@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import CropDisease from "./pages/CropDisease";
 import MarketAnalysis from "./pages/MarketAnalysis";
 import GovernmentSchemes from "./pages/GovernmentSchemes";
+import About from "./pages/About";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/crop-disease" element={<CropDisease />} />
           <Route path="/market-analysis" element={<MarketAnalysis />} />
           <Route path="/government-schemes" element={<GovernmentSchemes />} />
+          <Route path="/about" element={<About />} />
           <Route path="/profile" element={<Profile />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
