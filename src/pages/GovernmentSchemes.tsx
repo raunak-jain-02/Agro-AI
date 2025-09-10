@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Link } from "react-router-dom";
-import { ArrowLeft, FileText, CheckCircle, XCircle, Search, Filter, ExternalLink, Leaf } from "lucide-react";
+import { ArrowLeft, FileText, CheckCircle, XCircle, Search, Filter, ExternalLink, Leaf, TrendingUp, User } from "lucide-react";
 
 const GovernmentSchemes = () => {
   const schemes = [
@@ -103,31 +103,81 @@ const GovernmentSchemes = () => {
   return (
     <div className="min-h-screen bg-gradient-hero">
       {/* Navigation */}
-      <nav className="bg-card/80 backdrop-blur-sm border-b border-border shadow-soft">
+      <nav className="bg-card/80 backdrop-blur-sm border-b border-border shadow-soft sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
+            {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
               <ArrowLeft className="h-5 w-5 text-primary" />
               <Leaf className="h-8 w-8 text-primary" />
-              <h1 className="text-2xl font-bold text-primary">AgroAI</h1>
+              <h1 className="text-xl md:text-2xl font-bold text-primary">AgroAI</h1>
             </Link>
-            <h2 className="text-lg font-semibold text-foreground">Government Schemes</h2>
+
+            {/* Desktop Navigation Links */}
+            <div className="hidden md:flex items-center space-x-6">
+              <Link to="/crop-disease" className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors">
+                <Leaf className="h-4 w-4" />
+                <span>Crop Disease</span>
+              </Link>
+              <Link to="/market-analysis" className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors">
+                <TrendingUp className="h-4 w-4" />
+                <span>Market Analysis</span>
+              </Link>
+              <Link to="/government-schemes" className="flex items-center space-x-2 text-primary font-medium">
+                <FileText className="h-4 w-4" />
+                <span>Govt Schemes</span>
+              </Link>
+              <Link to="/profile">
+                <Button variant="outline" size="sm">
+                  <User className="h-4 w-4 mr-2" />
+                  Profile
+                </Button>
+              </Link>
+            </div>
+
+            {/* Mobile Page Title & Menu */}
+            <div className="flex items-center space-x-2 md:hidden">
+              <h2 className="text-sm font-semibold text-foreground">Govt Schemes</h2>
+              <Link to="/profile">
+                <Button variant="outline" size="sm">
+                  <User className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          {/* Mobile Navigation Links */}
+          <div className="md:hidden mt-4 pt-4 border-t border-border">
+            <div className="grid grid-cols-1 gap-3">
+              <Link to="/crop-disease" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                <Leaf className="h-5 w-5 text-primary" />
+                <span className="font-medium">AI Crop Disease</span>
+              </Link>
+              <Link to="/market-analysis" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                <TrendingUp className="h-5 w-5 text-accent" />
+                <span className="font-medium">Real-Time Market</span>
+              </Link>
+              <Link to="/government-schemes" className="flex items-center space-x-3 p-3 rounded-lg bg-success/10 border border-success/20">
+                <FileText className="h-5 w-5 text-success" />
+                <span className="font-medium text-success">Government Schemes</span>
+              </Link>
+            </div>
           </div>
         </div>
       </nav>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4 md:py-8">
         <div className="max-w-6xl mx-auto">
           {/* Search and Filter Section */}
-          <Card className="mb-8 bg-gradient-card shadow-card">
+          <Card className="mb-6 md:mb-8 bg-gradient-card shadow-card">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
                 <Search className="h-5 w-5 text-primary" />
                 Find Suitable Schemes
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid md:grid-cols-3 gap-4">
+              <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="text-sm font-medium mb-2 block">Search Schemes</label>
                   <Input placeholder="Enter scheme name..." />
@@ -159,7 +209,7 @@ const GovernmentSchemes = () => {
           </Card>
 
           {/* Stats Overview */}
-          <div className="grid md:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 md:mb-8">
             <Card className="bg-gradient-card shadow-card">
               <CardContent className="p-4 text-center">
                 <p className="text-2xl font-bold text-primary">6</p>
@@ -187,7 +237,7 @@ const GovernmentSchemes = () => {
           </div>
 
           {/* Schemes Grid */}
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid sm:grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
             {schemes.map((scheme) => (
               <Card key={scheme.id} className="bg-gradient-card shadow-card hover:shadow-elevated transition-all duration-300">
                 <CardHeader>
@@ -207,7 +257,7 @@ const GovernmentSchemes = () => {
                 <CardContent className="space-y-4">
                   <p className="text-muted-foreground">{scheme.description}</p>
                   
-                  <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <div>
                       <p className="font-medium text-foreground">Benefit Amount</p>
                       <p className="text-accent font-semibold">{scheme.amount}</p>
@@ -223,7 +273,7 @@ const GovernmentSchemes = () => {
                     <p className="text-muted-foreground text-sm">{scheme.eligibility}</p>
                   </div>
 
-                  <div className="flex gap-2">
+                  <div className="flex flex-col sm:flex-row gap-2">
                     <Button 
                       size="sm" 
                       className="flex-1"

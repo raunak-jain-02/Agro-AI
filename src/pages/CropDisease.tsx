@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Upload, Camera, Download, Leaf, AlertTriangle, CheckCircle } from "lucide-react";
+import { ArrowLeft, Upload, Camera, Download, Leaf, AlertTriangle, CheckCircle, TrendingUp, FileText, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const CropDisease = () => {
@@ -71,49 +71,99 @@ const CropDisease = () => {
   return (
     <div className="min-h-screen bg-gradient-hero">
       {/* Navigation */}
-      <nav className="bg-card/80 backdrop-blur-sm border-b border-border shadow-soft">
+      <nav className="bg-card/80 backdrop-blur-sm border-b border-border shadow-soft sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
+            {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
               <ArrowLeft className="h-5 w-5 text-primary" />
               <Leaf className="h-8 w-8 text-primary" />
-              <h1 className="text-2xl font-bold text-primary">AgroAI</h1>
+              <h1 className="text-xl md:text-2xl font-bold text-primary">AgroAI</h1>
             </Link>
-            <h2 className="text-lg font-semibold text-foreground">Crop Disease Analysis</h2>
+
+            {/* Desktop Navigation Links */}
+            <div className="hidden md:flex items-center space-x-6">
+              <Link to="/crop-disease" className="flex items-center space-x-2 text-primary font-medium">
+                <Leaf className="h-4 w-4" />
+                <span>Crop Disease</span>
+              </Link>
+              <Link to="/market-analysis" className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors">
+                <TrendingUp className="h-4 w-4" />
+                <span>Market Analysis</span>
+              </Link>
+              <Link to="/government-schemes" className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors">
+                <FileText className="h-4 w-4" />
+                <span>Govt Schemes</span>
+              </Link>
+              <Link to="/profile">
+                <Button variant="outline" size="sm">
+                  <User className="h-4 w-4 mr-2" />
+                  Profile
+                </Button>
+              </Link>
+            </div>
+
+            {/* Mobile Page Title & Menu */}
+            <div className="flex items-center space-x-2 md:hidden">
+              <h2 className="text-sm font-semibold text-foreground">Crop Disease</h2>
+              <Link to="/profile">
+                <Button variant="outline" size="sm">
+                  <User className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          {/* Mobile Navigation Links */}
+          <div className="md:hidden mt-4 pt-4 border-t border-border">
+            <div className="grid grid-cols-1 gap-3">
+              <Link to="/crop-disease" className="flex items-center space-x-3 p-3 rounded-lg bg-primary/10 border border-primary/20">
+                <Leaf className="h-5 w-5 text-primary" />
+                <span className="font-medium text-primary">AI Crop Disease</span>
+              </Link>
+              <Link to="/market-analysis" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                <TrendingUp className="h-5 w-5 text-accent" />
+                <span className="font-medium">Real-Time Market</span>
+              </Link>
+              <Link to="/government-schemes" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                <FileText className="h-5 w-5 text-success" />
+                <span className="font-medium">Government Schemes</span>
+              </Link>
+            </div>
           </div>
         </div>
       </nav>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4 md:py-8">
         <div className="max-w-4xl mx-auto">
           {/* Upload Section */}
-          <Card className="mb-8 bg-gradient-card shadow-card">
+          <Card className="mb-6 md:mb-8 bg-gradient-card shadow-card">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
                 <Camera className="h-5 w-5 text-primary" />
                 Upload Crop Image
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
+              <div className="border-2 border-dashed border-border rounded-lg p-4 md:p-8 text-center">
                 {selectedImage ? (
                   <div className="space-y-4">
                     <img 
                       src={selectedImage} 
                       alt="Selected crop" 
-                      className="max-w-md mx-auto rounded-lg shadow-soft"
+                      className="max-w-full md:max-w-md mx-auto rounded-lg shadow-soft"
                     />
                     <Button
                       onClick={analyzeImage}
                       disabled={isAnalyzing}
-                      className="bg-gradient-primary"
+                      className="bg-gradient-primary w-full md:w-auto"
                     >
                       {isAnalyzing ? "Analyzing..." : "Analyze Disease"}
                     </Button>
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <Upload className="h-16 w-16 text-muted-foreground mx-auto" />
+                    <Upload className="h-12 md:h-16 w-12 md:w-16 text-muted-foreground mx-auto" />
                     <div>
                       <Input
                         type="file"
@@ -123,12 +173,12 @@ const CropDisease = () => {
                         id="image-upload"
                       />
                       <label htmlFor="image-upload">
-                        <Button variant="outline" className="cursor-pointer">
+                        <Button variant="outline" className="cursor-pointer w-full md:w-auto">
                           Choose Image
                         </Button>
                       </label>
                     </div>
-                    <p className="text-muted-foreground">
+                    <p className="text-sm md:text-base text-muted-foreground px-2">
                       Upload a clear photo of your crop showing any visible symptoms
                     </p>
                   </div>
@@ -148,7 +198,7 @@ const CropDisease = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid md:grid-cols-2 gap-6">
+                  <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     <div>
                       <h3 className="font-semibold text-lg mb-2">Identified Disease</h3>
                       <p className="text-2xl font-bold text-destructive mb-2">{analysisResult.disease}</p>
@@ -171,7 +221,7 @@ const CropDisease = () => {
                 </CardContent>
               </Card>
 
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <Card className="bg-gradient-card shadow-card">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-destructive">
@@ -211,8 +261,8 @@ const CropDisease = () => {
                 </Card>
               </div>
 
-              <div className="text-center">
-                <Button onClick={downloadReport} variant="outline" className="gap-2">
+              <div className="text-center pt-4">
+                <Button onClick={downloadReport} variant="outline" className="gap-2 w-full md:w-auto">
                   <Download className="h-4 w-4" />
                   Download PDF Report
                 </Button>

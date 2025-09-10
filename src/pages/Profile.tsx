@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Link } from "react-router-dom";
-import { ArrowLeft, User, Camera, MapPin, DollarSign, Calendar, Leaf } from "lucide-react";
+import { ArrowLeft, User, Camera, MapPin, DollarSign, Calendar, Leaf, FileText, TrendingUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
@@ -42,29 +42,72 @@ const Profile = () => {
   return (
     <div className="min-h-screen bg-gradient-hero">
       {/* Navigation */}
-      <nav className="bg-card/80 backdrop-blur-sm border-b border-border shadow-soft">
+      <nav className="bg-card/80 backdrop-blur-sm border-b border-border shadow-soft sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
+            {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
               <ArrowLeft className="h-5 w-5 text-primary" />
               <Leaf className="h-8 w-8 text-primary" />
-              <h1 className="text-2xl font-bold text-primary">AgroAI</h1>
+              <h1 className="text-xl md:text-2xl font-bold text-primary">AgroAI</h1>
             </Link>
-            <h2 className="text-lg font-semibold text-foreground">Farmer Profile</h2>
+
+            {/* Desktop Navigation Links */}
+            <div className="hidden md:flex items-center space-x-6">
+              <Link to="/crop-disease" className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors">
+                <Leaf className="h-4 w-4" />
+                <span>Crop Disease</span>
+              </Link>
+              <Link to="/market-analysis" className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors">
+                <TrendingUp className="h-4 w-4" />
+                <span>Market Analysis</span>
+              </Link>
+              <Link to="/government-schemes" className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors">
+                <FileText className="h-4 w-4" />
+                <span>Govt Schemes</span>
+              </Link>
+              <Link to="/profile" className="flex items-center space-x-2 text-primary font-medium">
+                <User className="h-4 w-4" />
+                <span>Profile</span>
+              </Link>
+            </div>
+
+            {/* Mobile Page Title */}
+            <div className="md:hidden">
+              <h2 className="text-sm font-semibold text-foreground">Profile</h2>
+            </div>
+          </div>
+
+          {/* Mobile Navigation Links */}
+          <div className="md:hidden mt-4 pt-4 border-t border-border">
+            <div className="grid grid-cols-1 gap-3">
+              <Link to="/crop-disease" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                <Leaf className="h-5 w-5 text-primary" />
+                <span className="font-medium">AI Crop Disease</span>
+              </Link>
+              <Link to="/market-analysis" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                <TrendingUp className="h-5 w-5 text-accent" />
+                <span className="font-medium">Real-Time Market</span>
+              </Link>
+              <Link to="/government-schemes" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                <FileText className="h-5 w-5 text-success" />
+                <span className="font-medium">Government Schemes</span>
+              </Link>
+            </div>
           </div>
         </div>
       </nav>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4 md:py-8">
         <div className="max-w-4xl mx-auto">
           {/* Profile Header */}
-          <Card className="mb-8 bg-gradient-card shadow-card">
-            <CardContent className="p-8">
+          <Card className="mb-6 md:mb-8 bg-gradient-card shadow-card">
+            <CardContent className="p-6 md:p-8">
               <div className="flex flex-col md:flex-row items-center gap-6">
                 <div className="relative">
-                  <Avatar className="h-32 w-32">
+                  <Avatar className="h-24 w-24 md:h-32 md:w-32">
                     <AvatarImage src="/placeholder-farmer.jpg" alt="Farmer profile" />
-                    <AvatarFallback className="text-2xl bg-primary text-primary-foreground">
+                    <AvatarFallback className="text-xl md:text-2xl bg-primary text-primary-foreground">
                       {profileData.name.split(' ').map(n => n[0]).join('')}
                     </AvatarFallback>
                   </Avatar>
@@ -78,24 +121,24 @@ const Profile = () => {
                 </div>
                 
                 <div className="flex-1 text-center md:text-left">
-                  <h2 className="text-3xl font-bold text-foreground mb-2">{profileData.name}</h2>
-                  <div className="flex flex-col md:flex-row gap-4 text-muted-foreground">
-                    <div className="flex items-center gap-1">
+                  <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">{profileData.name}</h2>
+                  <div className="flex flex-col sm:flex-row md:flex-row gap-2 md:gap-4 text-sm md:text-base text-muted-foreground">
+                    <div className="flex items-center justify-center md:justify-start gap-1">
                       <MapPin className="h-4 w-4" />
                       <span>{profileData.location}</span>
                     </div>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center justify-center md:justify-start gap-1">
                       <Calendar className="h-4 w-4" />
                       <span>{profileData.age} years old</span>
                     </div>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center justify-center md:justify-start gap-1">
                       <DollarSign className="h-4 w-4" />
                       <span>₹{parseInt(profileData.income).toLocaleString()}/year</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex gap-2">
+                <div className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
                   {isEditing ? (
                     <>
                       <Button onClick={handleSave} className="bg-gradient-primary">
@@ -106,7 +149,7 @@ const Profile = () => {
                       </Button>
                     </>
                   ) : (
-                    <Button onClick={() => setIsEditing(true)} variant="outline">
+                    <Button onClick={() => setIsEditing(true)} variant="outline" className="w-full md:w-auto">
                       <User className="h-4 w-4 mr-2" />
                       Edit Profile
                     </Button>
@@ -117,7 +160,7 @@ const Profile = () => {
           </Card>
 
           {/* Profile Details */}
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
             <Card className="bg-gradient-card shadow-card">
               <CardHeader>
                 <CardTitle>Personal Information</CardTitle>
@@ -239,7 +282,7 @@ const Profile = () => {
               <CardTitle>Scheme Eligibility Status</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid md:grid-cols-3 gap-4">
+              <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="text-center p-4 rounded-lg border-2 border-success/20 bg-success/10">
                   <div className="text-2xl font-bold text-success mb-2">5</div>
                   <p className="text-sm text-success">Eligible Schemes</p>
@@ -257,8 +300,8 @@ const Profile = () => {
           </Card>
 
           {/* Data Privacy Notice */}
-          <div className="mt-8 text-center">
-            <p className="text-sm text-muted-foreground">
+          <div className="mt-6 md:mt-8 text-center">
+            <p className="text-xs md:text-sm text-muted-foreground px-4">
               Your profile information is used to determine scheme eligibility and provide personalized recommendations. 
               All data is securely stored and never shared without your consent.
             </p>

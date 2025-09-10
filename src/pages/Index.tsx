@@ -11,45 +11,89 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-hero">
       {/* Navigation */}
-      <nav className="bg-card/80 backdrop-blur-sm border-b border-border shadow-soft">
+      <nav className="bg-card/80 backdrop-blur-sm border-b border-border shadow-soft sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
+            {/* Logo */}
             <div className="flex items-center space-x-2">
               <Leaf className="h-8 w-8 text-primary" />
-              <h1 className="text-2xl font-bold text-primary">AgroAI</h1>
+              <h1 className="text-xl md:text-2xl font-bold text-primary">AgroAI</h1>
             </div>
-            <Link to="/profile">
-              <Button variant="outline" size="sm">
-                <User className="h-4 w-4 mr-2" />
-                Profile
-              </Button>
-            </Link>
+
+            {/* Desktop Navigation Links */}
+            <div className="hidden md:flex items-center space-x-6">
+              <Link to="/crop-disease" className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors">
+                <Leaf className="h-4 w-4" />
+                <span>Crop Disease</span>
+              </Link>
+              <Link to="/market-analysis" className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors">
+                <TrendingUp className="h-4 w-4" />
+                <span>Market Analysis</span>
+              </Link>
+              <Link to="/government-schemes" className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors">
+                <FileText className="h-4 w-4" />
+                <span>Govt Schemes</span>
+              </Link>
+              <Link to="/profile">
+                <Button variant="outline" size="sm">
+                  <User className="h-4 w-4 mr-2" />
+                  Profile
+                </Button>
+              </Link>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <Link to="/profile">
+                <Button variant="outline" size="sm">
+                  <User className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          {/* Mobile Navigation Links */}
+          <div className="md:hidden mt-4 pt-4 border-t border-border">
+            <div className="grid grid-cols-1 gap-3">
+              <Link to="/crop-disease" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                <Leaf className="h-5 w-5 text-primary" />
+                <span className="font-medium">AI Crop Disease</span>
+              </Link>
+              <Link to="/market-analysis" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                <TrendingUp className="h-5 w-5 text-accent" />
+                <span className="font-medium">Real-Time Market</span>
+              </Link>
+              <Link to="/government-schemes" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                <FileText className="h-5 w-5 text-success" />
+                <span className="font-medium">Government Schemes</span>
+              </Link>
+            </div>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative py-20 px-4">
+      <section className="relative py-8 md:py-20 px-4">
         <div className="container mx-auto text-center">
           <div className="relative rounded-2xl overflow-hidden mb-8 shadow-elevated">
             <img 
               src={heroImage} 
               alt="Agricultural fields with farmer using smartphone"
-              className="w-full h-96 object-cover"
+              className="w-full h-64 md:h-96 object-cover"
             />
             <div className="absolute inset-0 bg-primary/20 flex items-center justify-center">
-              <div className="text-white text-center">
-                <h2 className="text-4xl md:text-6xl font-bold mb-4">
+              <div className="text-white text-center px-4">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold mb-2 md:mb-4">
                   Smart Farming
                 </h2>
-                <p className="text-xl md:text-2xl opacity-90">
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl opacity-90">
                   AI-powered solutions for modern agriculture
                 </p>
               </div>
             </div>
           </div>
           
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12">
+          <p className="text-sm md:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 md:mb-12 px-4">
             Get instant crop disease analysis, real-time market prices, and access to government schemes - 
             all designed specifically for farmers like you.
           </p>
@@ -63,7 +107,7 @@ const Index = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="text-center">
                   <Thermometer className="h-6 w-6 text-accent mx-auto mb-2" />
                   <p className="text-sm text-muted-foreground">Temperature</p>
@@ -89,7 +133,7 @@ const Index = () => {
           </Card>
 
           {/* Feature Cards */}
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             <Link to="/crop-disease">
               <Card className="hover:shadow-elevated transition-all duration-300 transform hover:-translate-y-2 bg-gradient-card h-full">
                 <CardHeader className="text-center">

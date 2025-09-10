@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { ArrowLeft, TrendingUp, TrendingDown, MapPin, Search, Leaf } from "lucide-react";
+import { ArrowLeft, TrendingUp, TrendingDown, MapPin, Search, Leaf, User, FileText } from "lucide-react";
 
 const MarketAnalysis = () => {
   const marketData = [
@@ -61,31 +61,81 @@ const MarketAnalysis = () => {
   return (
     <div className="min-h-screen bg-gradient-hero">
       {/* Navigation */}
-      <nav className="bg-card/80 backdrop-blur-sm border-b border-border shadow-soft">
+      <nav className="bg-card/80 backdrop-blur-sm border-b border-border shadow-soft sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
+            {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
               <ArrowLeft className="h-5 w-5 text-primary" />
               <Leaf className="h-8 w-8 text-primary" />
-              <h1 className="text-2xl font-bold text-primary">AgroAI</h1>
+              <h1 className="text-xl md:text-2xl font-bold text-primary">AgroAI</h1>
             </Link>
-            <h2 className="text-lg font-semibold text-foreground">Market Analysis</h2>
+
+            {/* Desktop Navigation Links */}
+            <div className="hidden md:flex items-center space-x-6">
+              <Link to="/crop-disease" className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors">
+                <Leaf className="h-4 w-4" />
+                <span>Crop Disease</span>
+              </Link>
+              <Link to="/market-analysis" className="flex items-center space-x-2 text-primary font-medium">
+                <TrendingUp className="h-4 w-4" />
+                <span>Market Analysis</span>
+              </Link>
+              <Link to="/government-schemes" className="flex items-center space-x-2 text-foreground hover:text-primary transition-colors">
+                <FileText className="h-4 w-4" />
+                <span>Govt Schemes</span>
+              </Link>
+              <Link to="/profile">
+                <Button variant="outline" size="sm">
+                  <User className="h-4 w-4 mr-2" />
+                  Profile
+                </Button>
+              </Link>
+            </div>
+
+            {/* Mobile Page Title & Menu */}
+            <div className="flex items-center space-x-2 md:hidden">
+              <h2 className="text-sm font-semibold text-foreground">Market Analysis</h2>
+              <Link to="/profile">
+                <Button variant="outline" size="sm">
+                  <User className="h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          {/* Mobile Navigation Links */}
+          <div className="md:hidden mt-4 pt-4 border-t border-border">
+            <div className="grid grid-cols-1 gap-3">
+              <Link to="/crop-disease" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                <Leaf className="h-5 w-5 text-primary" />
+                <span className="font-medium">AI Crop Disease</span>
+              </Link>
+              <Link to="/market-analysis" className="flex items-center space-x-3 p-3 rounded-lg bg-accent/10 border border-accent/20">
+                <TrendingUp className="h-5 w-5 text-accent" />
+                <span className="font-medium text-accent">Real-Time Market</span>
+              </Link>
+              <Link to="/government-schemes" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                <FileText className="h-5 w-5 text-success" />
+                <span className="font-medium">Government Schemes</span>
+              </Link>
+            </div>
           </div>
         </div>
       </nav>
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-4 md:py-8">
         <div className="max-w-6xl mx-auto">
           {/* Search and Filter Section */}
-          <Card className="mb-8 bg-gradient-card shadow-card">
+          <Card className="mb-6 md:mb-8 bg-gradient-card shadow-card">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
                 <Search className="h-5 w-5 text-primary" />
                 Search Market Prices
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid md:grid-cols-3 gap-4">
+              <div className="grid sm:grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                   <label className="text-sm font-medium mb-2 block">Crop</label>
                   <Input placeholder="Enter crop name..." />
@@ -116,7 +166,7 @@ const MarketAnalysis = () => {
           </Card>
 
           {/* Market Overview */}
-          <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
             <Card className="bg-gradient-card shadow-card">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
