@@ -33,7 +33,7 @@ node -v
 npm -v
 ```
 
-## <img src="https://cdn-icons-png.flaticon.com/128/1051/1051377.png" alt="GitHub" width="30"> Cloning the Git Repository
+## <img src="https://cdn-icons-png.flaticon.com/128/270/270798.png" alt="GitHub" width="30"> Cloning the Git Repository
 
 
 Make sure you have git isntalled on your terminal.
