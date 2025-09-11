@@ -23,7 +23,7 @@ const About = () => {
       name: "Raunak Jain",
       role: "Web Developer",
       expertise: "Frontend Development",
-      image: "👩‍💻"
+      image: "🙎‍♂️"
     },
     {
       name: "Udit Parekh",
