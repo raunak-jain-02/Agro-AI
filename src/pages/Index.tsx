@@ -5,30 +5,27 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
-import { Leaf, TrendingUp, FileText, User, Cloud, Thermometer, Droplets, Wind, Heart, Database, Info } from "lucide-react"
+import { Leaf, TrendingUp, FileText, Cloud, Thermometer, Droplets, Wind } from "lucide-react"
+import NavBar from "@/components/NavBar"
+
+interface WeatherData {
+  temperature: number;
+  humidity: number;
+  wind: number;
+  condition: string;
+}
 import cropDiseaseIcon from "@/assets/crop-disease-nav.png"
 import marketAnalysisIcon from "@/assets/market-analysis-icon.jpg"
 import schemesIcon from "@/assets/schemes-icon.jpg"
-import cropDiseaseNavIcon from "@/assets/crop-disease-icon-nav.png"
 
 
 
 
 const Index = () => {
-  const [isScrolled, setIsScrolled] = useState(false)
   const [displayedText, setDisplayedText] = useState("")
   const [currentIndex, setCurrentIndex] = useState(0)
   const fullText = "Our Priority"
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY
-      setIsScrolled(scrollTop > 50)
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
 
   useEffect(() => {
     if (currentIndex < fullText.length) {
@@ -47,7 +44,7 @@ const Index = () => {
     setCurrentIndex(0)
   }, [])
 
-const [weather, setWeather] = useState<any>(null);
+const [weather, setWeather] = useState<WeatherData | null>(null);
 const [loading, setLoading] = useState(true);
 
 useEffect(() => {
@@ -83,140 +80,7 @@ useEffect(() => {
 
   return (
     <div className="min-h-screen bg-gradient-hero">
-      {/* Navigation */}
-      <nav
-        className={`bg-card/80 border-b border-border shadow-soft sticky top-0 z-50 transition-all duration-300 ${
-          isScrolled ? "backdrop-blur-md bg-card/95" : "backdrop-blur-sm bg-card/80"
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <Link to="/" className="flex items-center space-x-2 flex-shrink-0">
-              <Leaf className="h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-primary" />
-              <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-primary">AgroAI</h1>
-            </Link>
-
-            {/* Desktop Navigation Links - Centered */}
-            <div className="hidden lg:flex items-center space-x-4 xl:space-x-6 absolute left-1/2 transform -translate-x-1/2">
-              <Link
-                to="/crop-disease"
-                className="flex items-center space-x-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
-              >
-                <Leaf className="h-4 w-4" />
-                <span>Crop Disease</span>
-              </Link>
-              <Link
-                to="/market-analysis"
-                className="flex items-center space-x-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
-              >
-                <TrendingUp className="h-4 w-4" />
-                <span>Market Analysis</span>
-              </Link>
-              <Link
-                to="/government-schemes"
-                className="flex items-center space-x-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
-              >
-                <FileText className="h-4 w-4" />
-                <span>Govt Schemes</span>
-              </Link>
-              <Link
-                to="/disease-database"
-                className="flex items-center space-x-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
-              >
-                <Database className="h-4 w-4" />
-                <span>Disease Database</span>
-              </Link>
-              <Link
-                to="/about"
-                className="flex items-center space-x-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium"
-              >
-                <Info className="h-4 w-4" />
-                <span>About</span>
-              </Link>
-
-            </div>
-
-            {/* Tablet Navigation - Centered */}
-            <div className="hidden md:flex lg:hidden items-center space-x-3 absolute left-1/2 transform -translate-x-1/2">
-              <Link
-                to="/crop-disease"
-                className="p-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105"
-              >
-                <img src={cropDiseaseIcon} alt="Crop Disease" className="h-5 w-5 object-contain"
-/>
-
-              </Link>
-              <Link
-                to="/market-analysis"
-                className="p-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105"
-              >
-                <TrendingUp className="h-5 w-5" />
-              </Link>
-              <Link
-                to="/government-schemes"
-                className="p-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105"
-              >
-                <FileText className="h-5 w-5" />
-              </Link>
-              <Link
-                to="/about"
-                className="p-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105"
-              >
-                <Info className="h-5 w-5" />
-              </Link>
-            </div>
-
-            {/* Profile Button - Right */}
-            <div className="flex items-center">
-              <Link to="/profile">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="transition-all duration-300 hover:-translate-y-1 hover:scale-105 bg-transparent"
-                >
-                  <User className="h-4 w-4 mr-2" />
-                  <span className="hidden xl:inline">Profile</span>
-                </Button>
-              </Link>
-            </div>
-          </div>
-
-          {/* Mobile Navigation Links */}
-          <div className="md:hidden border-t border-border">
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              <Link
-                to="/crop-disease"
-                className="flex items-center space-x-3 px-3 py-3 rounded-lg hover:bg-muted/50 transition-all duration-300 hover:-translate-y-1 hover:scale-105 text-base font-medium"
-              >
-                <Leaf className="h-5 w-5 text-primary" />
-                <span>AI Crop Disease</span>
-              </Link>
-              <Link
-                to="/market-analysis"
-                className="flex items-center space-x-3 px-3 py-3 rounded-lg hover:bg-muted/50 transition-all duration-300 hover:-translate-y-1 hover:scale-105 text-base font-medium"
-              >
-                <TrendingUp className="h-5 w-5 text-accent" />
-                <span>Real-Time Market</span>
-              </Link>
-              <Link
-                to="/government-schemes"
-                className="flex items-center space-x-3 px-3 py-3 rounded-lg hover:bg-muted/50 transition-all duration-300 hover:-translate-y-1 hover:scale-105 text-base font-medium"
-              >
-                <FileText className="h-5 w-5 text-success" />
-                <span>Government Schemes</span>
-              </Link>
-              <Link
-                to="/about"
-                className="flex items-center space-x-3 px-3 py-3 rounded-lg hover:bg-muted/50 transition-all duration-300 hover:-translate-y-1 hover:scale-105 text-base font-medium"
-              >
-                <Info className="h-5 w-5 text-primary" />
-                <span>About Us</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+      <NavBar />
 
       {/* Hero Section */}
       <section className="relative py-6 sm:py-8 md:py-12 lg:py-16 xl:py-20 px-3 sm:px-4 lg:px-6">
