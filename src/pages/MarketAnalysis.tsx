@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,6 +10,9 @@ import { ArrowLeft, TrendingUp, TrendingDown, MapPin, Search, Leaf, User, FileTe
 
 const MarketAnalysis = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [marketData, setMarketData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -20,56 +24,22 @@ const MarketAnalysis = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const marketData = [
-    {
-      crop: "Wheat",
-      wholesale: 2200,
-      retail: 2500,
-      change: +150,
-      trend: "up",
-      market: "Delhi Mandi"
-    },
-    {
-      crop: "Rice",
-      wholesale: 3200,
-      retail: 3600,
-      change: -80,
-      trend: "down",
-      market: "Punjab Mandi"
-    },
-    {
-      crop: "Sugarcane",
-      wholesale: 350,
-      retail: 400,
-      change: +25,
-      trend: "up",
-      market: "UP Mandi"
-    },
-    {
-      crop: "Cotton",
-      wholesale: 5800,
-      retail: 6200,
-      change: +200,
-      trend: "up",
-      market: "Gujarat Mandi"
-    },
-    {
-      crop: "Maize",
-      wholesale: 1800,
-      retail: 2100,
-      change: -50,
-      trend: "down",
-      market: "Maharashtra Mandi"
-    },
-    {
-      crop: "Soybean",
-      wholesale: 4200,
-      retail: 4600,
-      change: +120,
-      trend: "up",
-      market: "MP Mandi"
-    }
-  ];
+  useEffect(() => {
+    const fetchMarketData = async () => {
+      try {
+        const response = await axios.get('https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json&offset=0&limit=10');
+        setMarketData(response.data.records);
+        setLoading(false);
+      } catch (err) {
+        setError('Error fetching market data.');
+        setLoading(false);
+      }
+    };
+
+    fetchMarketData();
+  }, []);
+
+  
 
   return (
     <div className="min-h-screen bg-gradient-hero">
@@ -250,43 +220,37 @@ const MarketAnalysis = () => {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-border">
-                      <th className="text-left py-3 px-4 font-semibold">Crop</th>
-                      <th className="text-left py-3 px-4 font-semibold">Wholesale</th>
-                      <th className="text-left py-3 px-4 font-semibold">Retail</th>
-                      <th className="text-left py-3 px-4 font-semibold">Change</th>
+                      <th className="text-left py-3 px-4 font-semibold">Commodity</th>
+                      <th className="text-left py-3 px-4 font-semibold">State</th>
+                      <th className="text-left py-3 px-4 font-semibold">District</th>
                       <th className="text-left py-3 px-4 font-semibold">Market</th>
+                      <th className="text-left py-3 px-4 font-semibold">Variety</th>
+                      <th className="text-left py-3 px-4 font-semibold">Min Price</th>
+                      <th className="text-left py-3 px-4 font-semibold">Max Price</th>
+                      <th className="text-left py-3 px-4 font-semibold">Modal Price</th>
+                      <th className="text-left py-3 px-4 font-semibold">Price Date</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {marketData.map((item, index) => (
+                    {loading ? (
+                      <tr>
+                        <td colSpan={9} className="text-center py-8">Loading market data...</td>
+                      </tr>
+                    ) : error ? (
+                      <tr>
+                        <td colSpan={9} className="text-center py-8 text-destructive">{error}</td>
+                      </tr>
+                    ) : marketData.map((item, index) => (
                       <tr key={index} className="border-b border-border/50 hover:bg-muted/20">
-                        <td className="py-4 px-4">
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-primary rounded-full" />
-                            <span className="font-medium">{item.crop}</span>
-                          </div>
-                        </td>
-                        <td className="py-4 px-4 font-semibold">₹{item.wholesale.toLocaleString()}</td>
-                        <td className="py-4 px-4 font-semibold">₹{item.retail.toLocaleString()}</td>
-                        <td className="py-4 px-4">
-                          <Badge 
-                            variant={item.trend === "up" ? "default" : "destructive"}
-                            className="flex items-center gap-1"
-                          >
-                            {item.trend === "up" ? (
-                              <TrendingUp className="h-3 w-3" />
-                            ) : (
-                              <TrendingDown className="h-3 w-3" />
-                            )}
-                            {item.trend === "up" ? "+" : ""}₹{Math.abs(item.change)}
-                          </Badge>
-                        </td>
-                        <td className="py-4 px-4">
-                          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                            <MapPin className="h-3 w-3" />
-                            {item.market}
-                          </div>
-                        </td>
+                        <td className="py-4 px-4 font-medium">{item.commodity}</td>
+                        <td className="py-4 px-4">{item.state}</td>
+                        <td className="py-4 px-4">{item.district}</td>
+                        <td className="py-4 px-4">{item.market}</td>
+                        <td className="py-4 px-4">{item.variety}</td>
+                        <td className="py-4 px-4 font-semibold">₹{parseInt(item.min_price).toLocaleString()}</td>
+                        <td className="py-4 px-4 font-semibold">₹{parseInt(item.max_price).toLocaleString()}</td>
+                        <td className="py-4 px-4 font-semibold">₹{parseInt(item.modal_price).toLocaleString()}</td>
+                        <td className="py-4 px-4">{item.arrival_date}</td>
                       </tr>
                     ))}
                   </tbody>
