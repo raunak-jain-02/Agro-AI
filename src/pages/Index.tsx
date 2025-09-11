@@ -6,9 +6,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
 import { Leaf, TrendingUp, FileText, User, Cloud, Thermometer, Droplets, Wind, Heart } from "lucide-react"
-import cropDiseaseIcon from "@/assets/crop-disease-icon.jpg"
+import cropDiseaseIcon from "@/assets/crop-disease-nav.png"
 import marketAnalysisIcon from "@/assets/market-analysis-icon.jpg"
 import schemesIcon from "@/assets/schemes-icon.jpg"
+import cropDiseaseNavIcon from "@/assets/crop-disease-icon-nav.png"
+
 
 
 
@@ -141,7 +143,9 @@ useEffect(() => {
                 to="/crop-disease"
                 className="p-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105"
               >
-                <Leaf className="h-5 w-5" />
+                <img src={cropDiseaseIcon} alt="Crop Disease" className="h-5 w-5 object-contain"
+/>
+
               </Link>
               <Link
                 to="/market-analysis"
