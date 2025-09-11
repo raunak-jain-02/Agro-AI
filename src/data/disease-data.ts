@@ -75,14 +75,6 @@ export const diseaseData = [
     treatment: ["Crop rotation", "Soil fumigation"],
   },
   {
-    id: "d6",
-    name: "Rust",
-    affectedCrops: ["Wheat", "Beans", "Corn"],
-    symptoms: ["Orange/red pustules on leaves", "Reduced photosynthesis"],
-    prevention: ["Resistant varieties", "Remove volunteer plants"],
-    treatment: ["Fungicides (triazoles, strobilurins)"],
-  },
-  {
     id: "d7",
     name: "Anthracnose",
     affectedCrops: ["Mango", "Beans", "Cucumber"],
