@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,7 @@ const CropDisease = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -197,17 +198,16 @@ const CropDisease = () => {
                     <Upload className="h-12 md:h-16 w-12 md:w-16 text-muted-foreground mx-auto" />
                     <div>
                       <Input
+                        ref={fileInputRef}
                         type="file"
                         accept="image/*"
                         onChange={handleImageUpload}
                         className="hidden"
                         id="image-upload"
                       />
-                      <label htmlFor="image-upload">
-                        <Button variant="outline" className="cursor-pointer w-full md:w-auto">
-                          Choose Image
-                        </Button>
-                      </label>
+                      <Button variant="outline" className="cursor-pointer w-full md:w-auto" onClick={() => fileInputRef.current?.click()}>
+                        Choose Image
+                      </Button>
                     </div>
                     <p className="text-sm md:text-base text-muted-foreground px-2">
                       Upload a clear photo of your crop showing any visible symptoms
