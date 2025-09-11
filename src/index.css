@@ -4,6 +4,27 @@
 
 /* AgroAI Design System - Agricultural Theme */
 
+@layer components {
+  .disease-image-container {
+    @apply relative overflow-hidden rounded-full border-2 border-primary shadow-md;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .disease-image-container:hover {
+    transform: scale(1.05);
+    @apply shadow-lg border-accent;
+  }
+  
+  .disease-image-container img {
+    @apply w-full h-full object-cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .disease-image-container:hover img {
+    transform: scale(1.1);
+  }
+}
+
 @layer base {
   :root {
     /* Background & Surfaces - ClinIQ inspired dark theme */

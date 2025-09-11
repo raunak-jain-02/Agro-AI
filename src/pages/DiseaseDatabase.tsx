@@ -118,7 +118,17 @@ const DiseaseDatabase = () => {
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredDiseases.map((disease, index) => (
               <Card key={index} className="bg-gradient-card shadow-card">
-                <CardHeader>
+                <CardHeader className="flex items-center gap-4">
+                  <div className="disease-image-container w-12 h-12 flex-shrink-0">
+                    <img 
+                      src={`/images/${disease.name.toLowerCase().replace(/ /g, '-')}.svg`} 
+                      alt={`${disease.name} image`} 
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "/placeholder.svg";
+                      }}
+                    />
+                  </div>
                   <CardTitle>{disease.name}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
