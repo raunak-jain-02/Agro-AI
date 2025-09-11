@@ -9,6 +9,7 @@ import MarketAnalysis from "./pages/MarketAnalysis";
 import GovernmentSchemes from "./pages/GovernmentSchemes";
 import About from "./pages/About";
 import Profile from "./pages/Profile";
+import DiseaseDatabase from "./pages/DiseaseDatabase";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/government-schemes" element={<GovernmentSchemes />} />
           <Route path="/about" element={<About />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/disease-database" element={<DiseaseDatabase />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

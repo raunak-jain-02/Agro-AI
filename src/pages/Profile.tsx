@@ -83,6 +83,10 @@ const Profile = () => {
                 <Heart className="h-4 w-4" />
                 <span>About</span>
               </Link>
+              <Link to="/disease-database" className="flex items-center space-x-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium">
+                <Heart className="h-4 w-4" />
+                <span>Disease Database</span>
+              </Link>
             </div>
 
             {/* Tablet Navigation - Centered */}
@@ -97,6 +101,9 @@ const Profile = () => {
                 <FileText className="h-5 w-5" />
               </Link>
               <Link to="/about" className="p-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105">
+                <Heart className="h-5 w-5" />
+              </Link>
+              <Link to="/disease-database" className="p-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105">
                 <Heart className="h-5 w-5" />
               </Link>
             </div>
@@ -126,6 +133,14 @@ const Profile = () => {
               <Link to="/government-schemes" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-all duration-300 hover:-translate-y-1 hover:scale-105">
                 <FileText className="h-5 w-5 text-success" />
                 <span className="font-medium">Government Schemes</span>
+              </Link>
+              <Link to="/about" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-all duration-300 hover:-translate-y-1 hover:scale-105">
+                <Heart className="h-5 w-5 text-primary" />
+                <span className="font-medium">About Us</span>
+              </Link>
+              <Link to="/disease-database" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-all duration-300 hover:-translate-y-1 hover:scale-105">
+                <Heart className="h-5 w-5 text-primary" />
+                <span className="font-medium">Disease Database</span>
               </Link>
               <Link to="/about" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-all duration-300 hover:-translate-y-1 hover:scale-105">
                 <Heart className="h-5 w-5 text-primary" />
