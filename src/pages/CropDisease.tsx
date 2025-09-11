@@ -3,9 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Upload, Camera, Download, Leaf, AlertTriangle, CheckCircle, TrendingUp, FileText, User, Heart } from "lucide-react";
+import { ArrowLeft, Upload, Camera, Download, Leaf, AlertTriangle, CheckCircle, TrendingUp, FileText, User, Heart, Database, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { geminiModel } from "@/lib/gemini";
+import { cn } from "@/lib/utils";
 
 // Function to convert file to base64 with proper format
 const fileToBase64 = (file: File): Promise<string> => {
@@ -40,8 +41,10 @@ const CropDisease = () => {
   const [analysisResult, setAnalysisResult] = useState<any>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const dropZoneRef = useRef<HTMLDivElement>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   useEffect(() => {
@@ -54,43 +57,80 @@ const CropDisease = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const validateAndProcessFile = (file: File) => {
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Invalid file type",
+        description: "Please upload an image file (JPG, PNG, etc.)",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    // Validate file size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Please upload an image smaller than 10MB",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    setSelectedFile(file);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setSelectedImage(e.target?.result as string);
+      setAnalysisResult(null); // Clear previous results
+    };
+    reader.onerror = () => {
+      toast({
+        title: "Error reading file",
+        description: "Failed to read the selected image",
+        variant: "destructive",
+      });
+    };
+    reader.readAsDataURL(file);
+    return true;
+  };
+
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Validate file type
-      if (!file.type.startsWith('image/')) {
-        toast({
-          title: "Invalid file type",
-          description: "Please upload an image file (JPG, PNG, etc.)",
-          variant: "destructive",
-        });
-        return;
-      }
+      validateAndProcessFile(file);
+    }
+  };
 
-      // Validate file size (max 10MB)
-      if (file.size > 10 * 1024 * 1024) {
-        toast({
-          title: "File too large",
-          description: "Please upload an image smaller than 10MB",
-          variant: "destructive",
-        });
-        return;
-      }
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
 
-      setSelectedFile(file);
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setSelectedImage(e.target?.result as string);
-        setAnalysisResult(null); // Clear previous results
-      };
-      reader.onerror = () => {
-        toast({
-          title: "Error reading file",
-          description: "Failed to read the selected image",
-          variant: "destructive",
-        });
-      };
-      reader.readAsDataURL(file);
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!isDragging) {
+      setIsDragging(true);
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      const file = files[0];
+      validateAndProcessFile(file);
     }
   };
 
@@ -285,11 +325,11 @@ Generated on: ${new Date().toLocaleString()}
                 <span>Govt Schemes</span>
               </Link>
               <Link to="/disease-database" className="flex items-center space-x-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium">
-                <Heart className="h-4 w-4" />
+                <Database className="h-4 w-4" />
                 <span>Disease Database</span>
               </Link>
               <Link to="/about" className="flex items-center space-x-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium">
-                <Heart className="h-4 w-4" />
+                <Info className="h-4 w-4" />
                 <span>About</span>
               </Link>
             </div>
@@ -306,10 +346,10 @@ Generated on: ${new Date().toLocaleString()}
                 <FileText className="h-5 w-5" />
               </Link>
               <Link to="/about" className="p-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                <Heart className="h-5 w-5" />
+                <Info className="h-5 w-5" />
               </Link>
               <Link to="/disease-database" className="p-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                <Heart className="h-5 w-5" />
+                <Database className="h-5 w-5" />
               </Link>
             </div>
 
@@ -340,11 +380,11 @@ Generated on: ${new Date().toLocaleString()}
                 <span className="font-medium">Government Schemes</span>
               </Link>
               <Link to="/about" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                <Heart className="h-5 w-5 text-primary" />
+                <Info className="h-5 w-5 text-primary" />
                 <span className="font-medium">About Us</span>
               </Link>
               <Link to="/disease-database" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                <Heart className="h-5 w-5 text-primary" />
+                <Database className="h-5 w-5 text-primary" />
                 <span className="font-medium">Disease Database</span>
               </Link>
             </div>
@@ -363,7 +403,17 @@ Generated on: ${new Date().toLocaleString()}
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 p-4 sm:p-6 pt-0">
-              <div className="border-2 border-dashed border-border rounded-lg p-3 sm:p-4 md:p-8 text-center">
+              <div 
+                ref={dropZoneRef}
+                className={cn(
+                  "border-2 border-dashed border-border rounded-lg p-3 sm:p-4 md:p-8 text-center transition-colors",
+                  isDragging && "border-primary bg-primary/5"
+                )}
+                onDragEnter={handleDragEnter}
+                onDragLeave={handleDragLeave}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+              >
                 {selectedImage ? (
                   <div className="space-y-4">
                     <img 
@@ -381,7 +431,10 @@ Generated on: ${new Date().toLocaleString()}
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <Upload className="h-12 md:h-16 w-12 md:w-16 text-muted-foreground mx-auto" />
+                    <Upload className={cn(
+                      "h-12 md:h-16 w-12 md:w-16 mx-auto transition-colors",
+                      isDragging ? "text-primary" : "text-muted-foreground"
+                    )} />
                     <div>
                       <Input
                         ref={fileInputRef}
@@ -397,6 +450,9 @@ Generated on: ${new Date().toLocaleString()}
                     </div>
                     <p className="text-sm md:text-base text-muted-foreground px-2">
                       Upload a clear photo of your crop showing any visible symptoms
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Drag and drop an image here or click the button above
                     </p>
                   </div>
                 )}

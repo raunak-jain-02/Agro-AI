@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Leaf, TrendingUp, FileText, User, Target, Users, Award, Lightbulb, Shield, Globe, Heart } from "lucide-react";
+import { ArrowLeft, Leaf, TrendingUp, FileText, User, Target, Users, Award, Lightbulb, Shield, Globe, Heart, Database, Info } from "lucide-react";
 
 const About = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -105,11 +105,11 @@ const About = () => {
                 <span>Govt Schemes</span>
               </Link>
               <Link to="/disease-database" className="flex items-center space-x-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium">
-                <Heart className="h-4 w-4" />
+                <Database className="h-4 w-4" />
                 <span>Disease Database</span>
               </Link>
               <Link to="/about" className="flex items-center space-x-2 text-primary font-medium transition-all duration-300 hover:-translate-y-1 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium">
-                <Heart className="h-4 w-4" />
+                <Info className="h-4 w-4" />
                 <span>About</span>
               </Link>
             </div>
@@ -126,7 +126,7 @@ const About = () => {
                 <FileText className="h-5 w-5" />
               </Link>
               <Link to="/about" className="p-2 text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                <Heart className="h-5 w-5" />
+                <Info className="h-5 w-5" />
               </Link>
             </div>
 
@@ -157,7 +157,7 @@ const About = () => {
                 <span>Government Schemes</span>
               </Link>
               <Link to="/about" className="flex items-center space-x-3 px-3 py-3 rounded-lg bg-primary/10 border border-primary/20 transition-all duration-300 hover:-translate-y-1 hover:scale-105 text-base font-medium">
-                <Heart className="h-5 w-5 text-primary" />
+                <Info className="h-5 w-5 text-primary" />
                 <span className="text-primary">About Us</span>
               </Link>
             </div>

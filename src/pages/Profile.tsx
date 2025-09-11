@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Link } from "react-router-dom";
-import { ArrowLeft, User, Camera, MapPin, Calendar, Leaf, FileText, TrendingUp, Heart } from "lucide-react";
+import { ArrowLeft, User, Camera, MapPin, Calendar, Leaf, FileText, TrendingUp, Heart, Database, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
@@ -80,11 +80,11 @@ const Profile = () => {
                 <span>Govt Schemes</span>
               </Link>
               <Link to="/disease-database" className="flex items-center space-x-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium">
-                <Heart className="h-4 w-4" />
+                <Database className="h-4 w-4" />
                 <span>Disease Database</span>
               </Link>
               <Link to="/about" className="flex items-center space-x-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium">
-                <Heart className="h-4 w-4" />
+                <Info className="h-4 w-4" />
                 <span>About</span>
               </Link>
             </div>
@@ -101,10 +101,10 @@ const Profile = () => {
                 <FileText className="h-5 w-5" />
               </Link>
               <Link to="/about" className="p-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                <Heart className="h-5 w-5" />
+                <Info className="h-5 w-5" />
               </Link>
               <Link to="/disease-database" className="p-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                <Heart className="h-5 w-5" />
+                <Database className="h-5 w-5" />
               </Link>
             </div>
 
@@ -135,16 +135,12 @@ const Profile = () => {
                 <span className="font-medium">Government Schemes</span>
               </Link>
               <Link to="/about" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                <Heart className="h-5 w-5 text-primary" />
+                <Info className="h-5 w-5 text-primary" />
                 <span className="font-medium">About Us</span>
               </Link>
               <Link to="/disease-database" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                <Heart className="h-5 w-5 text-primary" />
+                <Database className="h-5 w-5 text-primary" />
                 <span className="font-medium">Disease Database</span>
-              </Link>
-              <Link to="/about" className="flex items-center space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-all duration-300 hover:-translate-y-1 hover:scale-105">
-                <Heart className="h-5 w-5 text-primary" />
-                <span className="font-medium">About Us</span>
               </Link>
             </div>
           </div>
