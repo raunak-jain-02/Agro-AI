@@ -104,6 +104,10 @@ const About = () => {
                 <FileText className="h-4 w-4" />
                 <span>Govt Schemes</span>
               </Link>
+              <Link to="/disease-database" className="flex items-center space-x-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-1 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium">
+                <Heart className="h-4 w-4" />
+                <span>Disease Database</span>
+              </Link>
               <Link to="/about" className="flex items-center space-x-2 text-primary font-medium transition-all duration-300 hover:-translate-y-1 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium">
                 <Heart className="h-4 w-4" />
                 <span>About</span>
