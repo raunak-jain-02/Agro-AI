@@ -241,19 +241,20 @@ useEffect(() => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4">
+              <Link to="/crop-disease">
               <Button
                 size="lg"
                 className="bg-gradient-primary hover:opacity-90 px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto"
               >
                 Get Started
-              </Button>
+              </Button></Link>
+              <Link to="/about">
               <Button
                 variant="outline"
                 size="lg"
-                className="px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto bg-transparent"
-              >
+                className="px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto bg-transparent">
                 Learn More
-              </Button>
+              </Button></Link>
             </div>
           </div>
 
