@@ -1,5 +1,6 @@
 "use client"
 
+import axios from "axios";
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -8,6 +9,8 @@ import { Leaf, TrendingUp, FileText, User, Cloud, Thermometer, Droplets, Wind, H
 import cropDiseaseIcon from "@/assets/crop-disease-icon.jpg"
 import marketAnalysisIcon from "@/assets/market-analysis-icon.jpg"
 import schemesIcon from "@/assets/schemes-icon.jpg"
+
+
 
 const Index = () => {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -41,6 +44,40 @@ const Index = () => {
     setDisplayedText("")
     setCurrentIndex(0)
   }, [])
+
+const [weather, setWeather] = useState<any>(null);
+const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  const fetchWeather = async () => {
+    try {
+      const apiKey = "ff421bf921c9fd1149571dfd57e12f37"; // <-- replace with your key
+      const city = "Ludhiana"; // or make it dynamic later
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
+      );
+
+      const data = response.data;
+      setWeather({
+        temperature: data.main.temp,
+        humidity: data.main.humidity,
+        wind: data.wind.speed,
+        condition: data.weather[0].description,
+      });
+    } catch (err) {
+      console.error("Error fetching weather:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchWeather();
+
+  // refresh every 10 minutes
+  const interval = setInterval(fetchWeather, 600000);
+  return () => clearInterval(interval);
+}, []);
+
 
   return (
     <div className="min-h-screen bg-gradient-hero">
@@ -226,37 +263,44 @@ const Index = () => {
 
           {/* Weather Widget */}
           <Card className="mb-8 sm:mb-10 md:mb-12 bg-gradient-card shadow-card mx-4 sm:mx-0">
-            <CardHeader className="pb-3 sm:pb-4">
-              <CardTitle className="flex items-center justify-center gap-2 text-base sm:text-lg">
-                <Cloud className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-                Today's Weather
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="px-3 sm:px-6">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-                <div className="text-center p-2 sm:p-3">
-                  <Thermometer className="h-5 w-5 sm:h-6 sm:w-6 text-accent mx-auto mb-1 sm:mb-2" />
-                  <p className="text-xs sm:text-sm text-muted-foreground">Temperature</p>
-                  <p className="font-semibold text-sm sm:text-base">28°C</p>
-                </div>
-                <div className="text-center p-2 sm:p-3">
-                  <Droplets className="h-5 w-5 sm:h-6 sm:w-6 text-blue-500 mx-auto mb-1 sm:mb-2" />
-                  <p className="text-xs sm:text-sm text-muted-foreground">Humidity</p>
-                  <p className="font-semibold text-sm sm:text-base">65%</p>
-                </div>
-                <div className="text-center p-2 sm:p-3">
-                  <Wind className="h-5 w-5 sm:h-6 sm:w-6 text-primary mx-auto mb-1 sm:mb-2" />
-                  <p className="text-xs sm:text-sm text-muted-foreground">Wind</p>
-                  <p className="font-semibold text-sm sm:text-base">12 km/h</p>
-                </div>
-                <div className="text-center p-2 sm:p-3">
-                  <Cloud className="h-5 w-5 sm:h-6 sm:w-6 text-gray-500 mx-auto mb-1 sm:mb-2" />
-                  <p className="text-xs sm:text-sm text-muted-foreground">Condition</p>
-                  <p className="font-semibold text-sm sm:text-base">Partly Cloudy</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+  <CardHeader className="pb-3 sm:pb-4">
+    <CardTitle className="flex items-center justify-center gap-2 text-base sm:text-lg">
+      <Cloud className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+      Today's Weather
+    </CardTitle>
+  </CardHeader>
+  <CardContent className="px-3 sm:px-6">
+    {loading ? (
+      <p className="text-center text-muted-foreground">Loading weather...</p>
+    ) : weather ? (
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <div className="text-center p-2 sm:p-3">
+          <Thermometer className="h-5 w-5 sm:h-6 sm:w-6 text-accent mx-auto mb-1 sm:mb-2" />
+          <p className="text-xs sm:text-sm text-muted-foreground">Temperature</p>
+          <p className="font-semibold text-sm sm:text-base">{weather.temperature}°C</p>
+        </div>
+        <div className="text-center p-2 sm:p-3">
+          <Droplets className="h-5 w-5 sm:h-6 sm:w-6 text-blue-500 mx-auto mb-1 sm:mb-2" />
+          <p className="text-xs sm:text-sm text-muted-foreground">Humidity</p>
+          <p className="font-semibold text-sm sm:text-base">{weather.humidity}%</p>
+        </div>
+        <div className="text-center p-2 sm:p-3">
+          <Wind className="h-5 w-5 sm:h-6 sm:w-6 text-primary mx-auto mb-1 sm:mb-2" />
+          <p className="text-xs sm:text-sm text-muted-foreground">Wind</p>
+          <p className="font-semibold text-sm sm:text-base">{weather.wind} km/h</p>
+        </div>
+        <div className="text-center p-2 sm:p-3">
+          <Cloud className="h-5 w-5 sm:h-6 sm:w-6 text-gray-500 mx-auto mb-1 sm:mb-2" />
+          <p className="text-xs sm:text-sm text-muted-foreground">Condition</p>
+          <p className="font-semibold text-sm sm:text-base capitalize">{weather.condition}</p>
+        </div>
+      </div>
+    ) : (
+      <p className="text-center text-red-500">Failed to load weather</p>
+    )}
+  </CardContent>
+</Card>
+
 
           {/* Feature Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 px-4 sm:px-0">
