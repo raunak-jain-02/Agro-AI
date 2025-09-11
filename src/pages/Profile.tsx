@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Link } from "react-router-dom";
-import { ArrowLeft, User, Camera, MapPin, DollarSign, Calendar, Leaf, FileText, TrendingUp } from "lucide-react";
+import { ArrowLeft, User, Camera, MapPin, Calendar, Leaf, FileText, TrendingUp } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
@@ -132,7 +132,6 @@ const Profile = () => {
                       <span>{profileData.age} years old</span>
                     </div>
                     <div className="flex items-center justify-center md:justify-start gap-1">
-                      <DollarSign className="h-4 w-4" />
                       <span>₹{parseInt(profileData.income).toLocaleString()}/year</span>
                     </div>
                   </div>
