@@ -11,14 +11,14 @@ import { useToast } from "@/hooks/use-toast";
 
 const Profile = () => {
   const [profileData, setProfileData] = useState({
-    name: "Rajesh Kumar",
-    age: "42",
-    income: "350000",
+    name: "Raunak Jain",
+    age: "28",
+    income: "35000",
     location: "Ludhiana, Punjab",
     farmSize: "5.2",
     cropTypes: "Wheat, Rice, Sugarcane",
     phone: "+91 98765 43210",
-    email: "rajesh.kumar@example.com"
+    email: "raunakjain1002@gmail.com"
   });
 
   const [isEditing, setIsEditing] = useState(false);
