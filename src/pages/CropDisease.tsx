@@ -2,10 +2,38 @@ import { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Upload, Camera, Download, Leaf, AlertTriangle, CheckCircle, TrendingUp, FileText, User, Heart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { geminiModel } from "@/lib/gemini";
+
+// Function to convert file to base64 with proper format
+const fileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        // Remove the data URL prefix to get just the base64 data
+        const base64Data = reader.result.split(',')[1];
+        resolve(base64Data);
+      } else {
+        reject(new Error('Failed to read file'));
+      }
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
+
+// Function to create generative part for Gemini
+function createGenerativePart(base64Data: string, mimeType: string) {
+  return {
+    inlineData: {
+      data: base64Data,
+      mimeType: mimeType
+    },
+  };
+}
 
 const CropDisease = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -14,6 +42,7 @@ const CropDisease = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -28,17 +57,45 @@ const CropDisease = () => {
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Invalid file type",
+          description: "Please upload an image file (JPG, PNG, etc.)",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // Validate file size (max 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        toast({
+          title: "File too large",
+          description: "Please upload an image smaller than 10MB",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setSelectedFile(file);
       const reader = new FileReader();
       reader.onload = (e) => {
         setSelectedImage(e.target?.result as string);
-        setAnalysisResult(null);
+        setAnalysisResult(null); // Clear previous results
+      };
+      reader.onerror = () => {
+        toast({
+          title: "Error reading file",
+          description: "Failed to read the selected image",
+          variant: "destructive",
+        });
       };
       reader.readAsDataURL(file);
     }
   };
 
   const analyzeImage = async () => {
-    if (!selectedImage) {
+    if (!selectedImage || !selectedFile) {
       toast({
         title: "No image selected",
         description: "Please upload a crop image first",
@@ -48,35 +105,153 @@ const CropDisease = () => {
     }
 
     setIsAnalyzing(true);
-    
-    // Simulate AI analysis (replace with actual Gemini API call)
-    setTimeout(() => {
-      setAnalysisResult({
-        disease: "Late Blight",
-        confidence: 87,
-        severity: "Moderate",
-        description: "Late blight is a fungal disease that affects potato and tomato plants, causing dark spots on leaves and stems.",
-        treatment: [
-          "Remove affected leaves immediately",
-          "Apply copper-based fungicide spray",
-          "Improve air circulation around plants",
-          "Avoid overhead watering"
-        ],
-        prevention: [
-          "Plant disease-resistant varieties",
-          "Ensure proper spacing between plants",
-          "Apply preventive fungicide during wet seasons",
-          "Remove plant debris after harvest"
-        ]
+
+    try {
+      // Convert file to base64
+      const base64Data = await fileToBase64(selectedFile);
+      
+      // Create the generative part
+      const imagePart = createGenerativePart(base64Data, selectedFile.type);
+      
+      // Enhanced prompt for better results
+      const prompt = `You are an expert agricultural pathologist. Analyze this crop image for diseases, pests, or health issues. 
+
+Please provide your analysis in the following JSON format:
+{
+  "disease": "Name of the identified disease/condition",
+  "confidence": 85,
+  "severity": "Low/Medium/High",
+  "description": "Detailed description of the condition and symptoms observed",
+  "treatment": [
+    "Step 1 of treatment",
+    "Step 2 of treatment",
+    "Step 3 of treatment"
+  ],
+  "prevention": [
+    "Prevention tip 1",
+    "Prevention tip 2",
+    "Prevention tip 3"
+  ]
+}
+
+If no disease is detected, respond with:
+{
+  "disease": "Healthy",
+  "confidence": 95,
+  "severity": "None",
+  "description": "The crop appears to be healthy with no visible signs of disease or pest damage.",
+  "treatment": ["Continue regular care and monitoring"],
+  "prevention": ["Maintain current care practices", "Regular monitoring for early detection", "Proper watering and fertilization"]
+}
+
+Analyze the image carefully and provide accurate information based on visible symptoms.`;
+
+      console.log("Sending request to Gemini...");
+      
+      // Generate content with both prompt and image
+      const result = await geminiModel.generateContent([prompt, imagePart]);
+      const response = await result.response;
+      const text = response.text();
+      
+      console.log("Raw response:", text);
+      
+      // Clean and parse the response
+      let jsonResponse = text.replace(/```json|```/g, '').trim();
+      
+      // Remove any leading/trailing text that might not be JSON
+      const jsonStart = jsonResponse.indexOf('{');
+      const jsonEnd = jsonResponse.lastIndexOf('}') + 1;
+      
+      if (jsonStart !== -1 && jsonEnd > jsonStart) {
+        jsonResponse = jsonResponse.substring(jsonStart, jsonEnd);
+      }
+
+      console.log("Cleaned JSON response:", jsonResponse);
+
+      const parsedResult = JSON.parse(jsonResponse);
+
+      // Validate the parsed result has required fields
+      if (!parsedResult.disease || !parsedResult.confidence) {
+        throw new Error("Invalid response format from AI model");
+      }
+
+      setAnalysisResult(parsedResult);
+      
+      toast({
+        title: "Analysis complete",
+        description: `Disease identified: ${parsedResult.disease}`,
       });
+
+    } catch (error) {
+      console.error("Error analyzing image:", error);
+      
+      let errorMessage = "An error occurred during the analysis. Please try again.";
+      
+      if (error instanceof Error) {
+        if (error.message.includes('API key')) {
+          errorMessage = "API key issue. Please check your configuration.";
+        } else if (error.message.includes('quota')) {
+          errorMessage = "API quota exceeded. Please try again later.";
+        } else if (error.message.includes('JSON')) {
+          errorMessage = "Failed to parse analysis results. Please try again.";
+        }
+      }
+      
+      toast({
+        title: "Analysis failed",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
       setIsAnalyzing(false);
-    }, 3000);
+    }
   };
 
   const downloadReport = () => {
+    if (!analysisResult) {
+      toast({
+        title: "No report to download",
+        description: "Please analyze an image first",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Create a simple text report
+    const reportContent = `
+CROP DISEASE ANALYSIS REPORT
+============================
+
+Disease: ${analysisResult.disease}
+Confidence: ${analysisResult.confidence}%
+Severity: ${analysisResult.severity}
+
+Description:
+${analysisResult.description}
+
+Treatment Plan:
+${analysisResult.treatment?.map((step: string, index: number) => `${index + 1}. ${step}`).join('\n') || 'No treatment specified'}
+
+Prevention Tips:
+${analysisResult.prevention?.map((tip: string, index: number) => `${index + 1}. ${tip}`).join('\n') || 'No prevention tips specified'}
+
+Generated on: ${new Date().toLocaleString()}
+    `;
+
+    // Create and download the file
+    const blob = new Blob([reportContent], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `crop-analysis-${Date.now()}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
     toast({
       title: "Download started",
-      description: "Your crop analysis report is being prepared for offline access",
+      description: "Your crop analysis report has been downloaded",
     });
   };
 
@@ -262,7 +437,7 @@ const CropDisease = () => {
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-3">
-                      {analysisResult.treatment.map((step: string, index: number) => (
+                      {analysisResult.treatment && analysisResult.treatment.map((step: string, index: number) => (
                         <li key={index} className="flex items-start gap-2">
                           <CheckCircle className="h-5 w-5 text-success mt-0.5 flex-shrink-0" />
                           <span>{step}</span>
@@ -281,7 +456,7 @@ const CropDisease = () => {
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-3">
-                      {analysisResult.prevention.map((tip: string, index: number) => (
+                      {analysisResult.prevention && analysisResult.prevention.map((tip: string, index: number) => (
                         <li key={index} className="flex items-start gap-2">
                           <Leaf className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                           <span>{tip}</span>
@@ -295,7 +470,7 @@ const CropDisease = () => {
               <div className="text-center pt-4">
                 <Button onClick={downloadReport} variant="outline" className="gap-2 w-full md:w-auto">
                   <Download className="h-4 w-4" />
-                  Download PDF Report
+                  Download Report
                 </Button>
               </div>
             </div>
