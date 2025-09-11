@@ -10,6 +10,8 @@ import GovernmentSchemes from "./pages/GovernmentSchemes";
 import About from "./pages/About";
 import Profile from "./pages/Profile";
 import DiseaseDatabase from "./pages/DiseaseDatabase";
+import ContactUs from "./pages/ContactUs";
+import AdminMessages from "./pages/AdminMessages";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +30,8 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/disease-database" element={<DiseaseDatabase />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/admin/messages" element={<AdminMessages />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
