@@ -212,7 +212,7 @@ const About = () => {
                 </Button>
               </Link>
               <Link to="/market-analysis">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
+                <Button variant="secondary" size="lg" className="w-full sm:w-auto">
                   View Market Prices
                 </Button>
               </Link>
