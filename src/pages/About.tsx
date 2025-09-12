@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Target, Users, Award, Leaf, Lightbulb, Shield, Globe, Heart } from "lucide-react";
 import { Link } from "react-router-dom";
 import NavBar from "@/components/NavBar";
+import raunakPhoto from "@/assets/agro-hero.jpg";
 
 
 const About = () => {
@@ -12,28 +13,12 @@ const About = () => {
   const teamMembers = [
     {
       name: "Raunak Jain",
-      role: "Web Developer",
-      expertise: "Frontend Development",
-      image: "🙎‍♂️"
+      role: "Developer",
+      expertise: "Full-Stack Development • AI Integration • API Integration",
+      photo: raunakPhoto,
+      description:
+        "I design and build AgroAI end-to-end, blending AI with practical farming needs to deliver clear, reliable experiences for farmers.",
     },
-    {
-      name: "Udit Parekh",
-      role: "Project Manager",
-      expertise: "Project Management",
-      image: "🤵"
-    },
-    {
-      name: "Akarsh Pandey",
-      role: "Research Analyst",
-      expertise: "Research and Development",
-      image: "🙎‍♂️"
-    },
-    {
-      name: "Tanmay Nanda",
-      role: "AI Developer",
-      expertise: "Artificial Intelligence",
-      image: "👨‍💼"
-    }
   ];
 
   const values = [
@@ -102,7 +87,7 @@ const About = () => {
                   Our Mission
                 </h2>
                 <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-4 sm:mb-6">
-                Our mission with Agro Mitra AI is to bridge the gap between agriculture and technology. We aim to provide farmers, agri-businesses, and researchers with reliable.
+                Our mission with Agro-AI is to bridge the gap between agriculture and technology. We aim to provide farmers, agri-businesses, and researchers with reliable.
 
                 </p>
                 <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
@@ -141,20 +126,38 @@ const About = () => {
         {/* Team Section */}
         <div className="mb-8 sm:mb-12 md:mb-16">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-foreground mb-6 sm:mb-8 md:mb-12">
-            Meet Our Team
+            Meet The Developer
           </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-            {teamMembers.map((member, index) => (
-              <Card key={index} className="bg-gradient-card shadow-card hover:shadow-elevated transition-all duration-300 transform hover:-translate-y-2">
-                <CardContent className="p-4 sm:p-6 text-center">
-                  <div className="text-4xl sm:text-5xl md:text-6xl mb-3 sm:mb-4">{member.image}</div>
-                  <h3 className="text-base sm:text-lg font-semibold text-foreground mb-1 sm:mb-2">{member.name}</h3>
-                  <p className="text-sm sm:text-base text-primary mb-2 sm:mb-3">{member.role}</p>
-                  <Badge variant="secondary" className="text-xs sm:text-sm">{member.expertise}</Badge>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          {teamMembers.map((member, index) => (
+            <Card key={index} className="bg-gradient-card shadow-card max-w-6xl mx-auto">
+              <CardContent className="p-6 sm:p-10">
+                <div className="grid md:grid-cols-2 gap-6 md:gap-10 items-center">
+                  <div className="order-1">
+                    <img
+                      src={member.photo}
+                      alt={member.name}
+                      className="w-40 h-40 sm:w-52 sm:h-52 md:w-56 md:h-56 object-cover rounded-full mx-auto grayscale hover:grayscale-0 transition-all duration-300 shadow-md ring-2 ring-primary/40 ring-offset-4 ring-offset-background"
+                    />
+                  </div>
+                  <div className="order-2 text-left">
+                    <div className="mb-3">
+                      <h3 className="text-2xl sm:text-3xl font-extrabold tracking-wide text-foreground uppercase">
+                        {member.name}
+                      </h3>
+                      <p className="italic text-muted-foreground">{member.role}</p>
+                    </div>
+                    <Badge variant="secondary" className="mb-4">{member.expertise}</Badge>
+                    <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4">
+                      {member.description}
+                    </p>
+                    <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                      Focus areas: Front-End Development, Back-End Development, AI Integration, API Integration
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
 
         {/* Technology Section */}
@@ -171,20 +174,21 @@ const About = () => {
                   Our Technology
                 </h2>
                 <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-4 sm:mb-6">
-                  We leverage state-of-the-art machine learning algorithms, computer vision, and data analytics to provide accurate, real-time insights for modern farming.
+                 Farming today is no longer just about soil, seeds, and weather—it’s about smart decisions powered by technology. That’s where we come in.
+                 We use advanced machine learning, computer vision, and real-time data to give farmers simple, clear, and actionable insights.
                 </p>
                 <div className="space-y-3 sm:space-y-4">
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-sm sm:text-base text-muted-foreground">Advanced Computer Vision for Disease Detection</span>
+                    <span className="text-sm sm:text-base text-muted-foreground">🌱 Spot plant diseases early with powerful computer vision</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-sm sm:text-base text-muted-foreground">Real-time Market Data Analysis</span>
+                    <span className="text-sm sm:text-base text-muted-foreground">📊 Track Real-Time market trends so you know when to sell</span>
                   </div>
                   <div className="flex items-center space-x-3">
                     <div className="w-2 h-2 bg-primary rounded-full"></div>
-                    <span className="text-sm sm:text-base text-muted-foreground">Predictive Analytics for Crop Management</span>
+                    <span className="text-sm sm:text-base text-muted-foreground">🔮 Predict crop needs and plan smarter with data-driven insights</span>
                   </div>
                 </div>
               </div>

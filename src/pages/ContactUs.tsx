@@ -232,7 +232,7 @@ const ContactUs = () => {
                 <p className="text-sm text-muted-foreground mb-4">
                   Find quick answers to common questions in our FAQ section.
                 </p>
-                <Button variant="outline" className="w-full bg-transparent">
+                <Button variant="outline" className="w-full bg-transparent" onClick={() => window.location.assign('/faq')}>
                   Visit FAQ
                 </Button>
               </CardContent>

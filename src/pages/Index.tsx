@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
-import { Leaf, TrendingUp, FileText, Cloud, Thermometer, Droplets, Wind } from "lucide-react"
+import { Leaf, TrendingUp, FileText, Cloud, Thermometer, Droplets, Wind, Github } from "lucide-react"
 import cropDiseaseIcon from "@/assets/crop-disease-nav.png"
 import marketAnalysisIcon from "@/assets/market-analysis-icon.jpg"
 import schemesIcon from "@/assets/schemes-icon.jpg"
@@ -170,10 +170,10 @@ const Index = () => {
           {/* Feature Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 px-4 sm:px-0">
             <Link to="/crop-disease" className="animate-fade-in">
-              <Card className="group card-enhanced h-full hover-lift animate-float">
+              <Card className="group card-enhanced h-full hover-lift">
                 <CardHeader className="text-center p-6 sm:p-8">
                   <div className="relative">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-primary flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-bounce-gentle">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-primary flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <Leaf className="h-8 w-8 sm:h-10 sm:w-10 text-primary-foreground" />
                     </div>
                     <div className="absolute -top-2 -right-2 w-4 h-4 bg-primary rounded-full animate-pulse-slow" />
@@ -186,7 +186,7 @@ const Index = () => {
                   <p className="text-muted-foreground mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
                     Upload crop photos and get instant disease diagnosis with treatment recommendations
                   </p>
-                  <Button className="w-full btn-primary-enhanced group-hover:scale-105 transition-transform duration-300 text-sm sm:text-base">
+                  <Button className="w-full btn-primary-enhanced hover-lift transition-transform duration-300 group-hover:scale-105 hover:scale-105 text-sm sm:text-base">
                     🌱 Analyze Crops
                   </Button>
                 </CardContent>
@@ -194,10 +194,10 @@ const Index = () => {
             </Link>
 
             <Link to="/market-analysis" className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              <Card className="group card-enhanced h-full hover-lift animate-float-delayed">
+              <Card className="group card-enhanced h-full hover-lift">
                 <CardHeader className="text-center p-6 sm:p-8">
                   <div className="relative">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-br from-accent to-accent-light flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-bounce-gentle">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-br from-accent to-accent-light flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <TrendingUp className="h-8 w-8 sm:h-10 sm:w-10 text-accent-foreground" />
                     </div>
                     <div className="absolute -top-2 -right-2 w-4 h-4 bg-accent rounded-full animate-pulse-slow" />
@@ -211,8 +211,7 @@ const Index = () => {
                     Real-time mandi prices for crops in your area with wholesale and retail rates
                   </p>
                   <Button
-                    variant="secondary"
-                    className="w-full group-hover:scale-105 transition-transform duration-300 text-sm sm:text-base hover-lift"
+                    className="w-full btn-primary-enhanced hover-lift transition-transform duration-300 group-hover:scale-105 hover:scale-105 text-sm sm:text-base"
                   >
                     💰 View Prices
                   </Button>
@@ -221,10 +220,10 @@ const Index = () => {
             </Link>
 
             <Link to="/government-schemes" className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
-              <Card className="group card-enhanced h-full hover-lift animate-float" style={{ animationDelay: '1s' }}>
+              <Card className="group card-enhanced h-full hover-lift" style={{ animationDelay: '1s' }}>
                 <CardHeader className="text-center p-6 sm:p-8">
                   <div className="relative">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-br from-success to-green-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-bounce-gentle">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-br from-success to-green-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <FileText className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
                     </div>
                     <div className="absolute -top-2 -right-2 w-4 h-4 bg-success rounded-full animate-pulse-slow" />
@@ -238,8 +237,7 @@ const Index = () => {
                     Discover available schemes and check your eligibility for government benefits
                   </p>
                   <Button
-                    variant="outline"
-                    className="w-full group-hover:scale-105 transition-transform duration-300 text-sm sm:text-base border-gradient hover-lift hover-glow"
+                    className="w-full btn-primary-enhanced hover-lift transition-transform duration-300 group-hover:scale-105 hover:scale-105 text-sm sm:text-base"
                   >
                     📋 Explore Schemes
                   </Button>
@@ -267,18 +265,42 @@ const Index = () => {
                 combine AI technology with agricultural expertise to provide accurate information when you need it most.
               </p>
               <div className="flex space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift">
-                  <span className="text-white text-lg font-bold">f</span>
-                </div>
-                <div className="w-12 h-12 bg-gradient-to-br from-sky-400 to-sky-500 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift">
+                <a
+                  href="https://github.com/raunak-jain-02"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="AgroAI on GitHub"
+                  className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift"
+                >
+                  <Github className="h-6 w-6 text-white" />
+                </a>
+                <a
+                  href="https://x.com/raunak_jain_02"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="AgroAI on X"
+                  className="w-12 h-12 bg-gradient-to-br from-sky-400 to-sky-500 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift"
+                >
                   <span className="text-white text-lg font-bold">t</span>
-                </div>
-                <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift">
+                </a>
+                <a
+                  href="https://www.instagram.com/_raunak1029__?igsh=MXJpbG52dHVodXRi"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="AgroAI on Instagram"
+                  className="w-12 h-12 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift"
+                >
                   <span className="text-white text-lg font-bold">ig</span>
-                </div>
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift">
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/raunak-jain-ba2a4920a/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="AgroAI on LinkedIn"
+                  className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift"
+                >
                   <span className="text-white text-lg font-bold">in</span>
-                </div>
+                </a>
               </div>
               <div className="flex items-center space-x-3 text-sm text-success animate-pulse-slow">
                 <div className="w-3 h-3 bg-success rounded-full animate-bounce-gentle"></div>
@@ -313,7 +335,7 @@ const Index = () => {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Call Us</p>
-                    <p className="text-sm sm:text-base font-medium text-foreground">+91 9876543210</p>
+                    <p className="text-sm sm:text-base font-medium text-foreground">+91 9667811511</p>
                   </div>
                 </div>
 
