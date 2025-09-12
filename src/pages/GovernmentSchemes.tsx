@@ -103,6 +103,18 @@ const GovernmentSchemes = () => {
     return colors[category] || "bg-gray-500";
   };
 
+  const getSchemeRoute = (schemeName: string) => {
+    const routes: { [key: string]: string } = {
+      "PM-KISAN": "pm-kisan",
+      "Pradhan Mantri Fasal Bima Yojana": "pmfby",
+      "Kisan Credit Card": "kisan-credit-card",
+      "Soil Health Card Scheme": "soil-health-card",
+      "Pradhan Mantri Krishi Sinchai Yojana": "pmksy",
+      "National Agriculture Market (e-NAM)": "e-nam"
+    };
+    return routes[schemeName] || "#";
+  };
+
   return (
     <div className="min-h-screen bg-gradient-hero">
       <NavBar showBackButton={true} />
@@ -215,17 +227,27 @@ const GovernmentSchemes = () => {
                   </div>
 
                   <div className="flex flex-col sm:flex-row gap-2">
-                    <Button 
-                      size="sm" 
-                      className="flex-1"
-                      disabled={scheme.status !== "eligible"}
-                    >
-                      {scheme.status === "eligible" ? "Apply Now" : "Not Eligible"}
-                    </Button>
-                    <Button size="sm" variant="outline">
-                      <ExternalLink className="h-3 w-3 mr-1" />
-                      Details
-                    </Button>
+                    {scheme.status === "eligible" ? (
+                      <Link to={`/schemes/${getSchemeRoute(scheme.name)}`} className="flex-1">
+                        <Button size="sm" className="w-full">
+                          Apply Now
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Button 
+                        size="sm" 
+                        className="flex-1"
+                        disabled
+                      >
+                        Not Eligible
+                      </Button>
+                    )}
+                    <Link to={`/schemes/${getSchemeRoute(scheme.name)}`}>
+                      <Button size="sm" variant="outline">
+                        <ExternalLink className="h-3 w-3 mr-1" />
+                        Details
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>

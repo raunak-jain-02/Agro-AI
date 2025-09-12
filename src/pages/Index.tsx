@@ -1,11 +1,12 @@
-"use client"
-
 import axios from "axios";
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
 import { Leaf, TrendingUp, FileText, Cloud, Thermometer, Droplets, Wind } from "lucide-react"
+import cropDiseaseIcon from "@/assets/crop-disease-nav.png"
+import marketAnalysisIcon from "@/assets/market-analysis-icon.jpg"
+import schemesIcon from "@/assets/schemes-icon.jpg"
 import NavBar from "@/components/NavBar"
 
 interface WeatherData {
@@ -14,18 +15,11 @@ interface WeatherData {
   wind: number;
   condition: string;
 }
-import cropDiseaseIcon from "@/assets/crop-disease-nav.png"
-import marketAnalysisIcon from "@/assets/market-analysis-icon.jpg"
-import schemesIcon from "@/assets/schemes-icon.jpg"
-
-
-
 
 const Index = () => {
   const [displayedText, setDisplayedText] = useState("")
   const [currentIndex, setCurrentIndex] = useState(0)
   const fullText = "Our Priority"
-
 
   useEffect(() => {
     if (currentIndex < fullText.length) {
@@ -44,95 +38,96 @@ const Index = () => {
     setCurrentIndex(0)
   }, [])
 
-const [weather, setWeather] = useState<WeatherData | null>(null);
-const [loading, setLoading] = useState(true);
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [loading, setLoading] = useState(true);
 
-useEffect(() => {
-  const fetchWeather = async () => {
-    try {
-      const apiKey = "ff421bf921c9fd1149571dfd57e12f37"; // <-- replace with your key
-      const city = "Ludhiana"; // or make it dynamic later
-      const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
-      );
+  useEffect(() => {
+    const fetchWeather = async () => {
+      try {
+        const apiKey = "ff421bf921c9fd1149571dfd57e12f37"; // <-- replace with your key
+        const city = "Ludhiana"; // or make it dynamic later
+        const response = await axios.get(
+          `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
+        );
 
-      const data = response.data;
-      setWeather({
-        temperature: data.main.temp,
-        humidity: data.main.humidity,
-        wind: data.wind.speed,
-        condition: data.weather[0].description,
-      });
-    } catch (err) {
-      console.error("Error fetching weather:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+        const data = response.data;
+        setWeather({
+          temperature: data.main.temp,
+          humidity: data.main.humidity,
+          wind: data.wind.speed,
+          condition: data.weather[0].description,
+        });
+      } catch (err) {
+        console.error("Error fetching weather:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  fetchWeather();
+    fetchWeather();
 
-  // refresh every 10 minutes
-  const interval = setInterval(fetchWeather, 600000);
-  return () => clearInterval(interval);
-}, []);
-
+    // refresh every 10 minutes
+    const interval = setInterval(fetchWeather, 600000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-hero">
+    <div className="min-h-screen bg-gradient-hero bg-pattern">
       <NavBar />
-
+      
       {/* Hero Section */}
       <section className="relative py-6 sm:py-8 md:py-12 lg:py-16 xl:py-20 px-3 sm:px-4 lg:px-6">
         <div className="max-w-7xl mx-auto text-center">
           {/* Award Badge */}
-          <div className="inline-flex items-center gap-2 bg-primary/20 border border-primary/30 rounded-full px-3 sm:px-4 py-2 mb-6 sm:mb-8">
-            <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-            <span className="text-xs sm:text-sm font-medium text-primary">
-              Rated #1 Agricultural AI Platform of 2025
+          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 sm:px-6 py-3 mb-6 sm:mb-8 animate-slide-up hover-glow">
+            <div className="w-3 h-3 bg-primary rounded-full animate-pulse-slow" />
+            <span className="text-sm sm:text-base font-semibold text-primary">
+              🌟 Rated #1 Agricultural AI Platform of 2025
             </span>
           </div>
 
           {/* Main Hero Content */}
-          <div className="relative mb-6 sm:mb-8">
+          <div className="relative mb-6 sm:mb-8 animate-fade-in">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground mb-4 sm:mb-6 leading-tight px-2">
               Your Farm,
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+              <span className="text-gradient">
                 {displayedText}
                 {currentIndex < fullText.length && <span className="typewriter-cursor">|</span>}
               </span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
-              Experience seamless agriculture with AI-powered crop analysis and instant connections to market insights.
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4 animate-slide-up">
+              🌱 Experience seamless agriculture with AI-powered crop analysis and instant connections to market insights.
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4 animate-scale-in">
               <Link to="/crop-disease">
-              <Button
-                size="lg"
-                className="bg-gradient-primary hover:opacity-90 px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto"
-              >
-                Get Started
-              </Button></Link>
+                <Button
+                  size="lg"
+                  className="btn-primary-enhanced px-8 sm:px-10 py-4 text-base sm:text-lg w-full sm:w-auto hover-lift"
+                >
+                  🚀 Get Started
+                </Button>
+              </Link>
               <Link to="/about">
-              <Button
-                variant="outline"
-                size="lg"
-                className="px-6 sm:px-8 py-3 text-base sm:text-lg w-full sm:w-auto bg-transparent">
-                Learn More
-              </Button></Link>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="px-8 sm:px-10 py-4 text-base sm:text-lg w-full sm:w-auto border-gradient hover-lift hover-glow">
+                  📚 Learn More
+                </Button>
+              </Link>
             </div>
           </div>
 
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto mb-6 sm:mb-8 md:mb-12 px-4">
-            Get instant crop disease analysis, real-time market prices, and access to government schemes - all designed
+          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto mb-6 sm:mb-8 md:mb-12 px-4 animate-fade-in">
+            🌾 Get instant crop disease analysis, real-time market prices, and access to government schemes - all designed
             specifically for farmers like you.
           </p>
 
           {/* Weather Widget */}
-          <Card className="mb-8 sm:mb-10 md:mb-12 bg-gradient-card shadow-card mx-4 sm:mx-0">
+          <Card className="mb-8 sm:mb-10 md:mb-12 card-enhanced shadow-card mx-4 sm:mx-0 animate-slide-up hover-lift">
   <CardHeader className="pb-3 sm:pb-4">
     <CardTitle className="flex items-center justify-center gap-2 text-base sm:text-lg">
       <Cloud className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
@@ -173,89 +168,80 @@ useEffect(() => {
 
 
           {/* Feature Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 px-4 sm:px-0">
-            <Link to="/crop-disease">
-              <Card className="group hover:shadow-elevated transition-all duration-300 transform hover:-translate-y-2 bg-gradient-card h-full border-primary/20 hover:border-primary/40">
-                <CardHeader className="text-center p-4 sm:p-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 px-4 sm:px-0">
+            <Link to="/crop-disease" className="animate-fade-in">
+              <Card className="group card-enhanced h-full hover-lift animate-float">
+                <CardHeader className="text-center p-6 sm:p-8">
                   <div className="relative">
-                    <img
-                      src={cropDiseaseIcon || "/placeholder.svg"}
-                      alt="Crop Disease Analysis"
-                      className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-lg group-hover:scale-110 transition-transform duration-300"
-                    />
-                    <div className="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-primary rounded-full animate-pulse" />
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-primary flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-bounce-gentle">
+                      <Leaf className="h-8 w-8 sm:h-10 sm:w-10 text-primary-foreground" />
+                    </div>
+                    <div className="absolute -top-2 -right-2 w-4 h-4 bg-primary rounded-full animate-pulse-slow" />
                   </div>
-                  <CardTitle className="flex items-center justify-center gap-2 text-base sm:text-lg">
-                    <Leaf className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
-                    AI Crop Disease
+                  <CardTitle className="flex items-center justify-center gap-2 text-lg sm:text-xl text-gradient">
+                    🔬 AI Crop Disease
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="text-center p-4 sm:p-6 pt-0">
-                  <p className="text-muted-foreground mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
+                <CardContent className="text-center p-6 sm:p-8 pt-0">
+                  <p className="text-muted-foreground mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
                     Upload crop photos and get instant disease diagnosis with treatment recommendations
                   </p>
-                  <Button className="w-full bg-gradient-primary hover:opacity-90 group-hover:scale-105 transition-transform duration-300 text-sm sm:text-base">
-                    Analyze Crops
+                  <Button className="w-full btn-primary-enhanced group-hover:scale-105 transition-transform duration-300 text-sm sm:text-base">
+                    🌱 Analyze Crops
                   </Button>
                 </CardContent>
               </Card>
             </Link>
 
-            <Link to="/market-analysis">
-              <Card className="group hover:shadow-elevated transition-all duration-300 transform hover:-translate-y-2 bg-gradient-card h-full border-accent/20 hover:border-accent/40">
-                <CardHeader className="text-center p-4 sm:p-6">
+            <Link to="/market-analysis" className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
+              <Card className="group card-enhanced h-full hover-lift animate-float-delayed">
+                <CardHeader className="text-center p-6 sm:p-8">
                   <div className="relative">
-                    <img
-                      src={marketAnalysisIcon || "/placeholder.svg"}
-                      alt="Market Analysis"
-                      className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-lg group-hover:scale-110 transition-transform duration-300"
-                    />
-                    <div className="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-accent rounded-full animate-pulse" />
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-br from-accent to-accent-light flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-bounce-gentle">
+                      <TrendingUp className="h-8 w-8 sm:h-10 sm:w-10 text-accent-foreground" />
+                    </div>
+                    <div className="absolute -top-2 -right-2 w-4 h-4 bg-accent rounded-full animate-pulse-slow" />
                   </div>
-                  <CardTitle className="flex items-center justify-center gap-2 text-base sm:text-lg">
-                    <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
-                    Market Analysis
+                  <CardTitle className="flex items-center justify-center gap-2 text-lg sm:text-xl text-gradient">
+                    📊 Market Analysis
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="text-center p-4 sm:p-6 pt-0">
-                  <p className="text-muted-foreground mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
+                <CardContent className="text-center p-6 sm:p-8 pt-0">
+                  <p className="text-muted-foreground mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
                     Real-time mandi prices for crops in your area with wholesale and retail rates
                   </p>
                   <Button
                     variant="secondary"
-                    className="w-full group-hover:scale-105 transition-transform duration-300 text-sm sm:text-base"
+                    className="w-full group-hover:scale-105 transition-transform duration-300 text-sm sm:text-base hover-lift"
                   >
-                    View Prices
+                    💰 View Prices
                   </Button>
                 </CardContent>
               </Card>
             </Link>
 
-            <Link to="/government-schemes">
-              <Card className="group hover:shadow-elevated transition-all duration-300 transform hover:-translate-y-2 bg-gradient-card h-full border-success/20 hover:border-success/40 sm:col-span-2 lg:col-span-1">
-                <CardHeader className="text-center p-4 sm:p-6">
+            <Link to="/government-schemes" className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
+              <Card className="group card-enhanced h-full hover-lift animate-float" style={{ animationDelay: '1s' }}>
+                <CardHeader className="text-center p-6 sm:p-8">
                   <div className="relative">
-                    <img
-                      src={schemesIcon || "/placeholder.svg"}
-                      alt="Government Schemes"
-                      className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-lg group-hover:scale-110 transition-transform duration-300"
-                    />
-                    <div className="absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 bg-success rounded-full animate-pulse" />
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-br from-success to-green-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 animate-bounce-gentle">
+                      <FileText className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
+                    </div>
+                    <div className="absolute -top-2 -right-2 w-4 h-4 bg-success rounded-full animate-pulse-slow" />
                   </div>
-                  <CardTitle className="flex items-center justify-center gap-2 text-base sm:text-lg">
-                    <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-success" />
-                    Government Schemes
+                  <CardTitle className="flex items-center justify-center gap-2 text-lg sm:text-xl text-gradient">
+                    🏛️ Government Schemes
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="text-center p-4 sm:p-6 pt-0">
-                  <p className="text-muted-foreground mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
+                <CardContent className="text-center p-6 sm:p-8 pt-0">
+                  <p className="text-muted-foreground mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
                     Discover available schemes and check your eligibility for government benefits
                   </p>
                   <Button
                     variant="outline"
-                    className="w-full group-hover:scale-105 transition-transform duration-300 text-sm sm:text-base bg-transparent"
+                    className="w-full group-hover:scale-105 transition-transform duration-300 text-sm sm:text-base border-gradient hover-lift hover-glow"
                   >
-                    Explore Schemes
+                    📋 Explore Schemes
                   </Button>
                 </CardContent>
               </Card>
@@ -265,36 +251,38 @@ useEffect(() => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-card border-t border-border py-8 sm:py-12">
+      <footer className="bg-gradient-to-r from-primary/5 to-accent/5 border-t border-primary/20 py-12 sm:py-16 animate-fade-in">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
             {/* Brand Section */}
-            <div className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <Leaf className="h-6 w-6 text-primary" />
-                <span className="text-xl font-bold text-primary">AgroAI</span>
+            <div className="space-y-6">
+              <div className="flex items-center space-x-3 animate-scale-in">
+                <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center animate-rotate-slow">
+                  <Leaf className="h-6 w-6 text-primary-foreground" />
+                </div>
+                <span className="text-2xl font-bold text-gradient">AgroAI</span>
               </div>
               <p className="text-muted-foreground text-sm sm:text-base max-w-md leading-relaxed">
-                Your trusted partner for reliable agricultural insights and connecting with farming professionals. We
+                🌾 Your trusted partner for reliable agricultural insights and connecting with farming professionals. We
                 combine AI technology with agricultural expertise to provide accurate information when you need it most.
               </p>
-              <div className="flex space-x-3">
-                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors cursor-pointer">
-                  <span className="text-white text-sm font-semibold">f</span>
+              <div className="flex space-x-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift">
+                  <span className="text-white text-lg font-bold">f</span>
                 </div>
-                <div className="w-10 h-10 bg-blue-400 rounded-full flex items-center justify-center hover:bg-blue-500 transition-colors cursor-pointer">
-                  <span className="text-white text-sm font-semibold">t</span>
+                <div className="w-12 h-12 bg-gradient-to-br from-sky-400 to-sky-500 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift">
+                  <span className="text-white text-lg font-bold">t</span>
                 </div>
-                <div className="w-10 h-10 bg-pink-600 rounded-full flex items-center justify-center hover:bg-pink-700 transition-colors cursor-pointer">
-                  <span className="text-white text-sm font-semibold">ig</span>
+                <div className="w-12 h-12 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift">
+                  <span className="text-white text-lg font-bold">ig</span>
                 </div>
-                <div className="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center hover:bg-blue-800 transition-colors cursor-pointer">
-                  <span className="text-white text-sm font-semibold">in</span>
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift">
+                  <span className="text-white text-lg font-bold">in</span>
                 </div>
               </div>
-              <div className="flex items-center space-x-2 text-sm text-success">
-                <div className="w-2 h-2 bg-success rounded-full"></div>
-                <span>Compliant with Agricultural Data Protection Guidelines</span>
+              <div className="flex items-center space-x-3 text-sm text-success animate-pulse-slow">
+                <div className="w-3 h-3 bg-success rounded-full animate-bounce-gentle"></div>
+                <span className="font-medium">✅ Compliant with Agricultural Data Protection Guidelines</span>
               </div>
             </div>
 
@@ -371,7 +359,7 @@ useEffect(() => {
         </div>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Index
+export default Index;
