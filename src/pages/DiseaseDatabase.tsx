@@ -11,6 +11,31 @@ import { diseaseData } from "@/data/disease-data";
 const DiseaseDatabase = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Available SVG files mapping
+  const svgMapping: { [key: string]: string } = {
+    "late-blight": "/images/late-blight.svg",
+    "powdery-mildew": "/images/powdery-mildew.svg", 
+    "rust": "/images/rust.svg",
+    "bacterial-leaf-spot": "/images/bacterial-leaf-spot.svg",
+    "fusarium-wilt": "/images/fusarium-wilt.svg",
+    "anthracnose": "/images/anthracnose.svg",
+    "black-sigatoka": "/images/black-sigatoka.svg",
+    "ergot": "/images/ergot.svg",
+    "clubroot": "/images/clubroot.svg",
+    "citrus-canker": "/images/citrus-canker.svg",
+    "verticillium-wilt": "/images/verticillium-wilt.svg",
+    "rice-blast": "/images/rice-blast.svg",
+    "smut": "/images/smut.svg",
+    "leaf-curl-virus": "/images/leaf-curl-virus.svg",
+    "yellow-rust": "/images/yellow-rust.svg",
+    "alternaria-leaf-spot": "/images/alternaria-leaf-spot.svg"
+  };
+
+  const getDiseaseImage = (diseaseName: string) => {
+    const key = diseaseName.toLowerCase().replace(/ /g, '-');
+    return svgMapping[key] || "/placeholder.svg";
+  };
+
   const filteredDiseases = diseaseData.filter(
     (disease) =>
       disease.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -47,15 +72,16 @@ const DiseaseDatabase = () => {
                 <CardHeader className="flex items-center gap-4">
                   <div className="disease-image-container w-12 h-12 flex-shrink-0">
                     <img 
-                      src={`/images/${disease.name.toLowerCase().replace(/ /g, '-')}.svg`} 
+                      src={getDiseaseImage(disease.name)} 
                       alt={`${disease.name} image`} 
+                      className="w-full h-full object-contain"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = "/placeholder.svg";
                       }}
                     />
                   </div>
-                  <CardTitle>{disease.name}</CardTitle>
+                  <CardTitle className="text-sm sm:text-base">{disease.name}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div>
