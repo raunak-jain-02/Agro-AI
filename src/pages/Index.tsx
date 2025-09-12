@@ -304,7 +304,9 @@ const Index = () => {
               </div>
               <div className="flex items-center space-x-3 text-sm text-success animate-pulse-slow">
                 <div className="w-3 h-3 bg-success rounded-full animate-bounce-gentle"></div>
-                <span className="font-medium">✅ Compliant with Agricultural Data Protection Guidelines</span>
+                <span className="font-medium">✅ Compliant with Agricultural Data Protection Guidelines<br></br><br></br>
+                  Build with ❤️ by Raunak Jain
+                </span>
               </div>
             </div>
 
