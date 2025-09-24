@@ -15,7 +15,8 @@ import {
   Menu,
   X,
   Sun,
-  Moon
+  Moon,
+  ShoppingCart
 } from "lucide-react";
 
 interface NavBarProps {
@@ -98,6 +99,17 @@ const NavBar = ({ showBackButton = false, currentPage = "" }: NavBarProps) => {
               <span>Market Analysis</span>
             </Link>
             <Link
+              to="/buy-sell-crops"
+              className={`flex items-center space-x-2 transition-all duration-300 hover:-translate-y-1 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium ${
+                isActivePage("/buy-sell-crops")
+                  ? "text-primary font-medium"
+                  : "text-foreground hover:text-primary"
+              }`}
+            >
+              <ShoppingCart className="h-4 w-4" />
+              <span>Buy/Sell Crops</span>
+            </Link>
+            <Link
               to="/government-schemes"
               className={`flex items-center space-x-2 transition-all duration-300 hover:-translate-y-1 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium ${
                 isActivePage("/government-schemes")
@@ -160,6 +172,14 @@ const NavBar = ({ showBackButton = false, currentPage = "" }: NavBarProps) => {
               }`}
             >
               <TrendingUp className="h-5 w-5" />
+            </Link>
+            <Link
+              to="/buy-sell-crops"
+              className={`p-2 transition-all duration-300 hover:-translate-y-1 hover:scale-105 ${
+                isActivePage("/buy-sell-crops") ? "text-primary" : "text-foreground hover:text-primary"
+              }`}
+            >
+              <ShoppingCart className="h-5 w-5" />
             </Link>
             <Link
               to="/government-schemes"
@@ -290,6 +310,18 @@ const NavBar = ({ showBackButton = false, currentPage = "" }: NavBarProps) => {
               >
                 <TrendingUp className="h-5 w-5 text-accent" />
                 <span>Real-Time Market</span>
+              </Link>
+              <Link
+                to="/buy-sell-crops"
+                onClick={closeMobileMenu}
+                className={`flex items-center space-x-3 px-3 py-3 rounded-lg transition-all duration-300 hover:-translate-y-1 hover:scale-105 text-base font-medium ${
+                  isActivePage("/buy-sell-crops")
+                    ? "bg-secondary/10 border border-secondary/20 text-secondary"
+                    : "hover:bg-muted/50"
+                }`}
+              >
+                <ShoppingCart className="h-5 w-5 text-secondary" />
+                <span>Buy/Sell Crops</span>
               </Link>
               <Link
                 to="/government-schemes"

@@ -4,9 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
-import { TrendingUp, TrendingDown, MapPin, Search } from "lucide-react";
+import { TrendingUp, TrendingDown, MapPin, Search, ShoppingCart } from "lucide-react";
 import NavBar from "@/components/NavBar";
 
 interface MarketDataItem {
@@ -41,6 +40,7 @@ const generateMockMarketData = (): MarketDataItem[] => {
     }))
   );
 };
+
 
 const MarketAnalysis = () => {
   const [marketData, setMarketData] = useState<MarketDataItem[]>([]);
@@ -371,16 +371,19 @@ const MarketAnalysis = () => {
             </CardContent>
           </Card>
 
-          {/* Future Feature Teaser */}
+          {/* Buy/Sell Marketplace Link */}
           <Card className="mt-8 bg-gradient-primary text-primary-foreground shadow-card">
             <CardContent className="p-6 text-center">
-              <h3 className="text-xl font-bold mb-2">Coming Soon: Buy/Sell Marketplace</h3>
+              <h3 className="text-xl font-bold mb-2">Direct Buy/Sell Marketplace</h3>
               <p className="opacity-90 mb-4">
                 Connect directly with buyers and sellers in your area. Get the best prices for your crops!
               </p>
-              <Button variant="secondary" disabled>
-                Join Waitlist
-              </Button>
+              <Link to="/buy-sell-crops">
+                <Button className="bg-gradient-primary">
+                  <ShoppingCart className="h-4 w-4 mr-2" />
+                  Visit Buy/Sell Marketplace
+                </Button>
+              </Link>
             </CardContent>
           </Card>
         </div>

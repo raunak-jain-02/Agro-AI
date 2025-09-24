@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import CropDisease from "./pages/CropDisease";
 import MarketAnalysis from "./pages/MarketAnalysis";
+import BuySellCrops from "./pages/BuySellCrops";
 import GovernmentSchemes from "./pages/GovernmentSchemes";
 import PMKisan from "./pages/schemes/PMKisan";
 import PMFBY from "./pages/schemes/PMFBY";
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/" element={<Index/>} />
           <Route path="/crop-disease" element={<CropDisease />} />
           <Route path="/market-analysis" element={<MarketAnalysis />} />
+          <Route path="/buy-sell-crops" element={<BuySellCrops />} />
           <Route path="/government-schemes" element={<GovernmentSchemes />} />
           <Route path="/schemes/pm-kisan" element={<PMKisan />} />
           <Route path="/schemes/pmfby" element={<PMFBY />} />
