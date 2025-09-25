@@ -35,6 +35,10 @@ const Signup = () => {
     farmLocation: "",
     farmSize: "",
     primaryCrops: "",
+    // Notification preferences (default enabled)
+    weatherAlerts: true,
+    priceAlerts: true,
+    generalNotifications: true,
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -43,7 +47,7 @@ const Signup = () => {
   const [success, setSuccess] = useState("");
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const { login } = useAuth();
+  const { signup } = useAuth();
   const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,25 +101,28 @@ const Signup = () => {
         return;
       }
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Simulate successful signup and auto-login
-      const userData = {
-        id: Date.now().toString(),
+      // Use Supabase authentication
+      const success = await signup({
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
-        farmLocation: formData.farmLocation,
+        password: formData.password,
+        phone: formData.phone,
+        location: formData.farmLocation,
         farmSize: formData.farmSize,
-        primaryCrops: formData.primaryCrops
-      };
+        cropTypes: formData.primaryCrops ? formData.primaryCrops.split(',').map(crop => crop.trim()) : [],
+        // Include notification preferences
+        weatherAlerts: formData.weatherAlerts,
+        priceAlerts: formData.priceAlerts,
+        generalNotifications: formData.generalNotifications,
+      });
       
-      login(userData);
-      setSuccess("Account created successfully! Redirecting...");
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
+      if (success) {
+        setSuccess("Account created successfully! Please check your email to verify your account.");
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000);
+      }
 
     } catch (err) {
       setError("Signup failed. Please try again.");
@@ -315,6 +322,67 @@ const Signup = () => {
                         onChange={handleInputChange}
                         className="pl-10 h-12 border-border focus:ring-primary focus:border-primary transition-all duration-300"
                       />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Notification Preferences Section */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold text-foreground border-b border-border pb-2">
+                    📧 Email Notifications
+                  </h3>
+                  
+                  <div className="space-y-4 bg-muted/20 p-4 rounded-lg">
+                    <p className="text-sm text-muted-foreground">
+                      Stay updated with weather alerts and market prices. You can change these preferences anytime in your profile.
+                    </p>
+                    
+                    <div className="flex items-center space-x-2">
+                      <input
+                        id="weatherAlerts"
+                        name="weatherAlerts"
+                        type="checkbox"
+                        checked={formData.weatherAlerts}
+                        onChange={(e) => setFormData(prev => ({ ...prev, weatherAlerts: e.target.checked }))}
+                        className="h-4 w-4 text-primary border-border rounded focus:ring-primary focus:ring-2"
+                      />
+                      <Label htmlFor="weatherAlerts" className="text-sm text-foreground flex items-center gap-2">
+                        <span>🌤️ Daily Weather Alerts (5:00 AM)</span>
+                        <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">Recommended</span>
+                      </Label>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2">
+                      <input
+                        id="priceAlerts"
+                        name="priceAlerts"
+                        type="checkbox"
+                        checked={formData.priceAlerts}
+                        onChange={(e) => setFormData(prev => ({ ...prev, priceAlerts: e.target.checked }))}
+                        className="h-4 w-4 text-primary border-border rounded focus:ring-primary focus:ring-2"
+                      />
+                      <Label htmlFor="priceAlerts" className="text-sm text-foreground flex items-center gap-2">
+                        <span>💰 Crop Price Alerts</span>
+                        <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">Recommended</span>
+                      </Label>
+                    </div>
+                    
+                    <div className="flex items-center space-x-2">
+                      <input
+                        id="generalNotifications"
+                        name="generalNotifications"
+                        type="checkbox"
+                        checked={formData.generalNotifications}
+                        onChange={(e) => setFormData(prev => ({ ...prev, generalNotifications: e.target.checked }))}
+                        className="h-4 w-4 text-primary border-border rounded focus:ring-primary focus:ring-2"
+                      />
+                      <Label htmlFor="generalNotifications" className="text-sm text-foreground">
+                        <span>📢 General Updates & Tips</span>
+                      </Label>
+                    </div>
+                    
+                    <div className="text-xs text-muted-foreground mt-3 p-2 bg-blue-50 border border-blue-200 rounded">
+                      💡 Choose your notification preferences. You can always change these settings later in your profile.
                     </div>
                   </div>
                 </div>

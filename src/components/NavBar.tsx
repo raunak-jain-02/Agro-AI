@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
 import { 
   Leaf, 
   TrendingUp, 
@@ -29,7 +30,7 @@ const NavBar = ({ currentPage = "" }: NavBarProps) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, userProfile, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,11 +68,36 @@ const NavBar = ({ currentPage = "" }: NavBarProps) => {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3 flex-shrink-0 hover-scale transition-transform duration-300" onClick={closeMobileMenu}>
-            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-primary flex items-center justify-center animate-rotate-slow">
-              <Leaf className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground" />
-            </div>
-            <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gradient">AgroAI</h1>
+          <Link to="/" className="flex items-center space-x-3 flex-shrink-0" onClick={closeMobileMenu}>
+            <motion.div 
+              className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-primary flex items-center justify-center"
+              whileHover={{ 
+                scale: 1.1,
+                rotate: 5,
+                boxShadow: "0 0 20px rgba(34, 197, 94, 0.4)"
+              }}
+              animate={{ 
+                rotate: [0, 360],
+              }}
+              transition={{
+                rotate: { duration: 20, repeat: Infinity, ease: "linear" },
+                scale: { type: "spring", stiffness: 300, damping: 25 },
+              }}
+            >
+              <motion.div
+                whileHover={{ rotate: -5 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              >
+                <Leaf className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground" />
+              </motion.div>
+            </motion.div>
+            <motion.h1 
+              className="text-lg sm:text-xl lg:text-2xl font-bold text-gradient"
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            >
+              AgroAI
+            </motion.h1>
           </Link>
 
           {/* Desktop Navigation Links - Centered */}
@@ -254,7 +280,7 @@ const NavBar = ({ currentPage = "" }: NavBarProps) => {
                   >
                     <User className="h-4 w-4 mr-2" />
                     <span className="hidden sm:inline">
-                      {user?.firstName || 'Profile'}
+                      {userProfile?.user_metadata?.firstName || 'Profile'}
                     </span>
                     <span className="sm:hidden">Profile</span>
                   </Button>
@@ -295,9 +321,22 @@ const NavBar = ({ currentPage = "" }: NavBarProps) => {
         </div>
 
         {/* Mobile Navigation Links */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden border-t border-border bg-card/95 backdrop-blur-sm">
-            <div className="px-2 pt-2 pb-3 space-y-1">
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div 
+              className="md:hidden border-t border-border bg-card/95 backdrop-blur-sm"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+            >
+              <motion.div 
+                className="px-2 pt-2 pb-3 space-y-1"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3, delay: 0.1 }}
+              >
               {/* Mobile Dark Mode Toggle */}
               <div className="flex items-center justify-center py-2">
                 <Button
@@ -360,7 +399,7 @@ const NavBar = ({ currentPage = "" }: NavBarProps) => {
                       className="w-full transition-all duration-300 hover:-translate-y-1 hover:scale-105"
                     >
                       <User className="h-4 w-4 mr-2" />
-                      {user?.firstName || 'Profile'}
+                      {userProfile?.user_metadata?.firstName || 'Profile'}
                     </Button>
                   </Link>
                   <Button
@@ -448,9 +487,10 @@ const NavBar = ({ currentPage = "" }: NavBarProps) => {
                 <MessageSquare className="h-5 w-5 text-primary" />
                 <span>Contact Us</span>
               </Link>
-            </div>
-          </div>
-        )}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </nav>
   );

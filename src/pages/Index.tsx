@@ -8,6 +8,9 @@ import cropDiseaseIcon from "@/assets/crop-disease-nav.png"
 import marketAnalysisIcon from "@/assets/market-analysis-icon.jpg"
 import schemesIcon from "@/assets/schemes-icon.jpg"
 import NavBar from "@/components/NavBar"
+import { FadeInUp, FadeInDown, FadeInLeft, FadeInRight, ScaleIn, StaggerContainer, StaggerItem } from "@/components/animations/AnimationWrapper"
+import { FloatingShapes, GeometricShapes, AnimatedGradient } from "@/components/animations/BackgroundAnimations"
+import { motion } from "framer-motion"
 
 interface WeatherData {
   temperature: number;
@@ -72,62 +75,150 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-hero bg-pattern">
+    <div className="min-h-screen bg-gradient-hero bg-pattern relative overflow-hidden">
+      {/* Background Animations */}
+      <div className="absolute inset-0">
+        <AnimatedGradient />
+        <FloatingShapes />
+        <GeometricShapes />
+      </div>
+      
       <NavBar />
       
       {/* Hero Section */}
-      <section className="relative py-6 sm:py-8 md:py-12 lg:py-16 xl:py-20 px-3 sm:px-4 lg:px-6">
+      <section className="relative py-6 sm:py-8 md:py-12 lg:py-16 xl:py-20 px-3 sm:px-4 lg:px-6 z-10">
         <div className="max-w-7xl mx-auto text-center">
           {/* Award Badge */}
-          <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 sm:px-6 py-3 mb-6 sm:mb-8 animate-slide-up hover-glow">
-            <div className="w-3 h-3 bg-primary rounded-full animate-pulse-slow" />
-            <span className="text-sm sm:text-base font-semibold text-primary">
-              🌟 Rated #1 Agricultural AI Platform of 2025
-            </span>
-          </div>
+          <FadeInDown delay={0.2}>
+            <motion.div 
+              className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 rounded-full px-4 sm:px-6 py-3 mb-6 sm:mb-8 hover-glow cursor-pointer"
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <motion.div 
+                className="w-3 h-3 bg-primary rounded-full"
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.7, 1, 0.7]
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+              <span className="text-sm sm:text-base font-semibold text-primary">
+                🌟 Rated #1 Agricultural AI Platform of 2025
+              </span>
+            </motion.div>
+          </FadeInDown>
 
           {/* Main Hero Content */}
-          <div className="relative mb-6 sm:mb-8 animate-fade-in">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground mb-4 sm:mb-6 leading-tight px-2">
-              Your Farm,
-              <br />
-              <span className="text-gradient">
-                {displayedText}
-                {currentIndex < fullText.length && <span className="typewriter-cursor">|</span>}
-              </span>
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4 animate-slide-up">
-              🌱 Experience seamless agriculture with AI-powered crop analysis and instant connections to market insights.
-            </p>
+          <StaggerContainer className="relative mb-6 sm:mb-8" staggerChildren={0.2} delayChildren={0.4}>
+            <StaggerItem>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground mb-4 sm:mb-6 leading-tight px-2">
+                <motion.span
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6, duration: 0.8 }}
+                >
+                  Your Farm,
+                </motion.span>
+                <br />
+                <motion.span 
+                  className="text-gradient"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.8, duration: 0.8, type: "spring" }}
+                >
+                  {displayedText}
+                  {currentIndex < fullText.length && (
+                    <motion.span 
+                      className="typewriter-cursor"
+                      animate={{ opacity: [1, 0] }}
+                      transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
+                    >
+                      |
+                    </motion.span>
+                  )}
+                </motion.span>
+              </h1>
+            </StaggerItem>
+            
+            <StaggerItem>
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-4xl mx-auto mb-6 sm:mb-8 leading-relaxed px-4">
+                🌱 Experience seamless agriculture with AI-powered crop analysis and instant connections to market insights.
+              </p>
+            </StaggerItem>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4 animate-scale-in">
-              <Link to="/crop-disease">
-                <Button
-                  size="lg"
-                  className="btn-primary-enhanced px-8 sm:px-10 py-4 text-base sm:text-lg w-full sm:w-auto hover-lift"
-                >
-                  🚀 Get Started
-                </Button>
-              </Link>
-              <Link to="/about">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="px-8 sm:px-10 py-4 text-base sm:text-lg w-full sm:w-auto border-gradient hover-lift hover-glow">
-                  📚 Learn More
-                </Button>
-              </Link>
-            </div>
-          </div>
+            <StaggerItem>
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center px-4">
+                <Link to="/crop-disease">
+                  <motion.div
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  >
+                    <Button
+                      size="lg"
+                      className="btn-primary-enhanced px-8 sm:px-10 py-4 text-base sm:text-lg w-full sm:w-auto relative overflow-hidden group"
+                    >
+                      <motion.span
+                        className="relative z-10"
+                        initial={{ x: 0 }}
+                        whileHover={{ x: 2 }}
+                      >
+                        🚀 Get Started
+                      </motion.span>
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary-light/20 to-primary/0"
+                        initial={{ x: "-100%" }}
+                        whileHover={{ x: "100%" }}
+                        transition={{ duration: 0.6 }}
+                      />
+                    </Button>
+                  </motion.div>
+                </Link>
+                <Link to="/about">
+                  <motion.div
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                  >
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="px-8 sm:px-10 py-4 text-base sm:text-lg w-full sm:w-auto border-gradient hover-glow relative overflow-hidden group"
+                    >
+                      <motion.span
+                        className="relative z-10"
+                        initial={{ x: 0 }}
+                        whileHover={{ x: 2 }}
+                      >
+                        📚 Learn More
+                      </motion.span>
+                    </Button>
+                  </motion.div>
+                </Link>
+              </div>
+            </StaggerItem>
+          </StaggerContainer>
 
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto mb-6 sm:mb-8 md:mb-12 px-4 animate-fade-in">
-            🌾 Get instant crop disease analysis, real-time market prices, and access to government schemes - all designed
-            specifically for farmers like you.
-          </p>
+          <FadeInUp delay={1}>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-3xl mx-auto mb-6 sm:mb-8 md:mb-12 px-4">
+              🌾 Get instant crop disease analysis, real-time market prices, and access to government schemes - all designed
+              specifically for farmers like you.
+            </p>
+          </FadeInUp>
 
           {/* Weather Widget */}
-          <Card className="mb-8 sm:mb-10 md:mb-12 card-enhanced shadow-card mx-4 sm:mx-0 animate-slide-up hover-lift">
+          <ScaleIn delay={1.2}>
+            <motion.div
+              whileHover={{ y: -5, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            >
+              <Card className="mb-8 sm:mb-10 md:mb-12 card-enhanced shadow-card mx-4 sm:mx-0">
   <CardHeader className="pb-3 sm:pb-4">
     <CardTitle className="flex items-center justify-center gap-2 text-base sm:text-lg">
       <Cloud className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
@@ -164,94 +255,268 @@ const Index = () => {
       <p className="text-center text-red-500">Failed to load weather</p>
     )}
   </CardContent>
-</Card>
-
+              </Card>
+            </motion.div>
+          </ScaleIn>
 
           {/* Feature Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 px-4 sm:px-0">
-            <Link to="/crop-disease" className="animate-fade-in">
-              <Card className="group card-enhanced h-full hover-lift">
-                <CardHeader className="text-center p-6 sm:p-8">
-                  <div className="relative">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-primary flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <Leaf className="h-8 w-8 sm:h-10 sm:w-10 text-primary-foreground" />
-                    </div>
-                    <div className="absolute -top-2 -right-2 w-4 h-4 bg-primary rounded-full animate-pulse-slow" />
-                  </div>
-                  <CardTitle className="flex items-center justify-center gap-2 text-lg sm:text-xl text-gradient">
-                    🔬 AI Crop Disease
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="text-center p-6 sm:p-8 pt-0">
-                  <p className="text-muted-foreground mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
-                    Upload crop photos and get instant disease diagnosis with treatment recommendations
-                  </p>
-                  <Button className="w-full btn-primary-enhanced hover-lift transition-transform duration-300 group-hover:scale-105 hover:scale-105 text-sm sm:text-base">
-                    🌱 Analyze Crops
-                  </Button>
-                </CardContent>
-              </Card>
-            </Link>
+          <StaggerContainer 
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10 px-4 sm:px-0"
+            staggerChildren={0.2}
+            delayChildren={1.5}
+          >
+            <StaggerItem>
+              <Link to="/crop-disease">
+                <motion.div
+                  whileHover={{ y: -10, scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                >
+                  <Card className="group card-enhanced h-full relative overflow-hidden">
+                    {/* Background Glow Effect */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent rounded-lg opacity-0 group-hover:opacity-100"
+                      initial={{ opacity: 0 }}
+                      whileHover={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                    
+                    <CardHeader className="text-center p-6 sm:p-8 relative z-10">
+                      <div className="relative">
+                        <motion.div 
+                          className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-primary flex items-center justify-center"
+                          whileHover={{ 
+                            scale: 1.1,
+                            rotate: 5,
+                            boxShadow: "0 0 25px rgba(34, 197, 94, 0.4)"
+                          }}
+                          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                        >
+                          <motion.div
+                            animate={{ rotate: [0, 5, -5, 0] }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                          >
+                            <Leaf className="h-8 w-8 sm:h-10 sm:w-10 text-primary-foreground" />
+                          </motion.div>
+                        </motion.div>
+                        <motion.div 
+                          className="absolute -top-2 -right-2 w-4 h-4 bg-primary rounded-full"
+                          animate={{
+                            scale: [1, 1.2, 1],
+                            opacity: [0.7, 1, 0.7]
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                          }}
+                        />
+                      </div>
+                      <CardTitle className="flex items-center justify-center gap-2 text-lg sm:text-xl text-gradient">
+                        🔬 AI Crop Disease
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-center p-6 sm:p-8 pt-0 relative z-10">
+                      <p className="text-muted-foreground mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
+                        Upload crop photos and get instant disease diagnosis with treatment recommendations
+                      </p>
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Button className="w-full btn-primary-enhanced text-sm sm:text-base relative overflow-hidden">
+                          <span className="relative z-10">
+                            🌱 Analyze Crops
+                          </span>
+                          <motion.div
+                            className="absolute inset-0 bg-gradient-to-r from-primary-light/20 via-primary-light/40 to-primary-light/20"
+                            initial={{ x: "-100%" }}
+                            whileHover={{ x: "100%" }}
+                            transition={{ duration: 0.6 }}
+                          />
+                        </Button>
+                      </motion.div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </Link>
+            </StaggerItem>
 
-            <Link to="/market-analysis" className="animate-fade-in" style={{ animationDelay: '0.2s' }}>
-              <Card className="group card-enhanced h-full hover-lift">
-                <CardHeader className="text-center p-6 sm:p-8">
-                  <div className="relative">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-br from-accent to-accent-light flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <TrendingUp className="h-8 w-8 sm:h-10 sm:w-10 text-accent-foreground" />
-                    </div>
-                    <div className="absolute -top-2 -right-2 w-4 h-4 bg-accent rounded-full animate-pulse-slow" />
-                  </div>
-                  <CardTitle className="flex items-center justify-center gap-2 text-lg sm:text-xl text-gradient">
-                    📊 Market Analysis
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="text-center p-6 sm:p-8 pt-0">
-                  <p className="text-muted-foreground mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
-                    Real-time mandi prices for crops in your area with wholesale and retail rates
-                  </p>
-                  <Button
-                    className="w-full btn-primary-enhanced hover-lift transition-transform duration-300 group-hover:scale-105 hover:scale-105 text-sm sm:text-base"
-                  >
-                    💰 View Prices
-                  </Button>
-                </CardContent>
-              </Card>
-            </Link>
+            <StaggerItem>
+              <Link to="/market-analysis">
+                <motion.div
+                  whileHover={{ y: -10, scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                >
+                  <Card className="group card-enhanced h-full relative overflow-hidden">
+                    {/* Background Glow Effect */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent rounded-lg opacity-0 group-hover:opacity-100"
+                      initial={{ opacity: 0 }}
+                      whileHover={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                    
+                    <CardHeader className="text-center p-6 sm:p-8 relative z-10">
+                      <div className="relative">
+                        <motion.div 
+                          className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-br from-accent to-accent-light flex items-center justify-center"
+                          whileHover={{ 
+                            scale: 1.1,
+                            rotate: -5,
+                            boxShadow: "0 0 25px rgba(251, 146, 60, 0.4)"
+                          }}
+                          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                        >
+                          <motion.div
+                            animate={{ y: [0, -2, 0] }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                          >
+                            <TrendingUp className="h-8 w-8 sm:h-10 sm:w-10 text-accent-foreground" />
+                          </motion.div>
+                        </motion.div>
+                        <motion.div 
+                          className="absolute -top-2 -right-2 w-4 h-4 bg-accent rounded-full"
+                          animate={{
+                            scale: [1, 1.2, 1],
+                            opacity: [0.7, 1, 0.7]
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: 0.5
+                          }}
+                        />
+                      </div>
+                      <CardTitle className="flex items-center justify-center gap-2 text-lg sm:text-xl text-gradient">
+                        📈 Market Analysis
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-center p-6 sm:p-8 pt-0 relative z-10">
+                      <p className="text-muted-foreground mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
+                        Real-time mandi prices for crops in your area with wholesale and retail rates
+                      </p>
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Button className="w-full btn-primary-enhanced text-sm sm:text-base relative overflow-hidden">
+                          <span className="relative z-10">
+                            💰 View Prices
+                          </span>
+                          <motion.div
+                            className="absolute inset-0 bg-gradient-to-r from-accent/20 via-accent/40 to-accent/20"
+                            initial={{ x: "-100%" }}
+                            whileHover={{ x: "100%" }}
+                            transition={{ duration: 0.6 }}
+                          />
+                        </Button>
+                      </motion.div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </Link>
+            </StaggerItem>
 
-            <Link to="/government-schemes" className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
-              <Card className="group card-enhanced h-full hover-lift" style={{ animationDelay: '1s' }}>
-                <CardHeader className="text-center p-6 sm:p-8">
-                  <div className="relative">
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-br from-success to-green-400 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <FileText className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
-                    </div>
-                    <div className="absolute -top-2 -right-2 w-4 h-4 bg-success rounded-full animate-pulse-slow" />
-                  </div>
-                  <CardTitle className="flex items-center justify-center gap-2 text-lg sm:text-xl text-gradient">
-                    🏛️ Government Schemes
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="text-center p-6 sm:p-8 pt-0">
-                  <p className="text-muted-foreground mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
-                    Discover available schemes and check your eligibility for government benefits
-                  </p>
-                  <Button
-                    className="w-full btn-primary-enhanced hover-lift transition-transform duration-300 group-hover:scale-105 hover:scale-105 text-sm sm:text-base"
-                  >
-                    📋 Explore Schemes
-                  </Button>
-                </CardContent>
-              </Card>
-            </Link>
-          </div>
+            <StaggerItem>
+              <Link to="/government-schemes">
+                <motion.div
+                  whileHover={{ y: -10, scale: 1.03 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                >
+                  <Card className="group card-enhanced h-full relative overflow-hidden">
+                    {/* Background Glow Effect */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-br from-success/5 to-transparent rounded-lg opacity-0 group-hover:opacity-100"
+                      initial={{ opacity: 0 }}
+                      whileHover={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                    
+                    <CardHeader className="text-center p-6 sm:p-8 relative z-10">
+                      <div className="relative">
+                        <motion.div 
+                          className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-br from-success to-green-400 flex items-center justify-center"
+                          whileHover={{ 
+                            scale: 1.1,
+                            rotate: 5,
+                            boxShadow: "0 0 25px rgba(34, 197, 94, 0.4)"
+                          }}
+                          transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                        >
+                          <motion.div
+                            animate={{ 
+                              rotateY: [0, 180, 360]
+                            }}
+                            transition={{ 
+                              duration: 4, 
+                              repeat: Infinity, 
+                              ease: "easeInOut" 
+                            }}
+                          >
+                            <FileText className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
+                          </motion.div>
+                        </motion.div>
+                        <motion.div 
+                          className="absolute -top-2 -right-2 w-4 h-4 bg-success rounded-full"
+                          animate={{
+                            scale: [1, 1.2, 1],
+                            opacity: [0.7, 1, 0.7]
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: 1
+                          }}
+                        />
+                      </div>
+                      <CardTitle className="flex items-center justify-center gap-2 text-lg sm:text-xl text-gradient">
+                        🏦 Government Schemes
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="text-center p-6 sm:p-8 pt-0 relative z-10">
+                      <p className="text-muted-foreground mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base">
+                        Discover available schemes and check your eligibility for government benefits
+                      </p>
+                      <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Button className="w-full btn-primary-enhanced text-sm sm:text-base relative overflow-hidden">
+                          <span className="relative z-10">
+                            📋 Explore Schemes
+                          </span>
+                          <motion.div
+                            className="absolute inset-0 bg-gradient-to-r from-success/20 via-success/40 to-success/20"
+                            initial={{ x: "-100%" }}
+                            whileHover={{ x: "100%" }}
+                            transition={{ duration: 0.6 }}
+                          />
+                        </Button>
+                      </motion.div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              </Link>
+            </StaggerItem>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* Enhanced Footer */}
-      <footer className="bg-gradient-to-br from-primary/8 via-accent/5 to-primary/8 border-t border-primary/20 py-16 sm:py-20 animate-fade-in relative overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-pattern opacity-30"></div>
+      <FadeInUp delay={0.2}>
+        <footer className="bg-gradient-to-br from-primary/8 via-accent/5 to-primary/8 border-t border-primary/20 py-16 sm:py-20 relative overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 bg-pattern opacity-30">
+            {/* Additional floating elements for footer */}
+            <FloatingShapes />
+          </div>
+        
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 relative z-10">
         
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 relative z-10">
           {/* Main Footer Content */}
@@ -481,7 +746,9 @@ const Index = () => {
             </div>
           </div>
         </div>
+        </div>
       </footer>
+      </FadeInUp>
     </div>
   );
 };

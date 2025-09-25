@@ -50,9 +50,6 @@ const Login = () => {
     setSuccess("");
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
       // Basic validation
       if (!formData.email || !formData.password) {
         setError("Please fill in all fields");
@@ -64,22 +61,15 @@ const Login = () => {
         return;
       }
 
-      // Simulate successful login
-      const userData = {
-        id: "1",
-        firstName: "John",
-        lastName: "Doe",
-        email: formData.email,
-        farmLocation: "Sample Farm, Sample District",
-        farmSize: "10",
-        primaryCrops: "Wheat, Rice"
-      };
+      // Use Supabase authentication
+      const success = await login(formData.email, formData.password);
       
-      login(userData);
-      setSuccess("Login successful! Redirecting...");
-      setTimeout(() => {
-        navigate("/");
-      }, 1500);
+      if (success) {
+        setSuccess("Login successful! Redirecting...");
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
+      }
 
     } catch (err) {
       setError("Login failed. Please try again.");

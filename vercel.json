@@ -4,7 +4,29 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
+  ],
+  "functions": {
+    "api/send-weather-alerts.ts": {
+      "maxDuration": 300
+    },
+    "api/send-price-alerts.ts": {
+      "maxDuration": 300
+    },
+    "api/send-welcome-email.ts": {
+      "maxDuration": 60
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/send-weather-alerts",
+      "schedule": "0 23 * * *"
+    },
+    {
+      "path": "/api/send-price-alerts",
+      "schedule": "0 5,17 * * *"
+    }
   ]
 }
+
 
 
