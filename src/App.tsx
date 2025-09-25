@@ -19,6 +19,8 @@ import Profile from "./pages/Profile";
 import DiseaseDatabase from "./pages/DiseaseDatabase";
 import ContactUs from "./pages/ContactUs";
 import AdminMessages from "./pages/AdminMessages";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import FAQ from "./pages/FAQ";
 
@@ -48,6 +50,8 @@ const App = () => (
           <Route path="/disease-database" element={<DiseaseDatabase />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/admin/messages" element={<AdminMessages />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

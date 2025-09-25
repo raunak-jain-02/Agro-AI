@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Link } from "react-router-dom"
-import { Leaf, TrendingUp, FileText, Cloud, Thermometer, Droplets, Wind, Github } from "lucide-react"
+import { Leaf, TrendingUp, FileText, Cloud, Thermometer, Droplets, Wind, Github, MessageSquare } from "lucide-react"
 import cropDiseaseIcon from "@/assets/crop-disease-nav.png"
 import marketAnalysisIcon from "@/assets/market-analysis-icon.jpg"
 import schemesIcon from "@/assets/schemes-icon.jpg"
@@ -248,135 +248,235 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gradient-to-r from-primary/5 to-accent/5 border-t border-primary/20 py-12 sm:py-16 animate-fade-in">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+      {/* Enhanced Footer */}
+      <footer className="bg-gradient-to-br from-primary/8 via-accent/5 to-primary/8 border-t border-primary/20 py-16 sm:py-20 animate-fade-in relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 bg-pattern opacity-30"></div>
+        
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 relative z-10">
+          {/* Main Footer Content */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
+            
             {/* Brand Section */}
-            <div className="space-y-6">
+            <div className="lg:col-span-1 space-y-6">
               <div className="flex items-center space-x-3 animate-scale-in">
-                <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center animate-rotate-slow">
-                  <Leaf className="h-6 w-6 text-primary-foreground" />
+                <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center animate-rotate-slow shadow-lg">
+                  <Leaf className="h-7 w-7 text-primary-foreground" />
                 </div>
                 <span className="text-2xl font-bold text-gradient">AgroAI</span>
               </div>
-              <p className="text-muted-foreground text-sm sm:text-base max-w-md leading-relaxed">
+              <p className="text-muted-foreground text-sm leading-relaxed">
                 🌾 Your trusted partner for reliable agricultural insights and connecting with farming professionals. We
                 combine AI technology with agricultural expertise to provide accurate information when you need it most.
               </p>
-              <div className="flex space-x-4">
+              
+              {/* Social Links */}
+              <div className="flex space-x-3">
                 <a
                   href="https://github.com/raunak-jain-02"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="AgroAI on GitHub"
-                  className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift"
+                  className="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-800 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift shadow-md"
                 >
-                  <Github className="h-6 w-6 text-white" />
+                  <Github className="h-5 w-5 text-white" />
                 </a>
                 <a
                   href="https://x.com/raunak_jain_02"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="AgroAI on X"
-                  className="w-12 h-12 bg-gradient-to-br from-sky-400 to-sky-500 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift"
+                  className="w-10 h-10 bg-gradient-to-br from-sky-400 to-sky-500 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift shadow-md"
                 >
-                  <span className="text-white text-lg font-bold">t</span>
+                  <span className="text-white text-sm font-bold">𝕏</span>
                 </a>
                 <a
                   href="https://www.instagram.com/_raunak1029__?igsh=MXJpbG52dHVodXRi"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="AgroAI on Instagram"
-                  className="w-12 h-12 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift"
+                  className="w-10 h-10 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift shadow-md"
                 >
-                  <span className="text-white text-lg font-bold">ig</span>
+                  <span className="text-white text-sm font-bold">ig</span>
                 </a>
                 <a
                   href="https://www.linkedin.com/in/raunak-jain-ba2a4920a/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="AgroAI on LinkedIn"
-                  className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift"
+                  className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover-lift shadow-md"
                 >
-                  <span className="text-white text-lg font-bold">in</span>
+                  <span className="text-white text-sm font-bold">in</span>
                 </a>
-              </div>
-              <div className="flex items-center space-x-3 text-sm text-success animate-pulse-slow">
-                <div className="w-3 h-3 bg-success rounded-full animate-bounce-gentle"></div>
-                <span className="font-medium">✅ Compliant with Agricultural Data Protection Guidelines<br></br><br></br>
-                  Build with ❤️ by Raunak Jain
-                </span>
               </div>
             </div>
 
-            {/* Contact Us Section */}
+            {/* Quick Links */}
             <div className="space-y-6">
-              <h3 className="text-lg font-semibold text-primary border-l-4 border-primary pl-3">Contact Us</h3>
+              <h3 className="text-lg font-semibold text-primary border-l-4 border-primary pl-3 flex items-center gap-2">
+                <FileText className="h-5 w-5" />
+                Quick Links
+              </h3>
+              <div className="space-y-3">
+                <Link to="/crop-disease" className="block text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1 transform">
+                  🔬 Crop Disease Analysis
+                </Link>
+                <Link to="/market-analysis" className="block text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1 transform">
+                  📊 Market Analysis
+                </Link>
+                <Link to="/buy-sell-crops" className="block text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1 transform">
+                  🛒 Buy/Sell Crops
+                </Link>
+                <Link to="/government-schemes" className="block text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1 transform">
+                  🏛️ Government Schemes
+                </Link>
+                <Link to="/disease-database" className="block text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1 transform">
+                  🗄️ Disease Database
+                </Link>
+                <Link to="/about" className="block text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1 transform">
+                  ℹ️ About Us
+                </Link>
+                <Link to="/contact" className="block text-muted-foreground hover:text-primary transition-colors duration-300 hover:translate-x-1 transform">
+                  📞 Contact Us
+                </Link>
+              </div>
+            </div>
 
+            {/* Upcoming Features */}
+            <div className="space-y-6">
+              <h3 className="text-lg font-semibold text-accent border-l-4 border-accent pl-3 flex items-center gap-2">
+                <TrendingUp className="h-5 w-5" />
+                Coming Soon
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+                  <span className="text-sm">🌱 Smart Irrigation System</span>
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+                  <span className="text-sm">📱 Mobile App (iOS/Android)</span>
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+                  <span className="text-sm">🤖 AI Chat Assistant</span>
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+                  <span className="text-sm">📈 Weather Forecasting</span>
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+                  <span className="text-sm">💰 Crop Insurance Calculator</span>
+                </div>
+                <div className="flex items-center gap-2 text-muted-foreground">
+                  <div className="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+                  <span className="text-sm">🚚 Supply Chain Tracking</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Info */}
+            <div className="space-y-6">
+              <h3 className="text-lg font-semibold text-success border-l-4 border-success pl-3 flex items-center gap-2">
+                <MessageSquare className="h-5 w-5" />
+                Get In Touch
+              </h3>
               <div className="space-y-4">
                 {/* Email */}
-                <div className="flex items-start space-x-3">
-                  <div className="w-5 h-5 mt-0.5 text-primary">
+                <div className="flex items-start space-x-3 group">
+                  <div className="w-5 h-5 mt-0.5 text-success group-hover:text-primary transition-colors duration-300">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                       <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Email Us</p>
-                    <p className="text-sm sm:text-base font-medium text-foreground">support@agroai.com</p>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">Email Us</p>
+                    <a href="mailto:support@agroai.com" className="text-sm font-medium text-foreground hover:text-primary transition-colors duration-300">
+                      support@agroai.com
+                    </a>
                   </div>
                 </div>
 
                 {/* Phone */}
-                <div className="flex items-start space-x-3">
-                  <div className="w-5 h-5 mt-0.5 text-primary">
+                <div className="flex items-start space-x-3 group">
+                  <div className="w-5 h-5 mt-0.5 text-success group-hover:text-primary transition-colors duration-300">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                       <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Call Us</p>
-                    <p className="text-sm sm:text-base font-medium text-foreground">+91 9667811511</p>
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">Call Us</p>
+                    <a href="tel:+919667811511" className="text-sm font-medium text-foreground hover:text-primary transition-colors duration-300">
+                      +91 9667811511
+                    </a>
                   </div>
                 </div>
 
                 {/* Address */}
-                <div className="flex items-start space-x-3">
-                  <div className="w-5 h-5 mt-0.5 text-primary">
+                <div className="flex items-start space-x-3 group">
+                  <div className="w-5 h-5 mt-0.5 text-success group-hover:text-primary transition-colors duration-300">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                       <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Visit Us</p>
-                    <p className="text-sm sm:text-base font-medium text-foreground">
-                      Agriculture Avenue, Tech District
-                      <br />
-                      Vellore , Tamil Nadu - 632001
-                      <br />
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">Visit Us</p>
+                    <p className="text-sm font-medium text-foreground">
+                      Agriculture Avenue, Tech District<br />
+                      Vellore, Tamil Nadu - 632001<br />
                       India
                     </p>
                   </div>
                 </div>
 
                 {/* Operating Hours */}
-                <div className="flex items-start space-x-3">
-                  <div className="w-5 h-5 mt-0.5 text-primary">
+                <div className="flex items-start space-x-3 group">
+                  <div className="w-5 h-5 mt-0.5 text-success group-hover:text-primary transition-colors duration-300">
                     <svg viewBox="0 0 24 24" fill="currentColor">
                       <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
                       <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">Operating Hours</p>
-                    <p className="text-sm sm:text-base font-medium text-foreground">
-                      Monday - Friday: 8am - 8pm
-                      <br />
+                    <p className="text-xs text-muted-foreground uppercase tracking-wide">Hours</p>
+                    <p className="text-sm font-medium text-foreground">
+                      Mon-Fri: 8am - 8pm<br />
                       Weekend: 10am - 4pm
                     </p>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Section */}
+          <div className="border-t border-primary/20 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+              {/* Copyright & Compliance */}
+              <div className="flex flex-col md:flex-row items-center gap-4 text-sm text-muted-foreground">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-success rounded-full animate-bounce-gentle"></div>
+                  <span>✅ Compliant with Agricultural Data Protection Guidelines</span>
+                </div>
+                <div className="hidden md:block w-px h-4 bg-border"></div>
+                <div className="text-center md:text-left">
+                  <p>© 2025 AgroAI. All rights reserved.</p>
+                  <p>Built with ❤️ by <span className="text-primary font-medium">Raunak Jain</span></p>
+                </div>
+              </div>
+
+              {/* Additional Links */}
+              <div className="flex items-center space-x-6 text-sm">
+                <Link to="/privacy" className="text-muted-foreground hover:text-primary transition-colors duration-300">
+                  Privacy Policy
+                </Link>
+                <Link to="/terms" className="text-muted-foreground hover:text-primary transition-colors duration-300">
+                  Terms of Service
+                </Link>
+                <Link to="/faq" className="text-muted-foreground hover:text-primary transition-colors duration-300">
+                  FAQ
+                </Link>
               </div>
             </div>
           </div>

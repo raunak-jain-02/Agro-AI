@@ -175,6 +175,47 @@
   .dark * {
     transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
   }
+
+  /* Dark mode button hover fixes */
+  .dark .hover\:text-accent-foreground:hover {
+    color: hsl(var(--accent-light)) !important;
+  }
+
+  .dark .hover\:text-primary:hover {
+    color: hsl(var(--primary-light)) !important;
+  }
+
+  .dark .hover\:text-foreground:hover {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  /* Dark mode link hover fixes */
+  .dark a:hover {
+    color: hsl(var(--primary-light)) !important;
+  }
+
+  .dark .hover\:text-primary\/80:hover {
+    color: hsl(var(--primary-light)) !important;
+  }
+
+  /* Dark mode specific button variants */
+  .dark button:hover {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  .dark .hover\:text-destructive:hover {
+    color: hsl(var(--destructive-foreground)) !important;
+  }
+
+  /* Dark mode navbar specific fixes */
+  .dark .hover\:text-primary:hover {
+    color: hsl(var(--primary-light)) !important;
+  }
+
+  /* Dark mode footer link fixes */
+  .dark .hover\:text-primary:hover {
+    color: hsl(var(--primary-light)) !important;
+  }
 }
 
 @layer components {

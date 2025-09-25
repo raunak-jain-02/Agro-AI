@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { 
   Leaf, 
   TrendingUp, 
@@ -11,24 +12,24 @@ import {
   Database, 
   Info,
   MessageSquare,
-  ArrowLeft,
   Menu,
   X,
   Sun,
   Moon,
-  ShoppingCart
+  ShoppingCart,
+  LogOut
 } from "lucide-react";
 
 interface NavBarProps {
-  showBackButton?: boolean;
   currentPage?: string;
 }
 
-const NavBar = ({ showBackButton = false, currentPage = "" }: NavBarProps) => {
+const NavBar = ({ currentPage = "" }: NavBarProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const { theme, toggleTheme } = useTheme();
+  const { isAuthenticated, user, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -67,7 +68,6 @@ const NavBar = ({ showBackButton = false, currentPage = "" }: NavBarProps) => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 flex-shrink-0 hover-scale transition-transform duration-300" onClick={closeMobileMenu}>
-            {showBackButton && <ArrowLeft className="h-5 w-5 text-primary animate-wiggle" />}
             <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-primary flex items-center justify-center animate-rotate-slow">
               <Leaf className="h-5 w-5 sm:h-6 sm:w-6 text-primary-foreground" />
             </div>
@@ -119,17 +119,6 @@ const NavBar = ({ showBackButton = false, currentPage = "" }: NavBarProps) => {
             >
               <FileText className="h-4 w-4" />
               <span>Govt Schemes</span>
-            </Link>
-            <Link
-              to="/disease-database"
-              className={`flex items-center space-x-2 transition-all duration-300 hover:-translate-y-1 hover:scale-105 px-3 py-2 rounded-md text-sm font-medium ${
-                isActivePage("/disease-database")
-                  ? "text-primary font-medium"
-                  : "text-foreground hover:text-primary"
-              }`}
-            >
-              <Database className="h-4 w-4" />
-              <span>Disease Database</span>
             </Link>
             <Link
               to="/about"
@@ -190,14 +179,6 @@ const NavBar = ({ showBackButton = false, currentPage = "" }: NavBarProps) => {
               <FileText className="h-5 w-5" />
             </Link>
             <Link
-              to="/disease-database"
-              className={`p-2 transition-all duration-300 hover:-translate-y-1 hover:scale-105 ${
-                isActivePage("/disease-database") ? "text-primary" : "text-foreground hover:text-primary"
-              }`}
-            >
-              <Database className="h-5 w-5" />
-            </Link>
-            <Link
               to="/about"
               className={`p-2 transition-all duration-300 hover:-translate-y-1 hover:scale-105 ${
                 isActivePage("/about") ? "text-primary" : "text-foreground hover:text-primary"
@@ -215,7 +196,7 @@ const NavBar = ({ showBackButton = false, currentPage = "" }: NavBarProps) => {
             </Link>
           </div>
 
-          {/* Right Side - Dark Mode Toggle, Profile & Mobile Menu */}
+          {/* Right Side - Dark Mode Toggle, Auth Buttons, Profile & Mobile Menu */}
           <div className="flex items-center space-x-2">
             {/* Dark Mode Toggle */}
             <Button
@@ -232,17 +213,69 @@ const NavBar = ({ showBackButton = false, currentPage = "" }: NavBarProps) => {
               )}
             </Button>
 
-            {/* Profile Button */}
-            <Link to="/profile" onClick={closeMobileMenu}>
-              <Button
-                variant="outline"
-                size="sm"
-                className="transition-all duration-300 hover:-translate-y-1 hover:scale-105 bg-transparent"
-              >
-                <User className="h-4 w-4 mr-2" />
-                <span className="hidden xl:inline">Profile</span>
-              </Button>
-            </Link>
+            {/* Show Login/Signup when not authenticated */}
+            {!isAuthenticated && (
+              <>
+                {/* Login Button */}
+                <Link to="/login" onClick={closeMobileMenu}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="transition-all duration-300 hover:-translate-y-1 hover:scale-105 text-foreground hover:text-primary"
+                  >
+                    <span className="hidden sm:inline">Login</span>
+                    <span className="sm:hidden">Sign In</span>
+                  </Button>
+                </Link>
+
+                {/* Signup Button */}
+                <Link to="/signup" onClick={closeMobileMenu}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="transition-all duration-300 hover:-translate-y-1 hover:scale-105 border-gradient hover-lift"
+                  >
+                    <span className="hidden sm:inline">Sign Up</span>
+                    <span className="sm:hidden">Join</span>
+                  </Button>
+                </Link>
+              </>
+            )}
+
+            {/* Show Profile and Logout when authenticated */}
+            {isAuthenticated && (
+              <>
+                {/* Profile Button */}
+                <Link to="/profile" onClick={closeMobileMenu}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="transition-all duration-300 hover:-translate-y-1 hover:scale-105 bg-transparent"
+                  >
+                    <User className="h-4 w-4 mr-2" />
+                    <span className="hidden sm:inline">
+                      {user?.firstName || 'Profile'}
+                    </span>
+                    <span className="sm:hidden">Profile</span>
+                  </Button>
+                </Link>
+
+                {/* Logout Button */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => {
+                    logout();
+                    closeMobileMenu();
+                  }}
+                  className="transition-all duration-300 hover:-translate-y-1 hover:scale-105 text-foreground hover:text-destructive"
+                  title="Logout"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span className="hidden sm:inline ml-2">Logout</span>
+                </Button>
+              </>
+            )}
             
             {/* Mobile Menu Toggle */}
             <Button
@@ -287,6 +320,62 @@ const NavBar = ({ showBackButton = false, currentPage = "" }: NavBarProps) => {
                   )}
                 </Button>
               </div>
+
+              {/* Mobile Auth Buttons - Show different buttons based on auth state */}
+              {!isAuthenticated ? (
+                <div className="flex gap-2 px-2 py-2">
+                  <Link
+                    to="/login"
+                    onClick={closeMobileMenu}
+                    className="flex-1"
+                  >
+                    <Button
+                      variant="outline"
+                      className="w-full transition-all duration-300 hover:-translate-y-1 hover:scale-105"
+                    >
+                      Login
+                    </Button>
+                  </Link>
+                  <Link
+                    to="/signup"
+                    onClick={closeMobileMenu}
+                    className="flex-1"
+                  >
+                    <Button
+                      className="w-full btn-primary-enhanced hover-lift transition-all duration-300 hover:-translate-y-1 hover:scale-105"
+                    >
+                      Sign Up
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                <div className="flex gap-2 px-2 py-2">
+                  <Link
+                    to="/profile"
+                    onClick={closeMobileMenu}
+                    className="flex-1"
+                  >
+                    <Button
+                      variant="outline"
+                      className="w-full transition-all duration-300 hover:-translate-y-1 hover:scale-105"
+                    >
+                      <User className="h-4 w-4 mr-2" />
+                      {user?.firstName || 'Profile'}
+                    </Button>
+                  </Link>
+                  <Button
+                    onClick={() => {
+                      logout();
+                      closeMobileMenu();
+                    }}
+                    variant="outline"
+                    className="flex-1 transition-all duration-300 hover:-translate-y-1 hover:scale-105 text-destructive hover:text-destructive"
+                  >
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Logout
+                  </Button>
+                </div>
+              )}
               <Link
                 to="/crop-disease"
                 onClick={closeMobileMenu}
@@ -334,18 +423,6 @@ const NavBar = ({ showBackButton = false, currentPage = "" }: NavBarProps) => {
               >
                 <FileText className="h-5 w-5 text-success" />
                 <span>Government Schemes</span>
-              </Link>
-              <Link
-                to="/disease-database"
-                onClick={closeMobileMenu}
-                className={`flex items-center space-x-3 px-3 py-3 rounded-lg transition-all duration-300 hover:-translate-y-1 hover:scale-105 text-base font-medium ${
-                  isActivePage("/disease-database")
-                    ? "bg-primary/10 border border-primary/20 text-primary"
-                    : "hover:bg-muted/50"
-                }`}
-              >
-                <Database className="h-5 w-5 text-primary" />
-                <span>Disease Database</span>
               </Link>
               <Link
                 to="/about"
