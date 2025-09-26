@@ -381,9 +381,7 @@ const Signup = () => {
                       </Label>
                     </div>
                     
-                    <div className="text-xs text-muted-foreground mt-3 p-2 bg-blue-50 border border-blue-200 rounded">
-                      💡 Choose your notification preferences. You can always change these settings later in your profile.
-                    </div>
+                 
                   </div>
                 </div>
 
