@@ -1,9 +1,8 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
 import axios from 'axios';
 import EmailService, { type WeatherAlert, type UserNotificationPreferences } from './lib/email-service';
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL!;
+const supabaseUrl = process.env.SUPABASE_URL!;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 const supabase = createClient(supabaseUrl, supabaseKey, {
@@ -13,7 +12,7 @@ const supabase = createClient(supabaseUrl, supabaseKey, {
   }
 });
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: any, res: any) {
   // Security check - only allow POST requests and verify authorization
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });

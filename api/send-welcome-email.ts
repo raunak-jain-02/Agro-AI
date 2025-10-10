@@ -1,8 +1,7 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { createClient } from '@supabase/supabase-js';
 import EmailService, { type UserNotificationPreferences } from './lib/email-service';
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL!;
+const supabaseUrl = process.env.SUPABASE_URL!;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 const supabase = createClient(supabaseUrl, supabaseKey, {
@@ -12,7 +11,7 @@ const supabase = createClient(supabaseUrl, supabaseKey, {
   }
 });
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: any, res: any) {
   // Only allow POST requests
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -88,7 +87,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 }
 
 // You can also add a function to resend welcome emails if needed
-export async function resendWelcomeEmail(req: VercelRequest, res: VercelResponse) {
+export async function resendWelcomeEmail(req: any, res: any) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
