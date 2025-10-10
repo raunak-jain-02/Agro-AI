@@ -136,7 +136,7 @@ const About = () => {
                     <img
                       src={member.photo}
                       alt={member.name}
-                      className="w-40 h-40 sm:w-52 sm:h-52 md:w-56 md:h-56 object-cover rounded-full mx-auto grayscale hover:grayscale-0 transition-all duration-300 shadow-md ring-2 ring-primary/40 ring-offset-4 ring-offset-background"
+                      className="w-40 h-40 sm:w-52 sm:h-52 md:w-56 md:h-56 object-cover rounded-full mx-auto shadow-md ring-2 ring-primary/40 ring-offset-4 ring-offset-background"
                     />
                   </div>
                   <div className="order-2 text-left">

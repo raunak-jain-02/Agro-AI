@@ -727,7 +727,6 @@ const Index = () => {
                 <div className="hidden md:block w-px h-4 bg-border"></div>
                 <div className="text-center md:text-left">
                   <p>© 2025 AgroAI. All rights reserved.</p>
-                  <p>Built with ❤️ by <span className="text-primary font-medium">Raunak Jain</span></p>
                 </div>
               </div>
 
