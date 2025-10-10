@@ -15,17 +15,7 @@
     "api/send-welcome-email.ts": {
       "maxDuration": 60
     }
-  },
-  "crons": [
-    {
-      "path": "/api/send-weather-alerts",
-      "schedule": "0 23 * * *"
-    },
-    {
-      "path": "/api/send-price-alerts",
-      "schedule": "0 5,17 * * *"
-    }
-  ]
+  }
 }
 
 
