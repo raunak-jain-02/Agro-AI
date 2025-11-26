@@ -4,7 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { ScrollProgress, MouseFollower } from "./components/animations/BackgroundAnimations";
+import { ScrollProgress } from "./components/animations/BackgroundAnimations";
 import Index from "./pages/Index";
 import CropDisease from "./pages/CropDisease";
 import MarketAnalysis from "./pages/MarketAnalysis";
@@ -29,20 +29,11 @@ import FAQ from "./pages/FAQ";
 const queryClient = new QueryClient();
 
 const App = () => {
-  const [showMouseFollower, setShowMouseFollower] = useState(false);
-
-  useEffect(() => {
-    // Check if user prefers reduced motion
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    setShowMouseFollower(!prefersReducedMotion);
-  }, []);
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         {/* Global animations */}
         <ScrollProgress />
-        {showMouseFollower && <MouseFollower />}
         
         <Toaster />
         <Sonner />
