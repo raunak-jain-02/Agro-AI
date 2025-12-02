@@ -22,11 +22,7 @@ const About = () => {
   ];
 
   const values = [
-    {
-      icon: <Target className="h-6 w-6" />,
-      title: "Precision Agriculture",
-      description: "Using AI to provide accurate, data-driven insights for better farming decisions."
-    },
+    hi
     {
       icon: <Users className="h-6 w-6" />,
       title: "Farmer-Centric",
