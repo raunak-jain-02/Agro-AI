@@ -1,4 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
+import { supabase } from "@/lib/supabase";
+import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,18 +39,27 @@ const generateMockMarketplaceData = (): MarketplaceListing[] => {
   const commodities = ['Wheat', 'Rice', 'Cotton', 'Sugarcane', 'Bajra', 'Maize', 'Mustard', 'Groundnut'];
   const states = ['Punjab', 'Haryana', 'Uttar Pradesh', 'Maharashtra', 'Gujarat', 'Rajasthan'];
   const varieties = ['Bold', 'Medium', 'Fine', 'Extra Fine', 'FAQ', 'Superior'];
-  const units = ['Quintal', 'Ton', 'Kg', 'Bags'];
+
+
+  // Map commodities to their standard units
+  const getUnitForCommodity = (commodity: string): string => {
+    const lowerCommodity = commodity.toLowerCase();
+    if (lowerCommodity.includes('cotton')) return 'Bales';
+    if (lowerCommodity.includes('sugarcane')) return 'Ton';
+    if (lowerCommodity.includes('coconut')) return 'Thousands';
+    return 'Quintal'; // Default for grains like Wheat, Rice, etc.
+  };
   const names = ['Rajesh Kumar', 'Priya Sharma', 'Amit Singh', 'Sunita Devi', 'Vikram Patel', 'Meera Jain'];
-  
+
   return Array.from({ length: 12 }, (_, i) => {
     const commodity = commodities[i % commodities.length];
     const state = states[i % states.length];
     const variety = varieties[i % varieties.length];
-    const unit = units[i % units.length];
+    const unit = getUnitForCommodity(commodity);
     const quantity = Math.floor(Math.random() * 50) + 10;
     const pricePerUnit = 1800 + (i * 200) + Math.floor(Math.random() * 500);
     const type = i % 3 === 0 ? 'buy' : 'sell';
-    
+
     return {
       id: `listing-${i + 1}`,
       type,
@@ -74,8 +85,10 @@ const generateMockMarketplaceData = (): MarketplaceListing[] => {
 };
 
 const BuySellCrops = () => {
+  const { userProfile, isAuthenticated } = useAuth();
   // Marketplace states
   const [marketplaceListings, setMarketplaceListings] = useState<MarketplaceListing[]>([]);
+  const [loading, setLoading] = useState(true);
   const [showCreateListing, setShowCreateListing] = useState(false);
   const [listingType, setListingType] = useState<'buy' | 'sell'>('sell');
   const [marketplaceSearch, setMarketplaceSearch] = useState("");
@@ -98,76 +111,186 @@ const BuySellCrops = () => {
   });
 
   useEffect(() => {
-    // Load marketplace data
-    const mockMarketplaceData = generateMockMarketplaceData();
-    setMarketplaceListings(mockMarketplaceData);
+    fetchListings();
   }, []);
+
+  const fetchListings = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('marketplace_listings')
+        .select('*')
+        .eq('status', 'active')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      if (data && data.length > 0) {
+        // Map snake_case to camelCase
+        const mappedListings: MarketplaceListing[] = data.map(item => ({
+          id: item.id,
+          type: item.type,
+          commodity: item.commodity,
+          variety: item.variety,
+          quantity: Number(item.quantity),
+          unit: item.unit,
+          pricePerUnit: Number(item.price_per_unit),
+          totalPrice: Number(item.total_price),
+          location: item.location,
+          state: item.state,
+          district: item.district,
+          description: item.description,
+          contactName: item.contact_name,
+          contactPhone: item.contact_phone,
+          contactEmail: item.contact_email,
+          createdAt: item.created_at,
+          status: item.status,
+          sellerId: item.seller_id,
+          buyerId: item.buyer_id
+        }));
+        setMarketplaceListings(mappedListings);
+      } else {
+        // If no data in DB, use mock data for demo purposes
+        // In production, you might want to show "No listings found" instead
+        setMarketplaceListings(generateMockMarketplaceData());
+      }
+    } catch (error) {
+      console.error('Error fetching listings:', error);
+      // Fallback to mock data on error
+      setMarketplaceListings(generateMockMarketplaceData());
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchListings = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('marketplace_listings')
+        .select('*')
+        .eq('status', 'active')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      if (data && data.length > 0) {
+        // Map snake_case to camelCase
+        const mappedListings: MarketplaceListing[] = data.map(item => ({
+          id: item.id,
+          type: item.type,
+          commodity: item.commodity,
+          variety: item.variety,
+          quantity: Number(item.quantity),
+          unit: item.unit,
+          pricePerUnit: Number(item.price_per_unit),
+          totalPrice: Number(item.total_price),
+          location: item.location,
+          state: item.state,
+          district: item.district,
+          description: item.description,
+          contactName: item.contact_name,
+          contactPhone: item.contact_phone,
+          contactEmail: item.contact_email,
+          createdAt: item.created_at,
+          status: item.status,
+          sellerId: item.seller_id,
+          buyerId: item.buyer_id
+        }));
+        setMarketplaceListings(mappedListings);
+      } else {
+        // If no data in DB, use mock data for demo purposes
+        // In production, you might want to show "No listings found" instead
+        setMarketplaceListings(generateMockMarketplaceData());
+      }
+    } catch (error) {
+      console.error('Error fetching listings:', error);
+      // Fallback to mock data on error
+      setMarketplaceListings(generateMockMarketplaceData());
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Filter marketplace listings
   const filteredMarketplaceListings = useMemo(() => {
     let filtered = marketplaceListings.filter(listing => listing.status === 'active');
-    
+
     if (marketplaceFilter !== 'all') {
       filtered = filtered.filter(listing => listing.type === marketplaceFilter);
     }
-    
+
     if (marketplaceSearch) {
-      filtered = filtered.filter(listing => 
+      filtered = filtered.filter(listing =>
         listing.commodity.toLowerCase().includes(marketplaceSearch.toLowerCase()) ||
         listing.variety.toLowerCase().includes(marketplaceSearch.toLowerCase()) ||
         listing.location.toLowerCase().includes(marketplaceSearch.toLowerCase()) ||
         listing.state.toLowerCase().includes(marketplaceSearch.toLowerCase())
       );
     }
-    
+
     return filtered;
   }, [marketplaceListings, marketplaceFilter, marketplaceSearch]);
 
   // Handle creating new listing
-  const handleCreateListing = () => {
+  const handleCreateListing = async () => {
     if (!newListing.commodity || !newListing.quantity || !newListing.pricePerUnit || !newListing.contactName || !newListing.contactPhone) {
       alert('Please fill in all required fields');
       return;
     }
 
-    const listing: MarketplaceListing = {
-      id: `listing-${Date.now()}`,
-      type: listingType,
-      commodity: newListing.commodity,
-      variety: newListing.variety,
-      quantity: parseInt(newListing.quantity),
-      unit: newListing.unit,
-      pricePerUnit: parseFloat(newListing.pricePerUnit),
-      totalPrice: parseInt(newListing.quantity) * parseFloat(newListing.pricePerUnit),
-      location: newListing.location,
-      state: newListing.state,
-      district: newListing.district,
-      description: newListing.description,
-      contactName: newListing.contactName,
-      contactPhone: newListing.contactPhone,
-      contactEmail: newListing.contactEmail,
-      createdAt: new Date().toISOString(),
-      status: 'active',
-      sellerId: listingType === 'sell' ? `seller-${Date.now()}` : undefined,
-      buyerId: listingType === 'buy' ? `buyer-${Date.now()}` : undefined,
-    };
+    try {
+      const listingData = {
+        type: listingType,
+        commodity: newListing.commodity,
+        variety: newListing.variety,
+        quantity: parseFloat(newListing.quantity),
+        unit: newListing.unit,
+        price_per_unit: parseFloat(newListing.pricePerUnit),
+        total_price: parseFloat(newListing.quantity) * parseFloat(newListing.pricePerUnit),
+        location: newListing.location,
+        state: newListing.state,
+        district: newListing.district,
+        description: newListing.description,
+        contact_name: newListing.contactName,
+        contact_phone: newListing.contactPhone,
+        contact_email: newListing.contactEmail,
+        status: 'active',
+        seller_id: listingType === 'sell' ? (userProfile?.id || null) : null,
+        buyer_id: listingType === 'buy' ? (userProfile?.id || null) : null,
+      };
 
-    setMarketplaceListings(prev => [listing, ...prev]);
-    setShowCreateListing(false);
-    setNewListing({
-      commodity: '',
-      variety: '',
-      quantity: '',
-      unit: 'Quintal',
-      pricePerUnit: '',
-      location: '',
-      state: '',
-      district: '',
-      description: '',
-      contactName: '',
-      contactPhone: '',
-      contactEmail: ''
-    });
+      const { data, error } = await supabase
+        .from('marketplace_listings')
+        .insert([listingData])
+        .select();
+
+      if (error) throw error;
+
+      if (data) {
+        // Refresh listings
+        fetchListings();
+        setShowCreateListing(false);
+        setNewListing({
+          commodity: '',
+          variety: '',
+          quantity: '',
+          unit: 'Quintal',
+          pricePerUnit: '',
+          location: '',
+          state: '',
+          district: '',
+          description: '',
+          contactName: '',
+          contactPhone: '',
+          contactEmail: ''
+        });
+        alert('Listing created successfully!');
+      }
+    } catch (error) {
+      console.error('Error creating listing:', error);
+      alert('Failed to create listing. Please try again.');
+    }
   };
 
   // Handle contact action
@@ -179,7 +302,7 @@ const BuySellCrops = () => {
 
   return (
     <div className="min-h-screen bg-gradient-hero">
-      <NavBar showBackButton={true} />
+      <NavBar />
 
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6 md:py-8">
         <div className="max-w-6xl mx-auto">
@@ -202,7 +325,7 @@ const BuySellCrops = () => {
                 <p className="text-muted-foreground">Crops for Sale</p>
               </CardContent>
             </Card>
-            
+
             <Card className="bg-gradient-card shadow-card">
               <CardContent className="p-6 text-center">
                 <ShoppingCart className="h-8 w-8 mx-auto text-secondary mb-2" />
@@ -210,7 +333,7 @@ const BuySellCrops = () => {
                 <p className="text-muted-foreground">Buy Requests</p>
               </CardContent>
             </Card>
-            
+
             <Card className="bg-gradient-card shadow-card">
               <CardContent className="p-6 text-center">
                 <MessageCircle className="h-8 w-8 mx-auto text-accent mb-2" />
@@ -258,7 +381,7 @@ const BuySellCrops = () => {
                           Buy Crops
                         </Button>
                       </div>
-                      
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="commodity">Commodity *</Label>
@@ -266,7 +389,17 @@ const BuySellCrops = () => {
                             id="commodity"
                             placeholder="e.g., Wheat, Rice, Cotton"
                             value={newListing.commodity}
-                            onChange={(e) => setNewListing(prev => ({ ...prev, commodity: e.target.value }))}
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              let unit = newListing.unit;
+
+                              // Auto-select unit based on commodity
+                              if (val.toLowerCase().includes('cotton')) unit = 'Bales';
+                              else if (val.toLowerCase().includes('sugarcane')) unit = 'Ton';
+                              else if (val.toLowerCase().includes('coconut')) unit = 'Thousands';
+
+                              setNewListing(prev => ({ ...prev, commodity: val, unit }));
+                            }}
                           />
                         </div>
                         <div>
@@ -298,6 +431,8 @@ const BuySellCrops = () => {
                               <SelectItem value="Quintal">Quintal</SelectItem>
                               <SelectItem value="Ton">Ton</SelectItem>
                               <SelectItem value="Kg">Kg</SelectItem>
+                              <SelectItem value="Bales">Bales</SelectItem>
+                              <SelectItem value="Thousands">Thousands</SelectItem>
                               <SelectItem value="Bags">Bags</SelectItem>
                             </SelectContent>
                           </Select>
@@ -340,7 +475,7 @@ const BuySellCrops = () => {
                           />
                         </div>
                       </div>
-                      
+
                       <div>
                         <Label htmlFor="description">Description</Label>
                         <Textarea
@@ -350,7 +485,7 @@ const BuySellCrops = () => {
                           onChange={(e) => setNewListing(prev => ({ ...prev, description: e.target.value }))}
                         />
                       </div>
-                      
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="contactName">Contact Name *</Label>
@@ -381,7 +516,7 @@ const BuySellCrops = () => {
                           />
                         </div>
                       </div>
-                      
+
                       <div className="flex justify-end gap-2">
                         <Button variant="outline" onClick={() => setShowCreateListing(false)}>
                           Cancel
@@ -443,11 +578,11 @@ const BuySellCrops = () => {
                             {new Date(listing.createdAt).toLocaleDateString()}
                           </span>
                         </div>
-                        
+
                         <h3 className="font-semibold text-lg mb-2">
                           {listing.commodity} {listing.variety && `- ${listing.variety}`}
                         </h3>
-                        
+
                         <div className="space-y-2 mb-4">
                           <div className="flex justify-between">
                             <span className="text-sm text-muted-foreground">Quantity:</span>
@@ -466,13 +601,13 @@ const BuySellCrops = () => {
                             <span className="font-medium">{listing.location}, {listing.district}</span>
                           </div>
                         </div>
-                        
+
                         {listing.description && (
                           <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
                             {listing.description}
                           </p>
                         )}
-                        
+
                         <div className="flex items-center justify-between">
                           <div className="text-sm">
                             <p className="font-medium">{listing.contactName}</p>
@@ -497,7 +632,7 @@ const BuySellCrops = () => {
                     <Package className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                     <h3 className="text-lg font-semibold mb-2">No listings found</h3>
                     <p className="text-muted-foreground mb-4">
-                      {marketplaceSearch || marketplaceFilter !== 'all' 
+                      {marketplaceSearch || marketplaceFilter !== 'all'
                         ? 'Try adjusting your search criteria or filters.'
                         : 'Be the first to create a listing in your area!'
                       }

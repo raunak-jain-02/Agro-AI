@@ -381,6 +381,8 @@ Generated on: ${new Date().toLocaleString()}
                       src={selectedImage} 
                       alt="Selected crop" 
                       className="max-w-full md:max-w-md mx-auto rounded-lg shadow-soft"
+                      loading="lazy"
+                      decoding="async"
                     />
                     <Button
                       onClick={analyzeImage}

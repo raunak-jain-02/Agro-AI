@@ -13,6 +13,16 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
 }) => {
   const [progress, setProgress] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
+  // Add reduced motion detection
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setPrefersReducedMotion(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
 
   useEffect(() => {
     const startTime = Date.now();
@@ -132,7 +142,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
             {/* Animated Gradient Background */}
             <motion.div
               className="absolute inset-0"
-              animate={{
+              animate={prefersReducedMotion ? {} : {
                 background: [
                   "radial-gradient(circle at 20% 50%, rgba(34, 197, 94, 0.1) 0%, transparent 70%)",
                   "radial-gradient(circle at 80% 20%, rgba(34, 197, 94, 0.1) 0%, transparent 70%)",
@@ -140,7 +150,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                   "radial-gradient(circle at 20% 50%, rgba(34, 197, 94, 0.1) 0%, transparent 70%)"
                 ]
               }}
-              transition={{
+              transition={prefersReducedMotion ? { duration: 0 } : {
                 duration: 8,
                 repeat: Infinity,
                 ease: "linear"
@@ -148,7 +158,7 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
             />
 
             {/* Floating Particles */}
-            {Array.from({ length: 12 }).map((_, i) => (
+            {!prefersReducedMotion && Array.from({ length: 12 }).map((_, i) => (
               <motion.div
                 key={i}
                 className="absolute w-2 h-2 bg-primary/20 rounded-full"
@@ -169,29 +179,29 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
             <motion.div
               variants={logoVariants}
               initial="initial"
-              animate={progress < 90 ? "animate" : "pulse"}
+              animate={prefersReducedMotion ? undefined : (progress < 90 ? "animate" : "pulse")}
               className="mb-8"
             >
               <div className="relative">
                 {/* Logo Container */}
                 <motion.div
                   className="w-20 h-20 mx-auto rounded-full bg-gradient-primary flex items-center justify-center shadow-2xl"
-                  animate={{
+                  animate={prefersReducedMotion ? {} : {
                     boxShadow: [
                       "0 0 20px rgba(34, 197, 94, 0.3)",
                       "0 0 40px rgba(34, 197, 94, 0.5)",
                       "0 0 20px rgba(34, 197, 94, 0.3)"
                     ]
                   }}
-                  transition={{
+                  transition={prefersReducedMotion ? { duration: 0 } : {
                     duration: 2,
                     repeat: Infinity,
                     ease: "easeInOut"
                   }}
                 >
                   <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{
+                    animate={prefersReducedMotion ? {} : { rotate: 360 }}
+                    transition={prefersReducedMotion ? { duration: 0 } : {
                       duration: 4,
                       repeat: Infinity,
                       ease: "linear"
@@ -204,8 +214,8 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                 {/* Orbiting Elements */}
                 <motion.div
                   className="absolute inset-0"
-                  animate={{ rotate: -360 }}
-                  transition={{
+                  animate={prefersReducedMotion ? {} : { rotate: -360 }}
+                  transition={prefersReducedMotion ? { duration: 0 } : {
                     duration: 6,
                     repeat: Infinity,
                     ease: "linear"
@@ -218,18 +228,12 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                     <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1">
                       <div className="w-2 h-2 bg-success rounded-full" />
                     </div>
-                    <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1">
-                      <div className="w-2 h-2 bg-primary rounded-full" />
-                    </div>
-                    <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-1">
-                      <div className="w-2 h-2 bg-accent rounded-full" />
-                    </div>
                   </div>
                 </motion.div>
               </div>
             </motion.div>
 
-            {/* Brand Text */}
+            {/* Title & Subtitle */}
             <motion.div
               variants={textVariants}
               initial="initial"
@@ -260,30 +264,39 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
                     className="h-full bg-gradient-primary rounded-full relative"
                   >
                     {/* Shimmer Effect */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                      animate={{
-                        x: ["-100%", "100%"]
-                      }}
-                      transition={{
-                        duration: 1.5,
-                        repeat: Infinity,
-                        ease: "linear"
-                      }}
-                    />
+                    {!prefersReducedMotion && (
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+                        animate={{
+                          x: ["-100%", "100%"]
+                        }}
+                        transition={{
+                          duration: 1.5,
+                          repeat: Infinity,
+                          ease: "linear"
+                        }}
+                      />
+                    )}
                   </motion.div>
                 </div>
-                <motion.p
-                  className="text-sm text-muted-foreground mt-2 text-center"
-                  animate={{ opacity: [0.7, 1, 0.7] }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                  }}
-                >
-                  {Math.round(progress)}% Loading...
-                </motion.p>
+                {!prefersReducedMotion && (
+                  <motion.p
+                    className="text-sm text-muted-foreground mt-2 text-center"
+                    animate={{ opacity: [0.7, 1, 0.7] }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  >
+                    {Math.round(progress)}% Loading...
+                  </motion.p>
+                )}
+                {prefersReducedMotion && (
+                  <p className="text-sm text-muted-foreground mt-2 text-center">
+                    {Math.round(progress)}% Loading...
+                  </p>
+                )}
               </div>
             </motion.div>
 
@@ -294,22 +307,31 @@ const LoadingScreen: React.FC<LoadingScreenProps> = ({
               transition={{ delay: 1.5, duration: 0.5 }}
               className="text-center"
             >
-              <motion.p
-                className="text-sm text-muted-foreground"
-                animate={{
-                  opacity: [0.5, 1, 0.5]
-                }}
-                transition={{
-                  duration: 2.5,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                {progress < 30 && "Initializing agricultural intelligence..."}
-                {progress >= 30 && progress < 60 && "Loading crop analysis models..."}
-                {progress >= 60 && progress < 90 && "Connecting to market data..."}
-                {progress >= 90 && "Almost ready! 🌱"}
-              </motion.p>
+              {!prefersReducedMotion ? (
+                <motion.p
+                  className="text-sm text-muted-foreground"
+                  animate={{
+                    opacity: [0.5, 1, 0.5]
+                  }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                >
+                  {progress < 30 && "Initializing agricultural intelligence..."}
+                  {progress >= 30 && progress < 60 && "Loading crop analysis models..."}
+                  {progress >= 60 && progress < 90 && "Connecting to market data..."}
+                  {progress >= 90 && "Almost ready! 🌱"}
+                </motion.p>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  {progress < 30 && "Initializing agricultural intelligence..."}
+                  {progress >= 30 && progress < 60 && "Loading crop analysis models..."}
+                  {progress >= 60 && progress < 90 && "Connecting to market data..."}
+                  {progress >= 90 && "Almost ready! 🌱"}
+                </p>
+              )}
             </motion.div>
           </div>
         </motion.div>

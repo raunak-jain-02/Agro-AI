@@ -75,6 +75,8 @@ const DiseaseDatabase = () => {
                       src={getDiseaseImage(disease.name)} 
                       alt={`${disease.name} image`} 
                       className="w-full h-full object-contain"
+                      loading="lazy"
+                      decoding="async"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.src = "/placeholder.svg";

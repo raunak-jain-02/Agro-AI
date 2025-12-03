@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+﻿import { useState, useEffect, useMemo } from "react";
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -25,8 +25,8 @@ const generateMockMarketData = (): MarketDataItem[] => {
   const commodities = ['Wheat', 'Rice', 'Cotton', 'Sugarcane', 'Bajra', 'Maize', 'Mustard', 'Groundnut'];
   const states = ['Punjab', 'Haryana', 'Uttar Pradesh', 'Maharashtra', 'Gujarat', 'Rajasthan'];
   const varieties = ['Bold', 'Medium', 'Fine', 'Extra Fine', 'FAQ', 'Superior'];
-  
-  return commodities.flatMap((commodity, i) => 
+
+  return commodities.flatMap((commodity, i) =>
     states.slice(0, 3).map((state, j) => ({
       commodity,
       state,
@@ -56,30 +56,31 @@ const MarketAnalysis = () => {
       try {
         setLoading(true);
         setError(null);
-        
+
         // Use mock data directly since the API has CORS and authentication issues
         // In a production environment, you would need a backend proxy to handle the API calls
+        // Use mock data initially, but try to fetch real data
         const mockData = generateMockMarketData();
-        
+
         // Simulate API delay for better UX
         await new Promise(resolve => setTimeout(resolve, 1000));
-        
+
         setAllMarketData(mockData);
         setMarketData(mockData);
         setLoading(false);
-        
+
         // Optional: Try to fetch real data in the background and update if successful
         // This prevents blocking the UI while still attempting to get real data
         try {
           const apiUrl = 'https://api.data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070?api-key=579b464db66ec23bdd000001cdd3946e44ce4aad7209ff7b23ac571b&format=json&offset=0&limit=50';
-          
+
           const response = await axios.get(apiUrl, {
             timeout: 5000,
             headers: {
               'Accept': 'application/json',
             }
           });
-          
+
           if (response.data && response.data.records && Array.isArray(response.data.records) && response.data.records.length > 0) {
             setAllMarketData(response.data.records);
             setMarketData(response.data.records);
@@ -89,10 +90,10 @@ const MarketAnalysis = () => {
           // Silently fail and keep using mock data
           console.log('API unavailable, using mock data:', apiErr);
         }
-        
+
       } catch (err) {
         console.error('Error loading market data:', err);
-        
+
         // Fallback to mock data
         const mockData = generateMockMarketData();
         setAllMarketData(mockData);
@@ -111,26 +112,26 @@ const MarketAnalysis = () => {
 
     try {
       let filteredData = [...allMarketData];
-      
+
       // Filter by crop name
       if (searchTerm) {
-        filteredData = filteredData.filter(item => 
+        filteredData = filteredData.filter(item =>
           item.commodity.toLowerCase().includes(searchTerm.toLowerCase())
         );
       }
-      
+
       // Filter by state
       if (selectedState && selectedState !== "all") {
-        filteredData = filteredData.filter(item => 
+        filteredData = filteredData.filter(item =>
           item.state.toLowerCase() === selectedState.toLowerCase()
         );
       }
-      
+
       setMarketData(filteredData);
-      
+
       // Clear any previous errors
       if (error) setError(null);
-      
+
       // Show a message if no results found
       if (filteredData.length === 0 && (searchTerm || (selectedState && selectedState !== "all"))) {
         setError('No results found for the current search criteria. Try adjusting your filters.');
@@ -144,12 +145,12 @@ const MarketAnalysis = () => {
   const handleSearch = () => {
     // The filtering is already handled by the useEffect above
     // This function can be used for additional search-related actions
-    
+
     // If there's an error, try to refresh the data
     if (error) {
       setLoading(true);
       setError(null);
-      
+
       // Simulate refresh with mock data
       setTimeout(() => {
         const mockData = generateMockMarketData();
@@ -173,7 +174,7 @@ const MarketAnalysis = () => {
 
     // Calculate unique markets count
     const uniqueMarkets = new Set(marketData.map(item => item.market)).size;
-    
+
     // Calculate average price change (mock calculation based on modal_price)
     let totalPriceChange = 0;
     marketData.forEach(item => {
@@ -183,10 +184,10 @@ const MarketAnalysis = () => {
     });
     const avgPriceChangeNum = totalPriceChange / marketData.length;
     const priceChangeDirection = avgPriceChangeNum >= 0 ? "+" : "";
-    
+
     // Get the most recent update time
     const lastUpdated = "Today";
-    
+
     return {
       averagePriceChange: `${priceChangeDirection}${avgPriceChangeNum.toFixed(1)}%`,
       activeMarkets: uniqueMarkets,
@@ -194,9 +195,9 @@ const MarketAnalysis = () => {
     };
   }, [marketData]);
 
-  
 
-  
+
+
 
   return (
     <div className="min-h-screen bg-gradient-hero">
@@ -216,8 +217,8 @@ const MarketAnalysis = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
                 <div>
                   <label className="text-sm font-medium mb-2 block">Crop</label>
-                  <Input 
-                    placeholder="Enter crop name..." 
+                  <Input
+                    placeholder="Enter crop name..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     disabled={loading}
@@ -238,7 +239,7 @@ const MarketAnalysis = () => {
                   </Select>
                 </div>
                 <div className="flex items-end gap-2">
-                  <Button 
+                  <Button
                     className="w-full bg-gradient-primary"
                     onClick={handleSearch}
                     disabled={loading}
@@ -246,7 +247,7 @@ const MarketAnalysis = () => {
                     {loading ? "Loading..." : "Search Prices"}
                   </Button>
                   {(searchTerm || (selectedState && selectedState !== "all")) && (
-                    <Button 
+                    <Button
                       variant="outline"
                       className="w-full"
                       onClick={() => {
@@ -280,14 +281,14 @@ const MarketAnalysis = () => {
                       {marketStats.averagePriceChange}
                     </p>
                   </div>
-                  {parseFloat(marketStats.averagePriceChange) >= 0 ? 
-                    <TrendingUp className="h-8 w-8 text-success" /> : 
+                  {parseFloat(marketStats.averagePriceChange) >= 0 ?
+                    <TrendingUp className="h-8 w-8 text-success" /> :
                     <TrendingDown className="h-8 w-8 text-destructive" />
                   }
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card className="bg-gradient-card shadow-card">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
@@ -302,7 +303,7 @@ const MarketAnalysis = () => {
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card className="bg-gradient-card shadow-card">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">

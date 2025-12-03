@@ -254,85 +254,53 @@
   }
 
   .animate-bounce-gentle {
-    animation: bounceGentle 2s ease-in-out infinite;
+    animation: bounceGentle 3s ease-in-out infinite;
   }
 
   .animate-pulse-slow {
-    animation: pulseSlow 3s ease-in-out infinite;
+    animation: pulseSlow 4s ease-in-out infinite;
   }
 
   .animate-rotate-slow {
-    animation: rotateSlow 20s linear infinite;
+    animation: rotateSlow 60s linear infinite;
   }
 
-  .animate-wiggle {
-    animation: wiggle 1s ease-in-out infinite;
-  }
-
-  /* Hover Effects */
   .hover-lift {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.25s ease;
   }
 
   .hover-lift:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  }
-
-  .hover-glow:hover {
-    box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+    transform: translateY(-2px) scale(1.01);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
   }
 
   .hover-scale:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
+  }
+
+  /* Reduce motion globally when preferred */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float,
+    .animate-float-delayed,
+    .animate-glow,
+    .animate-bounce-gentle,
+    .animate-pulse-slow,
+    .animate-rotate-slow,
+    .animate-wiggle {
+      animation: none !important;
+    }
+    * { transition: none !important; }
   }
 
   /* Keyframes */
-  @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
-  }
-
-  @keyframes glow {
-    from { box-shadow: 0 0 20px rgba(34, 197, 94, 0.2); }
-    to { box-shadow: 0 0 30px rgba(34, 197, 94, 0.4); }
-  }
-
-  @keyframes slideUp {
-    from { 
-      opacity: 0; 
-      transform: translateY(30px); 
-    }
-    to { 
-      opacity: 1; 
-      transform: translateY(0); 
-    }
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  @keyframes scaleIn {
-    from { 
-      opacity: 0; 
-      transform: scale(0.9); 
-    }
-    to { 
-      opacity: 1; 
-      transform: scale(1); 
-    }
-  }
-
   @keyframes bounceGentle {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-4px); }
   }
 
   @keyframes pulseSlow {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.7; }
+    50% { opacity: 0.85; }
   }
 
   @keyframes rotateSlow {

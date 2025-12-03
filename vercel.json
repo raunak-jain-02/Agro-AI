@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/api/gov/:path*",
+      "destination": "https://api.data.gov.in/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
@@ -17,9 +21,3 @@
     }
   }
 }
-
-
-
-
-
-

@@ -68,12 +68,13 @@ export default {
       backgroundImage: {
         'gradient-primary': 'var(--gradient-primary)',
         'gradient-hero': 'var(--gradient-hero)',
-        'gradient-card': 'var(--gradient-card)',
+        'gradient-card': 'none',
+        'gradient-navbar': 'var(--gradient-navbar)',
       },
       boxShadow: {
-        'soft': 'var(--shadow-soft)',
-        'card': 'var(--shadow-card)',
-        'elevated': 'var(--shadow-elevated)',
+        'soft': '0 2px 8px rgba(0,0,0,0.08)',
+        'card': '0 0 0 rgba(0,0,0,0)',
+        'elevated': '0 6px 16px rgba(0,0,0,0.12)',
       },
       borderRadius: {
         lg: "var(--radius)",

@@ -51,7 +51,58 @@ CREATE TRIGGER on_user_profiles_updated
 GRANT ALL ON public.user_profiles TO authenticated;
 GRANT ALL ON public.user_profiles TO service_role;
 
+-- Create marketplace_listings table
+CREATE TABLE public.marketplace_listings (
+    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+    type VARCHAR(10) NOT NULL CHECK (type IN ('buy', 'sell')),
+    commodity VARCHAR(100) NOT NULL,
+    variety VARCHAR(100),
+    quantity NUMERIC NOT NULL,
+    unit VARCHAR(20) NOT NULL,
+    price_per_unit NUMERIC NOT NULL,
+    total_price NUMERIC NOT NULL,
+    location VARCHAR(255) NOT NULL,
+    state VARCHAR(100) NOT NULL,
+    district VARCHAR(100) NOT NULL,
+    description TEXT,
+    contact_name VARCHAR(100) NOT NULL,
+    contact_phone VARCHAR(20) NOT NULL,
+    contact_email VARCHAR(255),
+    status VARCHAR(20) DEFAULT 'active' CHECK (status IN ('active', 'sold', 'purchased', 'cancelled')),
+    seller_id UUID REFERENCES auth.users(id),
+    buyer_id UUID REFERENCES auth.users(id),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
+);
+
+-- Enable RLS for marketplace_listings
+ALTER TABLE public.marketplace_listings ENABLE ROW LEVEL SECURITY;
+
+-- Policies for marketplace_listings
+CREATE POLICY "Anyone can view active listings" ON public.marketplace_listings
+    FOR SELECT USING (status = 'active');
+
+CREATE POLICY "Authenticated users can create listings" ON public.marketplace_listings
+    FOR INSERT WITH CHECK (auth.uid() = seller_id OR auth.uid() = buyer_id);
+
+CREATE POLICY "Users can update their own listings" ON public.marketplace_listings
+    FOR UPDATE USING (auth.uid() = seller_id OR auth.uid() = buyer_id);
+
+CREATE POLICY "Users can delete their own listings" ON public.marketplace_listings
+    FOR DELETE USING (auth.uid() = seller_id OR auth.uid() = buyer_id);
+
+-- Trigger for updated_at on marketplace_listings
+CREATE TRIGGER on_marketplace_listings_updated
+    BEFORE UPDATE ON public.marketplace_listings
+    FOR EACH ROW EXECUTE PROCEDURE public.handle_updated_at();
+
+-- Grant permissions
+GRANT ALL ON public.marketplace_listings TO authenticated;
+GRANT ALL ON public.marketplace_listings TO service_role;
+GRANT SELECT ON public.marketplace_listings TO anon;
+
 -- Instructions:
 -- 1. Copy this entire SQL and run it in your Supabase SQL Editor
 -- 2. This will create the user_profiles table with proper RLS policies
 -- 3. Users will only be able to access their own profile data
+
