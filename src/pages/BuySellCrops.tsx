@@ -163,55 +163,6 @@ const BuySellCrops = () => {
     }
   };
 
-  const fetchListings = async () => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('marketplace_listings')
-        .select('*')
-        .eq('status', 'active')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-
-      if (data && data.length > 0) {
-        // Map snake_case to camelCase
-        const mappedListings: MarketplaceListing[] = data.map(item => ({
-          id: item.id,
-          type: item.type,
-          commodity: item.commodity,
-          variety: item.variety,
-          quantity: Number(item.quantity),
-          unit: item.unit,
-          pricePerUnit: Number(item.price_per_unit),
-          totalPrice: Number(item.total_price),
-          location: item.location,
-          state: item.state,
-          district: item.district,
-          description: item.description,
-          contactName: item.contact_name,
-          contactPhone: item.contact_phone,
-          contactEmail: item.contact_email,
-          createdAt: item.created_at,
-          status: item.status,
-          sellerId: item.seller_id,
-          buyerId: item.buyer_id
-        }));
-        setMarketplaceListings(mappedListings);
-      } else {
-        // If no data in DB, use mock data for demo purposes
-        // In production, you might want to show "No listings found" instead
-        setMarketplaceListings(generateMockMarketplaceData());
-      }
-    } catch (error) {
-      console.error('Error fetching listings:', error);
-      // Fallback to mock data on error
-      setMarketplaceListings(generateMockMarketplaceData());
-    } finally {
-      setLoading(false);
-    }
-  };
-
   // Filter marketplace listings
   const filteredMarketplaceListings = useMemo(() => {
     let filtered = marketplaceListings.filter(listing => listing.status === 'active');
