@@ -2,13 +2,17 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Target, Users, Award, Leaf, Lightbulb, Shield, Globe, Heart } from "lucide-react";
+import { Target, Users, Award, Leaf, Lightbulb, Shield, Globe, Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import NavBar from "@/components/NavBar";
 import raunakPhoto from "@/assets/agro-hero.jpg";
+import sparshPhoto from "@/assets/sparsh.jpg";
+import uditPhoto from "@/assets/udit.jpg";
 
 
 const About = () => {
+  const [currentDeveloperIndex, setCurrentDeveloperIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const teamMembers = [
     {
@@ -17,9 +21,48 @@ const About = () => {
       expertise: "Full-Stack Development • AI Integration • API Integration",
       photo: raunakPhoto,
       description:
-        "I design and build AgroAI end-to-end, blending AI with practical farming needs to deliver clear, reliable experiences for farmers.",
+        "I design and build AgroAI end-to-end, integrating powerful AI systems with a smooth and intuitive user experience. My focus is to create reliable, fast, and user-friendly tools that make technology genuinely helpful for farmers.",
+      focusAreas: "Front-End Development, AI Integration, API Integration"
+    },
+    {
+      name: "Udit Parekh",
+      role: "Backend Developer",
+      expertise: "Node.js • Supabase • Database Management",
+      photo: uditPhoto,
+      description:
+        "I build and maintain AgroAI’s backend systems, ensuring security, speed, and scalability, making AI accessible to farmers.",
+      focusAreas: "Backend Development, Supabase Integration, "
+    },
+    {
+      name: "Sparsh Agarwal",
+      role: "Project Manager",
+      expertise: "Project Management • Team Management • Execution",
+      photo: sparshPhoto,
+      description:
+        "I guide AgroAI’s overall direction by coordinating tasks, managing workflows, and ensuring effective communication across the team.",
+      focusAreas: "Project Management, Team Leadership, Planning & Execution. "
     },
   ];
+
+  const handlePrevious = () => {
+    if (!isAnimating) {
+      setIsAnimating(true);
+      setCurrentDeveloperIndex((prev) =>
+        prev === 0 ? teamMembers.length - 1 : prev - 1
+      );
+      setTimeout(() => setIsAnimating(false), 500);
+    }
+  };
+
+  const handleNext = () => {
+    if (!isAnimating) {
+      setIsAnimating(true);
+      setCurrentDeveloperIndex((prev) =>
+        prev === teamMembers.length - 1 ? 0 : prev + 1
+      );
+      setTimeout(() => setIsAnimating(false), 500);
+    }
+  };
 
   const values = [
     {
@@ -87,11 +130,11 @@ const About = () => {
                   Our Mission
                 </h2>
                 <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-4 sm:mb-6">
-                Our mission with Agro-AI is to bridge the gap between agriculture and technology. We aim to provide farmers, agri-businesses, and researchers with reliable.
+                  Our mission with Agro-AI is to bridge the gap between agriculture and technology. We aim to provide farmers, agri-businesses, and researchers with reliable.
 
                 </p>
                 <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-                AI-driven insights that help improve crop yields, reduce risks, and make smarter, data-informed decisions all through a simple, accessible, and an user-friendly platform.
+                  AI-driven insights that help improve crop yields, reduce risks, and make smarter, data-informed decisions all through a simple, accessible, and an user-friendly platform.
                 </p>
               </div>
               <div className="flex justify-center">
@@ -128,36 +171,82 @@ const About = () => {
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-foreground mb-6 sm:mb-8 md:mb-12">
             Meet The Developer
           </h2>
-          {teamMembers.map((member, index) => (
-            <Card key={index} className="bg-gradient-card shadow-card max-w-6xl mx-auto">
+          <div className="relative max-w-6xl mx-auto">
+            {/* Navigation Buttons */}
+            <Button
+              variant="outline"
+              size="icon"
+              className="absolute left-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gradient-card shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 -ml-4 sm:-ml-6"
+              onClick={handlePrevious}
+              disabled={isAnimating}
+            >
+              <ChevronLeft className="h-5 w-5 sm:h-6 sm:w-6" />
+            </Button>
+
+            <Button
+              variant="outline"
+              size="icon"
+              className="absolute right-0 top-1/2 -translate-y-1/2 z-10 h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-gradient-card shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 -mr-4 sm:-mr-6"
+              onClick={handleNext}
+              disabled={isAnimating}
+            >
+              <ChevronRight className="h-5 w-5 sm:h-6 sm:w-6" />
+            </Button>
+
+            {/* Developer Card with Animation */}
+            <Card
+              className={`bg-gradient-card shadow-card transition-all duration-500 ${isAnimating ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+                }`}
+            >
               <CardContent className="p-6 sm:p-10">
                 <div className="grid md:grid-cols-2 gap-6 md:gap-10 items-center">
                   <div className="order-1">
                     <img
-                      src={member.photo}
-                      alt={member.name}
+                      src={teamMembers[currentDeveloperIndex].photo}
+                      alt={teamMembers[currentDeveloperIndex].name}
                       className="w-40 h-40 sm:w-52 sm:h-52 md:w-56 md:h-56 object-cover rounded-full mx-auto shadow-md ring-2 ring-primary/40 ring-offset-4 ring-offset-background"
                     />
                   </div>
                   <div className="order-2 text-left">
                     <div className="mb-3">
                       <h3 className="text-2xl sm:text-3xl font-extrabold tracking-wide text-foreground uppercase">
-                        {member.name}
+                        {teamMembers[currentDeveloperIndex].name}
                       </h3>
-                      <p className="italic text-muted-foreground">{member.role}</p>
+                      <p className="italic text-muted-foreground">{teamMembers[currentDeveloperIndex].role}</p>
                     </div>
-                    <Badge variant="secondary" className="mb-4">{member.expertise}</Badge>
+                    <Badge variant="secondary" className="mb-4">{teamMembers[currentDeveloperIndex].expertise}</Badge>
                     <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-4">
-                      {member.description}
+                      {teamMembers[currentDeveloperIndex].description}
                     </p>
                     <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                      Focus areas: Front-End Development, Back-End Development, AI Integration, API Integration
+                      Focus areas: {teamMembers[currentDeveloperIndex].focusAreas}
                     </p>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          ))}
+
+            {/* Indicator Dots */}
+            <div className="flex justify-center gap-2 mt-6">
+              {teamMembers.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    if (!isAnimating) {
+                      setIsAnimating(true);
+                      setCurrentDeveloperIndex(index);
+                      setTimeout(() => setIsAnimating(false), 500);
+                    }
+                  }}
+                  className={`h-2 rounded-full transition-all duration-300 ${index === currentDeveloperIndex
+                    ? 'w-8 bg-primary'
+                    : 'w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                    }`}
+                  aria-label={`Go to developer ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Technology Section */}
@@ -174,8 +263,8 @@ const About = () => {
                   Our Technology
                 </h2>
                 <p className="text-base sm:text-lg text-muted-foreground leading-relaxed mb-4 sm:mb-6">
-                 Farming today is no longer just about soil, seeds, and weather—it’s about smart decisions powered by technology. That’s where we come in.
-                 We use advanced machine learning, computer vision, and real-time data to give farmers simple, clear, and actionable insights.
+                  Farming today is no longer just about soil, seeds, and weather—it’s about smart decisions powered by technology. That’s where we come in.
+                  We use advanced machine learning, computer vision, and real-time data to give farmers simple, clear, and actionable insights.
                 </p>
                 <div className="space-y-3 sm:space-y-4">
                   <div className="flex items-center space-x-3">

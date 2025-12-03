@@ -1,4 +1,4 @@
-﻿import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import axios from 'axios';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -175,14 +175,23 @@ const MarketAnalysis = () => {
     // Calculate unique markets count
     const uniqueMarkets = new Set(marketData.map(item => item.market)).size;
 
-    // Calculate average price change (mock calculation based on modal_price)
+    // Calculate average price change based on actual market data
+    // We calculate how much the modal price deviates from the midpoint of min and max prices
     let totalPriceChange = 0;
     marketData.forEach(item => {
-      // This is a mock calculation - in a real app, you'd compare with historical data
-      const randomChange = (Math.random() * 20) - 10; // Random value between -10 and 10
-      totalPriceChange += randomChange;
+      const minPrice = parseFloat(item.min_price) || 0;
+      const maxPrice = parseFloat(item.max_price) || 0;
+      const modalPrice = parseFloat(item.modal_price) || 0;
+      
+      if (modalPrice > 0 && minPrice > 0 && maxPrice > 0) {
+        // Calculate the midpoint between min and max
+        const midPoint = (minPrice + maxPrice) / 2;
+        // Calculate percentage deviation of modal price from midpoint
+        const deviation = ((modalPrice - midPoint) / midPoint) * 100;
+        totalPriceChange += deviation;
+      }
     });
-    const avgPriceChangeNum = totalPriceChange / marketData.length;
+    const avgPriceChangeNum = marketData.length > 0 ? totalPriceChange / marketData.length : 0;
     const priceChangeDirection = avgPriceChangeNum >= 0 ? "+" : "";
 
     // Get the most recent update time
@@ -325,7 +334,7 @@ const MarketAnalysis = () => {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <TrendingUp className="h-5 w-5 text-accent" />
-                Real-Time Mandi Prices (₹/Quintal)
+                Real-Time Mandi Prices (?/Quintal)
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -360,9 +369,9 @@ const MarketAnalysis = () => {
                         <td className="py-4 px-4">{item.district}</td>
                         <td className="py-4 px-4">{item.market}</td>
                         <td className="py-4 px-4">{item.variety}</td>
-                        <td className="py-4 px-4 font-semibold">₹{parseInt(item.min_price).toLocaleString()}</td>
-                        <td className="py-4 px-4 font-semibold">₹{parseInt(item.max_price).toLocaleString()}</td>
-                        <td className="py-4 px-4 font-semibold">₹{parseInt(item.modal_price).toLocaleString()}</td>
+                        <td className="py-4 px-4 font-semibold">?{parseInt(item.min_price).toLocaleString()}</td>
+                        <td className="py-4 px-4 font-semibold">?{parseInt(item.max_price).toLocaleString()}</td>
+                        <td className="py-4 px-4 font-semibold">?{parseInt(item.modal_price).toLocaleString()}</td>
                         <td className="py-4 px-4">{item.arrival_date}</td>
                       </tr>
                     ))}
