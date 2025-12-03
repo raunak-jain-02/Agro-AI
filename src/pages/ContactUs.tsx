@@ -29,7 +29,7 @@ const ContactUs = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Basic validation
     if (!formData.name || !formData.email || !formData.message) {
       toast({
@@ -42,7 +42,7 @@ const ContactUs = () => {
 
     // Create message object
     const newMessage = {
-      id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+      id: Date.now().toString() + Math.random().toString(36).substring(2, 11),
       name: formData.name,
       email: formData.email,
       subject: formData.subject || "general",
@@ -74,7 +74,7 @@ const ContactUs = () => {
   return (
     <div className="min-h-screen bg-gradient-hero">
       <NavBar showBackButton={true} />
-      
+
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-6 sm:py-8 md:py-12">
         {/* Header Section */}
         <div className="text-center mb-8 sm:mb-12 md:mb-16">
@@ -160,8 +160,8 @@ const ContactUs = () => {
                 </div>
 
                 {/* Submit Button */}
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full bg-gradient-primary hover:opacity-90 text-base py-3"
                 >
                   <Send className="h-4 w-4 mr-2" />
@@ -260,8 +260,8 @@ const ContactUs = () => {
             </Card>
           </div>
         </div>
-        
-        {/* Admin Access Link (for development) */}
+
+        {/* Admin Access Link (for development)
         <div className="text-center mt-8 pt-4 border-t border-border">
           <p className="text-xs text-muted-foreground mb-2">Admin Access (Development Only)</p>
           <Button
@@ -271,7 +271,7 @@ const ContactUs = () => {
           >
             View Contact Messages Admin Panel
           </Button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

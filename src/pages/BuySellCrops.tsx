@@ -112,6 +112,29 @@ const BuySellCrops = () => {
 
   useEffect(() => {
     fetchListings();
+
+    // Subscribe to real-time changes
+    const channel = supabase
+      .channel('marketplace_listings_changes')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'marketplace_listings'
+        },
+        (payload) => {
+          console.log('Real-time update:', payload);
+          // Refresh listings when any change occurs
+          fetchListings();
+        }
+      )
+      .subscribe();
+
+    // Cleanup subscription on unmount
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const fetchListings = async () => {
@@ -191,6 +214,9 @@ const BuySellCrops = () => {
     }
 
     try {
+      // Get current authenticated user
+      const { data: { user } } = await supabase.auth.getUser();
+
       const listingData = {
         type: listingType,
         commodity: newListing.commodity,
@@ -207,8 +233,8 @@ const BuySellCrops = () => {
         contact_phone: newListing.contactPhone,
         contact_email: newListing.contactEmail,
         status: 'active',
-        seller_id: listingType === 'sell' ? (userProfile?.id || null) : null,
-        buyer_id: listingType === 'buy' ? (userProfile?.id || null) : null,
+        seller_id: listingType === 'sell' ? (user?.id || null) : null,
+        buyer_id: listingType === 'buy' ? (user?.id || null) : null,
       };
 
       const { data, error } = await supabase

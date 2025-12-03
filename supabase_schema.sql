@@ -47,6 +47,50 @@ CREATE TRIGGER on_user_profiles_updated
     BEFORE UPDATE ON public.user_profiles
     FOR EACH ROW EXECUTE PROCEDURE public.handle_updated_at();
 
+-- Create a function that automatically creates a user profile when a new user signs up
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER AS $$
+BEGIN
+    INSERT INTO public.user_profiles (
+        id, 
+        email, 
+        first_name, 
+        last_name,
+        phone,
+        location,
+        farm_size,
+        crop_types,
+        weather_alerts,
+        price_alerts,
+        general_notifications
+    )
+    VALUES (
+        NEW.id,
+        NEW.email,
+        COALESCE(NEW.raw_user_meta_data->>'firstName', ''),
+        COALESCE(NEW.raw_user_meta_data->>'lastName', ''),
+        COALESCE(NEW.raw_user_meta_data->>'phone', NULL),
+        COALESCE(NEW.raw_user_meta_data->>'location', NULL),
+        COALESCE(NEW.raw_user_meta_data->>'farmSize', NULL),
+        CASE 
+            WHEN NEW.raw_user_meta_data->>'cropTypes' IS NOT NULL 
+            THEN ARRAY(SELECT jsonb_array_elements_text(NEW.raw_user_meta_data->'cropTypes'))
+            ELSE NULL
+        END,
+        COALESCE((NEW.raw_user_meta_data->>'weatherAlerts')::boolean, true),
+        COALESCE((NEW.raw_user_meta_data->>'priceAlerts')::boolean, true),
+        COALESCE((NEW.raw_user_meta_data->>'generalNotifications')::boolean, true)
+    );
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Create a trigger that fires when a new user is created in auth.users
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+    AFTER INSERT ON auth.users
+    FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
 -- Grant permissions
 GRANT ALL ON public.user_profiles TO authenticated;
 GRANT ALL ON public.user_profiles TO service_role;
@@ -82,8 +126,8 @@ ALTER TABLE public.marketplace_listings ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Anyone can view active listings" ON public.marketplace_listings
     FOR SELECT USING (status = 'active');
 
-CREATE POLICY "Authenticated users can create listings" ON public.marketplace_listings
-    FOR INSERT WITH CHECK (auth.uid() = seller_id OR auth.uid() = buyer_id);
+CREATE POLICY "Anyone can create listings" ON public.marketplace_listings
+    FOR INSERT WITH CHECK (true);
 
 CREATE POLICY "Users can update their own listings" ON public.marketplace_listings
     FOR UPDATE USING (auth.uid() = seller_id OR auth.uid() = buyer_id);
