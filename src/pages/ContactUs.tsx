@@ -261,7 +261,7 @@ const ContactUs = () => {
           </div>
         </div>
 
-        {/* Admin Access Link (for development)
+        {/* Admin Access Link (for development) 
         <div className="text-center mt-8 pt-4 border-t border-border">
           <p className="text-xs text-muted-foreground mb-2">Admin Access (Development Only)</p>
           <Button

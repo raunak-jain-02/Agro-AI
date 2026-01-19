@@ -28,7 +28,8 @@ const DiseaseDatabase = () => {
     "smut": "/images/smut.svg",
     "leaf-curl-virus": "/images/leaf-curl-virus.svg",
     "yellow-rust": "/images/yellow-rust.svg",
-    "alternaria-leaf-spot": "/images/alternaria-leaf-spot.svg"
+    "alternaria-leaf-spot": "/images/alternaria-leaf-spot.svg",
+    "cercospora-leaf-spot" : "/images/alternaria-leaf-spot.svg"
   };
 
   const getDiseaseImage = (diseaseName: string) => {
