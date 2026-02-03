@@ -124,7 +124,7 @@ If you find this project useful, feel free to ⭐ star the repository, share it 
 
 **Name**: Raunak Jain<br>
 **Email**: raunakjain1002@gmail.com<br>
-**Website**: https://agro-mitra-ai.vercel.app/
+**Website**: https://agro-ai-final.vercel.app/
 
 
  
