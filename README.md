@@ -98,14 +98,6 @@ Contributions are welcome! Please fork the repository and submit a pull request 
   <img src="https://github.com/raunak-jain-02.png" width="50" height="50">
 </a>
 
-<a href="https://github.com/leafrelaf">
-  <img src="https://github.com/leafrelaf.png" width="50" height="50">
-</a>
-
-<a href="https://github.com/akarsh0612">
-  <img src="https://github.com/akarsh0612.png" width="50" height="50">
-</a>
-
 <a href="https://github.com/parekhudit7">
   <img src="https://github.com/parekhudit7.png" width="50" height="50">
 </a>
